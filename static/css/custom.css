@@ -1,19 +1,25 @@
 #top-nav {
+    background-image: linear-gradient(whitesmoke, white);
     position: relative;
     z-index: 10;
-    box-shadow: 1px 0 15px -2px dimgrey;
+    box-shadow: 0 5px 20px dimgrey;
 }
 
 #side-nav {
-    position: relative;
-    box-shadow: 1px 5px 10px -2px dimgrey;
-    z-index: 5;
+    background-color: white;
+    box-shadow: 2px 0 10px dimgrey;
+    z-index: 0;
 }
 
 #content-area {
+    z-index: -5;
+}
+
+#footer {
+    background-color: white;
     position: relative;
-    z-index: 0;
-    background-color: #dce8f2;
+    box-shadow: 0 -5px 20px dimgrey;
+    z-index: 10;
 }
 
 #user-image {
@@ -26,5 +32,5 @@
 }
 
 .card-header {
-    color: darkred;
+    color: darkcyan;
 }

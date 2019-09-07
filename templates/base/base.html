@@ -19,12 +19,13 @@
             <div id="side-nav" class="col-2 pt-5">
                 {% include 'base/side-navbar.html' %}
             </div>
-            <div id="content-area" class="col-10 pl-5 pt-5">
+            <div id="content-area" class="col-10 p-5 p-5">
                 {% block content %}
                 replace me
                 {% endblock %}
             </div>
         </div>
+        {% include 'base/footer.html' %}
     </div>
 </body>
 </html>
