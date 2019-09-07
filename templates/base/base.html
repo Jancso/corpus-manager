@@ -11,12 +11,14 @@
     <link rel="stylesheet" href="{% static "css/custom.css" %}">
 </head>
 <body>
-    <div class="container-fluid">
+    <div id="main-container" class="container-fluid">
+        {% include 'base/top-navbar.html' %}
+
         <div class="row">
-            <div class="col-2">
+            <div id="side-nav" class="col-2">
                 {% include 'base/side-navbar.html' %}
             </div>
-            <div class="col-10">
+            <div id="content-area" class="col-10">
                 {% block content %}
                 replace me
                 {% endblock %}

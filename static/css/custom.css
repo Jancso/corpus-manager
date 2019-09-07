@@ -1,3 +1,17 @@
-h1#home-page {
-    color: aqua;
+#top-nav {
+    position: relative;
+    z-index: 10;
+    box-shadow: 1px 0 15px -2px dimgrey;
+}
+
+#side-nav {
+    position: relative;
+    box-shadow: 1px 5px 10px -2px dimgrey;
+    z-index: 5;
+}
+
+#content-area {
+    position: relative;
+    z-index: 0;
+    background-color: #dce8f2;
 }
