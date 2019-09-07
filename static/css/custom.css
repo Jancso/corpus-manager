@@ -15,3 +15,16 @@
     z-index: 0;
     background-color: #dce8f2;
 }
+
+#user-image {
+    width:300px;
+    height:auto;
+}
+
+.card {
+    box-shadow: 1px 5px 10px -2px dimgrey;
+}
+
+.card-header {
+    color: darkred;
+}

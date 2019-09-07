@@ -1,6 +1,46 @@
 {% extends 'base/base.html' %}
 
+{% load static %}
+
 {% block content %}
-    <h1>Home Page</h1>
-    {% lorem 4 p%}
+
+    <div class="row">
+
+        <div class="col-lg-6 pr-5">
+            <div class="card h-100">
+                <h5 class="card-header bg-light text-center">Anna Jancso</h5>
+                <div class="card-body">
+                    <img src="{% static 'img/user-placeholder.jpg' %}"
+                         id="user-image"
+                         class="p-3 rounded-circle mx-auto d-block img-fluid">
+
+                    <table class="table mt-5">
+                        <tbody>
+                        <tr>
+                            <td><i class="fas fa-envelope pr-2"></i></td>
+                            <td><a href="mailto:youremailaddress">anna.jancso@uzh.ch</a></td>
+                        </tr>
+                        <tr>
+                            <td><i class="fas fa-user-tag pr-2"></i></td>
+                            <td>HiWi</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 pr-5">
+            <div class="card h-100">
+                <h5 class="card-header bg-light text-center">Assignments</h5>
+                <div class="card-body">
+                    <p class="card-text text-justify">
+                        {% lorem 2 p %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
