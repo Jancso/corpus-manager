@@ -42,8 +42,8 @@ class UserUpdateView(View):
                 user_profile_form.save()
 
             context['form'] = {
-                'user': self.user_form(instance=obj.user),
-                'user_profile': self.user_profile_form(instance=obj)
+                'user': user_form,
+                'user_profile': user_profile_form
             }
 
         return render(request, self.template_name, context)
