@@ -1,26 +1,32 @@
 #top-nav {
-    background-image: linear-gradient(whitesmoke, white);
+    background-image: linear-gradient(#007bff, #007bff);
     position: relative;
     z-index: 10;
-    box-shadow: 0 5px 20px dimgrey;
+    box-shadow: 0 5px 20px lightsteelblue;
+}
+
+#top-nav a {
+    color: white;
 }
 
 #side-nav {
     background-color: white;
-    box-shadow: 2px 0 10px dimgrey;
+    box-shadow: 2px 0 10px lightsteelblue;
     z-index: 0;
 }
 
 #content-area {
     z-index: -5;
-    background-image: linear-gradient(whitesmoke, white);
+    background-image: linear-gradient(whitesmoke, whitesmoke);
 }
 
 #footer {
-    background-color: white;
+    background-color: #007bff;
     position: relative;
-    box-shadow: 0 -5px 20px dimgrey;
+    box-shadow: 0 -5px 20px lightsteelblue;
     z-index: 10;
+    font-size: 10pt;
+    color: white;
 }
 
 #user-image {
@@ -29,11 +35,7 @@
 }
 
 .card {
-    box-shadow: 1px 5px 10px -2px dimgrey;
-}
-
-.card-header {
-    color: darkcyan;
+    box-shadow: 1px 5px 10px -2px lightsteelblue;
 }
 
 #registration-content-area {
