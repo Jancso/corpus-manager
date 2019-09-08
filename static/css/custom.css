@@ -35,3 +35,9 @@
 .card-header {
     color: darkcyan;
 }
+
+#registration-content-area {
+    border-radius: 25px;
+    background-color: whitesmoke;
+    box-shadow: 0 0 10px dimgrey;
+}
