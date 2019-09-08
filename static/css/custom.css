@@ -1,7 +1,7 @@
 #top-nav {
     background-image: linear-gradient(#007bff, #007bff);
     position: relative;
-    z-index: 10;
+    z-index: 3;
     box-shadow: 0 5px 20px lightsteelblue;
 }
 
@@ -12,11 +12,11 @@
 #side-nav {
     background-color: white;
     box-shadow: 2px 0 10px lightsteelblue;
-    z-index: 0;
+    z-index: 1;
 }
 
 #content-area {
-    z-index: -5;
+    z-index: 0;
     background-image: linear-gradient(whitesmoke, whitesmoke);
 }
 
@@ -24,7 +24,7 @@
     background-color: #007bff;
     position: relative;
     box-shadow: 0 -5px 20px lightsteelblue;
-    z-index: 10;
+    z-index: 3;
     font-size: 10pt;
     color: white;
 }
