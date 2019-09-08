@@ -2,12 +2,24 @@
 
 {% block content %}
 
-<form method="post">{% csrf_token %}
-    <table class="table">
-        {{ form.user.as_table }}
-        {{ form.user_profile.as_table }}
-    </table>
-    <input class="btn btn-primary" type="submit" value="Update">
-</form>
+    <div class="row">
+
+        <div class="col-4">
+            <img src="{{ user.image.url }}"
+                 id="user-image"
+                 class="p-3 rounded-circle mx-auto d-block img-fluid">
+        </div>
+
+        <div class="col-8">
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <table class="table">
+                    {{ form.user.as_table }}
+                    {{ form.user_profile.as_table }}
+                </table>
+                <input class="btn btn-primary" type="submit" value="Update">
+            </form>
+        </div>
+
+    </div>
 
 {% endblock %}

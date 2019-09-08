@@ -26,6 +26,8 @@ class UserUpdateView(View):
                 'user_profile': self.user_profile_form(instance=obj)
             }
 
+            context['user'] = obj
+
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
@@ -35,7 +37,7 @@ class UserUpdateView(View):
             user_form = self.user_form(
                 request.POST, instance=obj.user)
             user_profile_form = self.user_profile_form(
-                request.POST, instance=obj)
+                request.POST, request.FILES, instance=obj)
 
             if user_form.is_valid() and user_profile_form.is_valid():
                 user_form.save()
@@ -45,5 +47,7 @@ class UserUpdateView(View):
                 'user': user_form,
                 'user_profile': user_profile_form
             }
+
+            context['user'] = obj
 
         return render(request, self.template_name, context)
