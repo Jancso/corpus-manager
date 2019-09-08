@@ -10,35 +10,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card h-100">
-                <h5 class="card-header bg-light text-center">
-                    {{ user.get_full_name }}
-                </h5>
-                <div class="card-body">
-{#                    <img src="{% static 'img/user-placeholder.jpg' %}"#}
-{#                         id="user-image"#}
-{#                         class="p-3 rounded-circle mx-auto d-block img-fluid">#}
-
-                    <img src="{{ user.userprofile.image.url }}"
-                         id="user-image"
-                         class="p-3 rounded-circle mx-auto d-block img-fluid">
-
-                    <table class="table mt-5">
-                        <tbody>
-                        <tr>
-                            <td><i class="fas fa-envelope pr-2"></i></td>
-                            <td>
-                                <a href="mailto:{{user.email}}">{{ user.email }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-user-tag pr-2"></i></td>
-                            <td>HiWi</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% include 'home/user-card.html' %}
         </div>
 
         <div class="col-lg-1">

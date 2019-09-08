@@ -13,6 +13,7 @@
 
 #content-area {
     z-index: -5;
+    background-image: linear-gradient(whitesmoke, white);
 }
 
 #footer {
