@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['image']
+        fields = ['image', 'job_function']
 
 
 class UserForm(ModelForm):
