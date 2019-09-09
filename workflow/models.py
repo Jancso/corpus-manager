@@ -54,9 +54,9 @@ class Recording(models.Model):
                                    max_length=30,
                                    default='U')
 
-    audio = models.CharField(max_length=100, default='n/a')
-    length = models.DurationField(null=True)
-    notes = models.TextField()
+    audio = models.CharField(max_length=100, null=True, blank=True)
+    length = models.DurationField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
 
 class Task(models.Model):
@@ -89,7 +89,7 @@ class Task(models.Model):
                               max_length=30,
                               default='NOT-STARTED')
 
-    end = models.DateField(null=True)
+    end = models.DateField(null=True, blank=True)
 
     class Meta:
         unique_together = ('recording', 'name')
