@@ -1,0 +1,25 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-content %}
+    <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Segmentation</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for rec in recordings %}
+            <tr>
+                <th scope="row">{{ rec.id }}</th>
+                <td>{{ rec.name }}</td>
+                <td>{{ rec.segmentation }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

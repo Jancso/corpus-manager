@@ -1,6 +1,6 @@
 <nav class="nav flex-column nav-pills">
     <a id="home-link" class="nav-link" href="{% url 'home:home-detail' %}"><i class="fas fa-home pr-2"></i> Home</a>
-    <a class="nav-link" href="#"><i class="fas fa-sitemap pr-2"></i> Workflow</a>
-    <a class="nav-link" href="#"><i class="fas fa-database pr-2"></i> Metadata</a>
+    <a class="nav-link" href="{% url 'workflow:workflow' %}"><i class="fas fa-sitemap pr-2"></i> Workflow</a>
+{#    <a class="nav-link" href="#"><i class="fas fa-database pr-2"></i> Metadata</a>#}
     <a id="settings-link" class="nav-link" href="{% url 'home:settings-detail' %}"><i class="fas fa-user-cog pr-2"></i>Settings</a>
 </nav>
