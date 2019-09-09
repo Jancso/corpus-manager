@@ -2,7 +2,8 @@ from django.db import models
 
 
 class Recording(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,
+                            unique=True)
 
     QUALITY_CHOICES = {
         ('H', 'high'),
@@ -55,6 +56,49 @@ class Recording(models.Model):
 
     audio = models.CharField(max_length=100, default='n/a')
     length = models.DurationField(null=True)
+    notes = models.TextField()
 
 
+class Task(models.Model):
 
+    recording = models.ForeignKey(Recording, on_delete=models.CASCADE)
+
+    NAME_CHOICES = {
+        'S': 'segmentation',
+        'T': 'transcription/translation',
+        'CT': 'check transcription/translation',
+        'G': 'glossing',
+        'CG': 'check glossing',
+    }
+
+    name = models.CharField(choices=NAME_CHOICES,
+                            max_length=50)
+
+    STATUS_CHOICES = {
+        'BARRED': 'barred',
+        'CHECKED': 'checked',
+        'COMPLETED': 'completed',
+        'DEFERRED': 'defered',
+        'INCOMPLETE': 'incomplete',
+        'IN-PROGRESS': 'in progress',
+        'NOT-STARTED': 'not started',
+        'RESERVED': 'reserved for',
+    }
+
+    status = models.CharField(choices=STATUS_CHOICES,
+                              max_length=30,
+                              default='NOT-STARTED')
+
+    end = models.DateField(null=True)
+
+    class Meta:
+        unique_together = ('recording', 'name')
+
+
+class Assignment(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    person = models.CharField(unique=True, max_length=50)
+    start = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('task', 'person')
