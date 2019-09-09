@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {% include 'base/settings-breadcrumb.html' %}
+
     <div class="row">
 
         <div class="col-md-4 text-center">
@@ -29,6 +31,7 @@
     <script>
         $(function () {
             $('#settings-link').addClass('active');
+            $('#password-breadcrumb').hide();
         })
     </script>
 
