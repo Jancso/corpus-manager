@@ -16,7 +16,7 @@
             <tbody>
             {% for rec in recordings %}
                 <tr>
-                    <td>{{ rec.name }}</td>
+                    <td><a href="{% url 'workflow:rec-detail' rec.pk %}">{{ rec.name }}</a></td>
                     <td>{{ rec.quality }}</td>
                     <td>{{ rec.status }}</td>
                 </tr>

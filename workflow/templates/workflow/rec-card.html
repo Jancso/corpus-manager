@@ -1,0 +1,41 @@
+<div class="card">
+    <h6 class="card-header">Recording</h6>
+
+    <div class="card-body">
+        <table class="table table-hover table-responsive">
+            <tbody>
+            <tr>
+                <th scope="row">Quality:</th>
+                <td>{{ recording.get_quality_display }}</td>
+            </tr>
+
+            <tr>
+                <td>Child Speech:</td>
+                <td>{{ recording.get_child_speech_display }}</td>
+            </tr>
+
+            <tr>
+                <td>Directedness:</td>
+                <td>{{ recording.get_directedness_display }}</td>
+            </tr>
+
+            <tr>
+                <td>Dene:</td>
+                <td>{{ recording.get_dene_speech_display }}</td>
+            </tr>
+
+            <tr>
+                <td>Audio:</td>
+                <td>{{ recording.audio }}</td>
+            </tr>
+
+            <tr>
+                <td>Length:</td>
+                <td>{{ recording.length }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

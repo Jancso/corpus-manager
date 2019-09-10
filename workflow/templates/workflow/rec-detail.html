@@ -1,0 +1,31 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-content %}
+    <div class="row mb-3">
+        <div class="col-12">
+            <h5>{{ recording.name }}</h5>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-6">
+            {% include 'workflow/rec-card.html' %}
+        </div>
+
+        <div class="col-6">
+            {% include 'workflow/task_card.html' with task=segmentation %}
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('#workflow-breadcrumb').append(
+                '<li class="breadcrumb-item" aria-current="page">' +
+                '{{ recording.name }}\n</li>'
+            )
+        })
+    </script>
+
+
+{% endblock %}

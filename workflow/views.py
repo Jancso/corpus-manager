@@ -5,7 +5,7 @@ from collections import namedtuple
 
 
 def _get_recs():
-    Rec = namedtuple('Rec', ['id', 'name', 'quality', 'status'])
+    Rec = namedtuple('Rec', ['pk', 'name', 'quality', 'status'])
     recs = []
     recordings = Recording.objects.all()
 
@@ -93,3 +93,18 @@ def rec_create_view(request):
         'form': form
     }
     return render(request, 'workflow/rec_create.html', context)
+
+
+def rec_detail_view(request, pk):
+    rec = Recording.objects.get(pk=pk)
+    segmentation = rec.task_set.filter(name=Task.SEGMENTATION).get()
+    transcription = rec.task_set.filter(name=Task.TRANSCRIPTION).get()
+    glossing = rec.task_set.filter(name=Task.GLOSSING).get()
+
+    context = {
+        'recording': rec,
+        'segmentation': segmentation,
+        'transcription': transcription,
+        'glossing': glossing,
+    }
+    return render(request, 'workflow/rec-detail.html', context)
