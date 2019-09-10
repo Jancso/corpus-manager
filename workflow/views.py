@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Recording, Task
+from .models import Recording, Task, Assignment
 from .forms import RecordingForm
 from collections import namedtuple
 
@@ -49,3 +49,20 @@ def rec_create_view(request):
         'form': form
     }
     return render(request, 'workflow/rec_create.html', context)
+
+
+def assignments_all_list_view(request):
+    context = {
+        'working': [],
+        'finished': []
+    }
+    assignments = Assignment.objects.all()
+
+    for assignment in assignments:
+        if assignment.task.status in [
+                Task.STATUS_INCOMPLETE, Task.STATUS_COMPLETE]:
+            context['finished'].append(assignment)
+        else:
+            context['working'].append(assignment)
+
+    return render(request, 'workflow/assignment-list.html', context)

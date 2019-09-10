@@ -1,0 +1,24 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-content %}
+
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="row mb-5">
+                <div class="col-12">
+                    {% include "workflow/assignments_table.html" with assignments=working title='Working Assignments' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    {% include "workflow/assignments_table.html" with assignments=finished title='Finished Assignments' %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+{% endblock %}
