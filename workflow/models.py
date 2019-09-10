@@ -131,6 +131,12 @@ class Task(models.Model):
 
     end = models.DateField(null=True, blank=True)
 
+    def is_finished(self):
+        return self.status in [self.STATUS_INCOMPLETE, self.STATUS_COMPLETE]
+
+    def is_free(self):
+        return self.status == self.STATUS_NOT_STARTED
+
     class Meta:
         unique_together = ('recording', 'name')
 

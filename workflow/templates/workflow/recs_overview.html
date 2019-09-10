@@ -1,0 +1,29 @@
+<div class="card">
+    <h6 class="card-header">
+        All Recordings
+    </h6>
+    <div class="card-body">
+        <table id="rec-tasks-table" class="table table-hover table-responsive">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quality</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for rec in recordings %}
+                <tr>
+                    <th scope="row">{{ rec.id }}</th>
+                    <td>{{ rec.name }}</td>
+                    <td>{{ rec.quality }}</td>
+                    <td>{{ rec.status }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>

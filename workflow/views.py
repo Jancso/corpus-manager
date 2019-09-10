@@ -5,9 +5,7 @@ from collections import namedtuple
 
 
 def workflow_view(request):
-    Rec = namedtuple(
-        'Rec',
-        ['id', 'name', 'segmentation', 'transcription', 'glossing'])
+    Rec = namedtuple('Rec', ['id', 'name', 'quality', 'status'])
 
     context = {
         'recordings': []
@@ -17,20 +15,28 @@ def workflow_view(request):
 
     for recording in recordings:
         tasks = Task.objects.filter(recording__name=recording.name)
-        segmentation = tasks.filter(
-            name=Task.SEGMENTATION).get().get_status_display()
-        transcription = tasks.filter(
-            name=Task.TRANSCRIPTION).get().get_status_display()
-        glossing = tasks.filter(
-            name=Task.GLOSSING).get().get_status_display()
+        segmentation = tasks.filter(name=Task.SEGMENTATION).get()
+        transcription = tasks.filter(name=Task.TRANSCRIPTION).get()
+        glossing = tasks.filter(name=Task.GLOSSING).get()
 
-        rec = Rec(recording.pk,
-                  recording.name,
-                  segmentation,
-                  transcription,
-                  glossing)
+        ordered_tasks = [segmentation, transcription, glossing]
 
-        context['recordings'].append(rec)
+        status = 'SOMETHING WENT WRONG'
+        for task in ordered_tasks:
+            if task.is_finished():
+                if task == Task.GLOSSING:
+                    status = 'FINISHED'
+                    break
+            else:
+                status = f'{task.get_status_display()} {task.name}'
+                break
+
+        context['recordings'].append(Rec(
+            recording.pk,
+            recording.name,
+            recording.get_quality_display(),
+            status
+        ))
 
     return render(request, 'workflow/work_flow_view.html', context)
 
