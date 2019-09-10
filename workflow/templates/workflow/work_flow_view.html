@@ -7,13 +7,13 @@
 
             <div class="row mb-4">
                 <div class="col-12">
-                    {% include 'workflow/tasks_choice.html' %}
+                    {% include "workflow/open_tasks_table.html" with tasks=open_tasks title='Open Tasks' %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    {% include "workflow/assignments_table.html" with assignments=assigned_tasks title='Assignments' %}
+                    {% include "workflow/assignments_table.html" with assignments=assigned_tasks title='Assigned Tasks' %}
                 </div>
             </div>
         </div>

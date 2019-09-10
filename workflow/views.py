@@ -24,7 +24,8 @@ def _get_recs():
                     status = 'FINISHED'
                     break
             else:
-                status = f'{task.get_status_display()} {task.name}'
+                status = \
+                    f'{task.get_status_display()} {task.get_name_display()}'
                 break
 
         recs.append(Rec(
@@ -47,10 +48,33 @@ def _get_assigned_tasks():
     return filtered_assignments
 
 
+def _get_open_tasks():
+    Tsk = namedtuple('Rec', ['rec', 'name'])
+    recs = []
+    recordings = Recording.objects.all()
+
+    for recording in recordings:
+        tasks = Task.objects.filter(recording__name=recording.name)
+        segmentation = tasks.filter(name=Task.SEGMENTATION).get()
+        transcription = tasks.filter(name=Task.TRANSCRIPTION).get()
+        glossing = tasks.filter(name=Task.GLOSSING).get()
+
+        ordered_tasks = [segmentation, transcription, glossing]
+
+        for pos, task in enumerate(ordered_tasks):
+            if task.is_free():
+                if pos == 0 or ordered_tasks[pos-1].is_finished():
+                    recs.append(Tsk(recording.name, task.get_name_display()))
+                    break
+
+    return recs
+
+
 def workflow_view(request):
     context = {
         'recordings': _get_recs(),
-        'assigned_tasks': _get_assigned_tasks()
+        'assigned_tasks': _get_assigned_tasks(),
+        'open_tasks': _get_open_tasks()
     }
     return render(request, 'workflow/work_flow_view.html', context)
 

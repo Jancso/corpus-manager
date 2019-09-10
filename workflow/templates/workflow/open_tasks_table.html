@@ -10,16 +10,14 @@
             <tr>
                 <th scope="col">Recording</th>
                 <th scope="col">Task</th>
-                <th scope="col">Person</th>
             </tr>
 
             </thead>
             <tbody>
-            {% for assignment in assignments %}
+            {% for task in tasks %}
                 <tr>
-                    <td>{{ assignment.task.recording.name }}</td>
-                    <td>{{ assignment.task.get_name_display }}</td>
-                    <td>{{ assignment.person }}</td>
+                    <td>{{ task.rec }}</td>
+                    <td>{{ task.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
