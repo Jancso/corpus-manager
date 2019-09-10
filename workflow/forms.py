@@ -22,9 +22,9 @@ class RecordingForm(forms.ModelForm):
     def clean_name(self):
         name = self.cleaned_data.get('name')
 
-        re_str = r'deslas-[A-Z]{3,4}-\d{4}-\d{2}-\d{2}(-[A-Z]+)?'
+        rgx = re.compile(r'deslas-[A-Z]{3,4}-\d{4}-\d{2}-\d{2}(-[A-Z0-9]+)?')
 
-        if not re.fullmatch(re_str, name):
-            raise forms.ValidationError(f'Format must be: /{re_str}/')
+        if not rgx.fullmatch(name):
+            raise forms.ValidationError(f'Format must be: /{rgx.pattern}/')
 
         return name

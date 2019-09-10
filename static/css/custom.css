@@ -42,3 +42,7 @@
     background-color: whitesmoke;
     box-shadow: 0 0 10px dimgrey;
 }
+
+.errorlist li {
+    color: red;
+}
