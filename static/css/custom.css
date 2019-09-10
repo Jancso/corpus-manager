@@ -46,3 +46,15 @@
 .errorlist li {
     color: red;
 }
+
+.number-circle {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  background: lightgrey;
+  border: 1px solid #666;
+  color: black;
+  text-align: center;
+  font: 15px Arial, sans-serif;
+}

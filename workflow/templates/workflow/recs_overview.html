@@ -1,6 +1,6 @@
 <div class="card">
     <h6 class="card-header">
-        Recordings
+        Recordings <span class="dot ml-2 number-circle">{{ recordings|length }}</span>
         {% include 'workflow/table-filter-input.html' with filter_input_id='recs-overview-input' %}
     </h6>
     <div class="card-body">
