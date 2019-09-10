@@ -19,6 +19,8 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Segmentation</th>
+                <th scope="col">Transcription</th>
+                <th scope="col">Glossing</th>
             </tr>
             </thead>
 
@@ -28,6 +30,8 @@
                     <th scope="row">{{ rec.id }}</th>
                     <td>{{ rec.name }}</td>
                     <td>{{ rec.segmentation }}</td>
+                    <td>{{ rec.transcription }}</td>
+                    <td>{{ rec.glossing }}</td>
                 </tr>
             {% endfor %}
 
