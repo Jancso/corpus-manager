@@ -51,18 +51,23 @@ def rec_create_view(request):
     return render(request, 'workflow/rec_create.html', context)
 
 
-def assignments_all_list_view(request):
+# --------------------------------------
+
+def assignments_list_view(request, task):
     context = {
         'working': [],
-        'finished': []
+        'finished': [],
+        'task': task
     }
     assignments = Assignment.objects.all()
 
     for assignment in assignments:
-        if assignment.task.status in [
-                Task.STATUS_INCOMPLETE, Task.STATUS_COMPLETE]:
-            context['finished'].append(assignment)
-        else:
-            context['working'].append(assignment)
+
+        if task == 'all' or assignment.task.name == task:
+            if assignment.task.status in [
+                    Task.STATUS_INCOMPLETE, Task.STATUS_COMPLETE]:
+                context['finished'].append(assignment)
+            else:
+                context['working'].append(assignment)
 
     return render(request, 'workflow/assignment-list.html', context)

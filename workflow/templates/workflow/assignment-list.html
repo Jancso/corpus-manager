@@ -22,12 +22,24 @@
     </div>
 
     <script>
-        $(function () {
-            $('#workflow-breadcrumb').append(
-                '<li class="breadcrumb-item" aria-current="page">' +
-                'Assignments\n</li>'
-            )
-        })
+        if ('{{ task }}' === 'all') {
+            $(function () {
+                $('#workflow-breadcrumb').append(
+                    '<li class="breadcrumb-item" aria-current="page">' +
+                    'Assignments\n</li>'
+                )
+            })
+        } else {
+            $(function () {
+                $('#workflow-breadcrumb').append(
+                    '<li class="breadcrumb-item" aria-current="page">' +
+                    '<a href="{% url 'workflow:assignments-list' 'all' %}">Assignments</a></li>' +
+                    '<li class="breadcrumb-item" aria-current="page">' +
+                    '{{ task.title }}' + '\n</li>'
+
+                )
+            })
+        }
     </script>
 
 {% endblock %}

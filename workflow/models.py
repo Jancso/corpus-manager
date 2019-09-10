@@ -88,11 +88,11 @@ class Task(models.Model):
 
     recording = models.ForeignKey(Recording, on_delete=models.CASCADE)
 
-    SEGMENTATION = 'S'
-    TRANSCRIPTION = 'T'
-    TRANSCRIPTION_CHECK = 'TC'
-    GLOSSING = 'G'
-    GLOSSING_CHECK = 'GC'
+    SEGMENTATION = 'segmentation'
+    TRANSCRIPTION = 'transcription'
+    TRANSCRIPTION_CHECK = 'transcription check'
+    GLOSSING = 'glossing'
+    GLOSSING_CHECK = 'glossing check'
 
     NAME_CHOICES = [
         (SEGMENTATION, 'segmentation'),
