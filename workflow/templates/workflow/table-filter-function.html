@@ -1,0 +1,10 @@
+<script>
+    $(document).ready(function () {
+        $("#{{ filter_input_id }}").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#{{ filter_table_id }} tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

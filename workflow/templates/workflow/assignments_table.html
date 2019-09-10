@@ -1,11 +1,12 @@
 <div class="card">
     <h6 class="card-header">
         {{ title }}
+        {% include 'workflow/table-filter-input.html' with filter_input_id='assignments-input' %}
     </h6>
 
     <div class="card-body">
 
-        <table class="table table-responsive table-hover">
+        <table id="assignments-table" class="table table-responsive table-hover">
             <thead>
             <tr>
                 <th scope="col">Recording</th>
@@ -26,3 +27,5 @@
         </table>
     </div>
 </div>
+
+{% include 'workflow/table-filter-function.html' with filter_table_id='assignments-table' filter_input_id='assignments-input' %}
