@@ -4,13 +4,9 @@ from .forms import RecordingForm
 from collections import namedtuple
 
 
-def workflow_view(request):
+def _get_recs():
     Rec = namedtuple('Rec', ['id', 'name', 'quality', 'status'])
-
-    context = {
-        'recordings': []
-    }
-
+    recs = []
     recordings = Recording.objects.all()
 
     for recording in recordings:
@@ -31,13 +27,31 @@ def workflow_view(request):
                 status = f'{task.get_status_display()} {task.name}'
                 break
 
-        context['recordings'].append(Rec(
+        recs.append(Rec(
             recording.pk,
             recording.name,
             recording.get_quality_display(),
             status
         ))
 
+    return recs
+
+
+def _get_assigned_tasks():
+    assignments = Assignment.objects.all()
+    filtered_assignments = []
+    for assignment in assignments:
+        if not assignment.task.is_finished():
+            filtered_assignments.append(assignment)
+
+    return filtered_assignments
+
+
+def workflow_view(request):
+    context = {
+        'recordings': _get_recs(),
+        'assigned_tasks': _get_assigned_tasks()
+    }
     return render(request, 'workflow/work_flow_view.html', context)
 
 

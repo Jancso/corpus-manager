@@ -12,7 +12,6 @@
                 <th scope="col">Recording</th>
                 <th scope="col">Task</th>
                 <th scope="col">Person</th>
-                <th scope="col">Start</th>
             </tr>
 
             </thead>
@@ -23,7 +22,6 @@
                     <td>{{ assignment.task.recording.name }}</td>
                     <td>{{ assignment.task.get_name_display }}</td>
                     <td>{{ assignment.person }}</td>
-                    <td>{{ assignment.start }}</td>
                 </tr>
             {% endfor %}
             </tbody>
