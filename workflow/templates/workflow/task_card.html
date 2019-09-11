@@ -1,16 +1,45 @@
 <div class="card">
-    <h6 class="card-header">{{ task.name }}</h6>
+    <h6 class="card-header">{{ task.name.title }}</h6>
 
     <div class="card-body">
-        <table class="table table-hover table-responsive">
-            <tbody>
-            <tr>
-                <th scope="row">Status:</th>
-                <td>{{ task.get_status_display }}</td>
-            </tr>
 
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-5">
+                <table class="table table-hover table-responsive">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Status:</th>
+                        <td>{{ task.get_status_display }}</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Start:</th>
+                        <td>{{ task.start }}</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">End:</th>
+                        <td>{{ task.end }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <b class="m-2">Assignees:</b>
+                {% if not task.assignment_set.all|length %}
+                    None
+                {% else %}
+                    <ul class="mt-2">
+                        {% for assignment in task.assignment_set.all %}
+                            <li>{{ assignment.person }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+
     </div>
 
 </div>

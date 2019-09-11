@@ -129,6 +129,8 @@ class Task(models.Model):
                               max_length=30,
                               default=STATUS_NOT_STARTED)
 
+    start = models.DateField(null=True, blank=True)
+
     end = models.DateField(null=True, blank=True)
 
     def is_finished(self):
@@ -144,7 +146,6 @@ class Task(models.Model):
 class Assignment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     person = models.CharField(unique=True, max_length=50)
-    start = models.DateField(auto_now_add=True)
 
     class Meta:
         unique_together = ('task', 'person')

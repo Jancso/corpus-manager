@@ -101,6 +101,8 @@ def rec_detail_view(request, pk):
     transcription = rec.task_set.filter(name=Task.TRANSCRIPTION).get()
     glossing = rec.task_set.filter(name=Task.GLOSSING).get()
 
+    t = glossing.assignment_set
+
     context = {
         'recording': rec,
         'segmentation': segmentation,
