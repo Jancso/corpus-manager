@@ -1,7 +1,7 @@
 <div class="card">
     <h6 class="card-header">
         {{ task.name.title }}
-        <a class="float-right" href="#"><i class="fas fa-edit"></i></a>
+        <a class="float-right" href="{% url 'workflow:task-update' task.pk %}"><i class="fas fa-edit"></i></a>
     </h6>
 
     <div class="card-body">

@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Recording, Task, Assignment
-from .forms import RecordingForm
+from .forms import RecordingForm, TaskForm, AssignmentForm
 from collections import namedtuple
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, View
 
 
 def _get_recs():
@@ -118,3 +118,28 @@ class RecordingUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('workflow:rec-detail', args=(self.object.pk,))
+
+
+class TaskUpdateView(View):
+
+    def get(self, request, pk):
+        task = Task.objects.get(pk=pk)
+        task_form = TaskForm(instance=task)
+        context = {
+            'task': task,
+            'form': task_form
+        }
+        return render(request, 'workflow/task_update.html', context)
+
+    def post(self, request, pk):
+        task = Task.objects.get(pk=pk)
+        task_form = TaskForm(request.POST, instance=task)
+        if task_form.is_valid():
+            task_form.save()
+            return redirect('workflow:rec-detail', pk=task.recording.pk)
+
+        context = {
+            'task': task,
+            'form': task_form
+        }
+        return render(request, 'workflow/task_update.html', context)
