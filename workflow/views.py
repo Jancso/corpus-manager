@@ -91,7 +91,7 @@ def rec_create_view(request):
     context = {
         'form': form
     }
-    return render(request, 'workflow/rec_create.html', context)
+    return render(request, 'workflow/recording/rec_create.html', context)
 
 
 def rec_detail_view(request, pk):
@@ -108,12 +108,12 @@ def rec_detail_view(request, pk):
         'transcription': transcription,
         'glossing': glossing,
     }
-    return render(request, 'workflow/rec-detail.html', context)
+    return render(request, 'workflow/recording/rec_detail.html', context)
 
 
 class RecordingUpdateView(UpdateView):
     model = Recording
-    template_name = 'workflow/rec_update.html'
+    template_name = 'workflow/recording/rec_update.html'
     form_class = RecordingForm
 
     def get_success_url(self):
@@ -129,7 +129,7 @@ class TaskUpdateView(View):
             'task': task,
             'form': task_form
         }
-        return render(request, 'workflow/task_update.html', context)
+        return render(request, 'workflow/task/task_update.html', context)
 
     def post(self, request, pk):
         task = Task.objects.get(pk=pk)
@@ -142,4 +142,4 @@ class TaskUpdateView(View):
             'task': task,
             'form': task_form
         }
-        return render(request, 'workflow/task_update.html', context)
+        return render(request, 'workflow/task/task_update.html', context)

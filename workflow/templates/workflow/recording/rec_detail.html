@@ -1,5 +1,11 @@
 {% extends 'workflow/base.html' %}
 
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">
+        {{ recording.name }}
+    </li>
+{% endblock %}
+
 {% block workflow-content %}
     <div class="row mb-3">
         <div class="col-12">
@@ -12,12 +18,12 @@
         <div class="col-md-4">
             <div class="row mb-5">
                 <div class="col-12">
-                    {% include 'workflow/rec-card.html' %}
+                    {% include 'workflow/recording/rec_view_card.html' %}
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 mb-5 d-flex justify-content-center">
-                    {% include 'workflow/rec_delete_button.html' %}
+                    {% include 'workflow/recording/rec_delete_button.html' %}
                 </div>
             </div>
         </div>
@@ -27,32 +33,22 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-12 mb-2">
-                    {% include 'workflow/task_card.html' with task=segmentation %}
+                    {% include 'workflow/task/task_view_card.html' with task=segmentation %}
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 mb-2">
-                    {% include 'workflow/task_card.html' with task=transcription %}
+                    {% include 'workflow/task/task_view_card.html' with task=transcription %}
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    {% include 'workflow/task_card.html' with task=glossing %}
+                    {% include 'workflow/task/task_view_card.html' with task=glossing %}
                 </div>
             </div>
         </div>
 
         <div class="col-md-1"></div>
     </div>
-
-    <script>
-        $(function () {
-            $('#workflow-breadcrumb').append(
-                '<li class="breadcrumb-item" aria-current="page">' +
-                '{{ recording.name }}\n</li>'
-            )
-        })
-    </script>
-
 
 {% endblock %}

@@ -1,0 +1,18 @@
+<div class="card">
+    <h6 class="card-header">
+        Update {{ task.get_display_name }} task
+        for {{ task.recording.name }}
+    </h6>
+
+    <div class="card-body">
+        <form action="{% url 'workflow:task-update' task.pk %}"
+              method="post">{% csrf_token %}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+
+            <input class="btn btn-primary" type="submit"
+                   value="Update">
+        </form>
+    </div>
+</div>

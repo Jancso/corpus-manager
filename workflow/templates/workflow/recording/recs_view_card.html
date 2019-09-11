@@ -1,7 +1,7 @@
 <div class="card">
     <h6 class="card-header">
         Recordings <span class="dot ml-2 number-circle">{{ recordings|length }}</span>
-        {% include 'workflow/table-filter-input.html' with filter_input_id='recs-overview-input' %}
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='recs-overview-input' %}
     </h6>
     <div class="card-body">
         <table id="rec-tasks-table" class="table table-hover table-responsive">
@@ -27,4 +27,4 @@
     </div>
 </div>
 
-{% include 'workflow/table-filter-function.html' with filter_table_id='rec-tasks-table' filter_input_id='recs-overview-input' %}
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='rec-tasks-table' filter_input_id='recs-overview-input' %}

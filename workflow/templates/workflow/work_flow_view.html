@@ -7,13 +7,13 @@
 
             <div class="row mb-4">
                 <div class="col-12">
-                    {% include "workflow/tasks_card.html" with tasks=open_tasks title='Open Tasks' %}
+                    {% include "workflow/task/tasks_view_card.html" with tasks=open_tasks title='Open Tasks' %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    {% include "workflow/assignments_table.html" with assignments=assigned_tasks title='Assigned Tasks' %}
+                    {% include "workflow/assignment/assignments_view_card.html" with assignments=assigned_tasks title='Assigned Tasks' %}
                 </div>
             </div>
         </div>
@@ -22,13 +22,13 @@
 
             <div class="row mb-4">
                 <div class="col-12">
-                    {% include 'workflow/rec_add_button.html' %}
+                    {% include 'workflow/recording/rec_add_button.html' %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    {% include 'workflow/recs_overview.html' %}
+                    {% include 'workflow/recording/recs_view_card.html' %}
                 </div>
             </div>
 

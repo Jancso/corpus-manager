@@ -1,0 +1,20 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">
+        Add recording
+    </li>
+{% endblock %}
+
+{% block workflow-content %}
+    <div class="row">
+        <div class="col-3"></div>
+
+        <div class="col-6">
+            {% include 'workflow/recording/rec_create_card.html' %}
+        </div>
+
+        <div class="col-3"></div>
+    </div>
+
+{% endblock %}

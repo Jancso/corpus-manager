@@ -1,0 +1,28 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{% url 'workflow:rec-detail' recording.pk %}">
+            {{ recording.name }}
+        </a>
+    </li>
+    <li class=breadcrumb-item aria-current="page">Update</li>
+
+{% endblock %}
+
+{% block workflow-content %}
+
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            {% include 'workflow/recording/rec_update_card.html' %}
+
+        </div>
+        <div class="col-md-3">
+
+        </div>
+    </div>
+
+{% endblock %}
