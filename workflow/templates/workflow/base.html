@@ -2,7 +2,15 @@
 
 {% block content %}
 
-    {% include 'workflow/workflow-breadcrumb.html' %}
+    <nav class="mb-5" aria-label="breadcrumb">
+        <ol id="workflow-breadcrumb" class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'workflow:workflow' %}">Workflow</a>
+            </li>
+            {% block workflow-breadcrumb %}
+            {% endblock %}
+        </ol>
+    </nav>
 
     {% block workflow-content %}
 

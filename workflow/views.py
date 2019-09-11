@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from .models import Recording, Task, Assignment
 from .forms import RecordingForm
 from collections import namedtuple
+from django.views.generic.edit import UpdateView
 
 
 def _get_recs():
@@ -108,3 +109,12 @@ def rec_detail_view(request, pk):
         'glossing': glossing,
     }
     return render(request, 'workflow/rec-detail.html', context)
+
+
+class RecordingUpdateView(UpdateView):
+    model = Recording
+    fields = '__all__'
+    template_name = 'workflow/rec_update.html'
+
+    def get_success_url(self):
+        return reverse('workflow:rec-detail', args=(self.object.pk,))
