@@ -5,6 +5,11 @@ import re
 
 class RecordingForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
     class Meta:
         model = Recording
         fields = '__all__'
@@ -12,11 +17,7 @@ class RecordingForm(forms.ModelForm):
     notes = forms.CharField(
         required=False,
         widget=forms.Textarea(
-            attrs={
-                'rows': 3,
-                'cols': 20
-            }
-        )
+            attrs={'rows': 3})
     )
 
     def clean_name(self):

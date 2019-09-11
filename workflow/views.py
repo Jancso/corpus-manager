@@ -113,8 +113,8 @@ def rec_detail_view(request, pk):
 
 class RecordingUpdateView(UpdateView):
     model = Recording
-    fields = '__all__'
     template_name = 'workflow/rec_update.html'
+    form_class = RecordingForm
 
     def get_success_url(self):
         return reverse('workflow:rec-detail', args=(self.object.pk,))
