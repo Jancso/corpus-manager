@@ -49,25 +49,23 @@ def _get_assigned_tasks():
 
 
 def _get_open_tasks():
-    Tsk = namedtuple('Rec', ['rec', 'name'])
-    recs = []
+    tasks = []
     recordings = Recording.objects.all()
 
-    for recording in recordings:
-        tasks = Task.objects.filter(recording__name=recording.name)
-        segmentation = tasks.filter(name=Task.SEGMENTATION).get()
-        transcription = tasks.filter(name=Task.TRANSCRIPTION).get()
-        glossing = tasks.filter(name=Task.GLOSSING).get()
+    for rec in recordings:
+        segmentation = rec.task_set.filter(name=Task.SEGMENTATION).get()
+        transcription = rec.task_set.filter(name=Task.TRANSCRIPTION).get()
+        glossing = rec.task_set.filter(name=Task.GLOSSING).get()
 
         ordered_tasks = [segmentation, transcription, glossing]
 
         for pos, task in enumerate(ordered_tasks):
             if task.is_free():
                 if pos == 0 or ordered_tasks[pos-1].is_finished():
-                    recs.append(Tsk(recording.name, task.get_name_display()))
+                    tasks.append(task)
                     break
 
-    return recs
+    return tasks
 
 
 def workflow_view(request):

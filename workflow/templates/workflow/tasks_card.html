@@ -1,0 +1,34 @@
+<div class="card">
+    <h6 class="card-header">
+        {{ title }} <span
+            class="dot ml-2 number-circle">{{ tasks|length }}</span>
+        {% include 'workflow/table-filter-input.html' with filter_input_id='tasks-input' %}
+    </h6>
+
+    <div class="card-body">
+
+        <table id="tasks-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Recording</th>
+                <th scope="col">Task</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workflow:rec-detail' task.recording.pk %}">
+                            {{ task.recording.name }}
+                        </a>
+                    </td>
+                    <td>{{ task.get_name_display }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'workflow/table-filter-function.html' with filter_table_id='tasks-table' filter_input_id='tasks-input' %}
