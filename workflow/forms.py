@@ -33,13 +33,12 @@ class RecordingForm(forms.ModelForm):
 
 
 class TaskForm(forms.ModelForm):
-    users = forms.ModelMultipleChoiceField(queryset=User.objects.all())
+    assignees = forms.ModelMultipleChoiceField(required=False, queryset=User.objects.all())
 
     def __init__(self, *args, **kwargs):
-
         if kwargs.get('instance'):
             initial = kwargs.setdefault('initial', {})
-            initial['users'] = [t.person.pk for t in
+            initial['assignees'] = [t.person.pk for t in
                 kwargs['instance'].assignment_set.all()]
 
         super().__init__(*args, **kwargs)
@@ -54,7 +53,7 @@ class TaskForm(forms.ModelForm):
         def save_m2m():
             old_save_m2m()
             instance.assignment_set.all().delete()
-            for user in self.cleaned_data['users']:
+            for user in self.cleaned_data['assignees']:
                 a = Assignment.objects.create(task=instance, person=user)
                 instance.assignment_set.add(a)
 

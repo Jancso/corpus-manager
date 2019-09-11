@@ -3,6 +3,7 @@ from .models import Recording, Task, Assignment
 from .forms import RecordingForm, TaskForm, AssignmentForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
+import datetime
 
 
 def _get_recs():
@@ -135,7 +136,21 @@ class TaskUpdateView(View):
         task = Task.objects.get(pk=pk)
         task_form = TaskForm(request.POST, instance=task)
         if task_form.is_valid():
+            if 'assignees' in task_form.changed_data and not task.start:
+                task.start = datetime.datetime.today()
             task_form.save()
+
+            if task.is_finished():
+                task.end = datetime.datetime.today()
+
+            if not task.is_finished():
+                task.end = None
+
+            if not task.assignment_set.all():
+                task.start = None
+
+            task.save()
+
             return redirect('workflow:rec-detail', pk=task.recording.pk)
 
         context = {
