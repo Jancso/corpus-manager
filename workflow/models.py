@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Recording(models.Model):
@@ -145,7 +146,7 @@ class Task(models.Model):
 
 class Assignment(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    person = models.CharField(unique=True, max_length=50)
+    person = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('task', 'person')
