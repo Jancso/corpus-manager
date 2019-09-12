@@ -1,0 +1,31 @@
+<div class="card">
+    <h6 class="card-header">
+        {{ title }}
+        <span class="dot ml-2 number-circle">{{ assignments|length }}</span>
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Recording</th>
+                <th scope="col">Task</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for assignment in assignments %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workflow:rec-detail' assignment.task.recording.pk %}">
+                            {{ assignment.task.recording.name }}
+                        </a>
+
+                    </td>
+                    <td>{{ assignment.task.name.title }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>

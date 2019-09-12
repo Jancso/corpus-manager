@@ -6,23 +6,25 @@
 
     <div class="row">
 
-        <div class="col-lg-1">
+        <div class="col-md-1">
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-md-4">
             {% include 'users/user-short.html' %}
         </div>
 
-        <div class="col-lg-1">
+        <div class="col-md-1">
         </div>
 
-        <div class="col-lg-6">
-            <div class="card h-100">
-                <h5 class="card-header bg-light text-center">Assignments</h5>
-                <div class="card-body">
-                    <p class="card-text text-justify">
-                        {% lorem 2 p %}
-                    </p>
+        <div class="col-md-6">
+            <div class="row mb-3">
+                <div class="col-12">
+                    {% include 'users/user_task_list_card.html' with assignments=current_assignments title='Your current Tasks' %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% include 'users/user_task_list_card.html' with assignments=finished_assignments title='Your finished Tasks' %}
                 </div>
             </div>
         </div>

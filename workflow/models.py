@@ -134,8 +134,10 @@ class Task(models.Model):
 
     end = models.DateField(null=True, blank=True)
 
+    finished_task_statuses = [STATUS_INCOMPLETE, STATUS_COMPLETE]
+
     def is_finished(self):
-        return self.status in [self.STATUS_INCOMPLETE, self.STATUS_COMPLETE]
+        return self.status in self.finished_task_statuses
 
     def is_free(self):
         return self.status == self.STATUS_NOT_STARTED
