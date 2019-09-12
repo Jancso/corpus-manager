@@ -1,0 +1,43 @@
+<div class="card">
+    <h6 class="card-header">
+        {{ user.get_full_name }}
+    </h6>
+    <div class="card-body">
+
+        <img src="{{ user.userprofile.image.url }}"
+             id="user-image"
+             class="p-3 rounded-circle mx-auto d-block img-fluid">
+
+        <table class="table mt-5">
+            <tbody>
+            <tr>
+                <td><i class="fas fa-user"></i></td>
+                <td>Username</td>
+                <td>{{ user }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>First Name</td>
+                <td>{{ user.first_name }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Last Name</td>
+                <td>{{ user.last_name }}</td>
+            </tr>
+            <tr>
+                <td><i class="fas fa-envelope"></i></td>
+                <td>Email</td>
+                <td>
+                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                </td>
+            </tr>
+            <tr>
+                <td><i class="fas fa-tag"></i></td>
+                <td>Job Function</td>
+                <td>{{ user.userprofile.get_job_function_display }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

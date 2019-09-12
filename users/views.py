@@ -1,7 +1,13 @@
 from django.views import View
+from django.views.generic.detail import DetailView
 from .forms import UserForm, UserProfileForm
 from django.shortcuts import render, get_object_or_404
 from .models import User
+
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'users/user_detail.html'
 
 
 class UserUpdateView(View):
