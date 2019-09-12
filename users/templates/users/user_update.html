@@ -1,7 +1,11 @@
 {% extends 'users/base.html' %}
 
 {% block user-breadcrumb %}
-    <li class=breadcrumb-item aria-current="page">{{ user.get_full_name }}</li>
+    <li class=breadcrumb-item aria-current="page">
+        <a href="{% url 'users:user-detail' user.pk %}">
+            {{ user.get_full_name }}
+        </a>
+    </li>
     <li class=breadcrumb-item aria-current="page">Update</li>
 {% endblock %}
 
