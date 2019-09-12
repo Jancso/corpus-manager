@@ -1,3 +1,12 @@
-from django.test import TestCase
+import unittest
+from django.test import Client
 
-# Create your tests here.
+
+class SimpleTest(unittest.TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_GET_users(self):
+        response = self.client.get('/users/')
+        self.assertEqual(response.status_code, 200)
+
