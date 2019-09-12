@@ -6,24 +6,23 @@
 
     <div class="row">
 
-        <div class="col-md-4 text-center">
-            <img src="{{ user.image.url }}"
-                 id="user-image"
-                 class="p-3 rounded-circle mx-auto d-block img-fluid mb-5">
-
-            <a class="btn btn-danger mb-5" href="{% url 'password_change' %}">Change Password</a>
-        </div>
-
         <div class="col-md-2"></div>
 
-        <div class="col-md-6">
-            <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                <table class="table">
-                    {{ form.user.as_table }}
-                    {{ form.user_profile.as_table }}
-                </table>
-                <input class="btn btn-primary" type="submit" value="Update">
-            </form>
+        <div class="col-md-8">
+            <div class="row mb-5">
+                <div class="col-12">
+                    {% include 'users/user_update_card.html' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a class="btn btn-danger"
+                       href="{% url 'password_change' %}">
+                        Change Password
+                    </a>
+                </div>
+            </div>
         </div>
 
     </div>

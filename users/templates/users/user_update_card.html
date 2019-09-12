@@ -1,0 +1,27 @@
+<div class="card">
+    <h6 class="card-header">
+        Update your profile
+    </h6>
+    <div class="card-body">
+        <form method="post"
+              enctype="multipart/form-data">{% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="{{ user.image.url }}"
+                         id="user-image"
+                         class="p-3 rounded-circle mx-auto d-block img-fluid my-5">
+                    <input class="btn btn-primary mb-5" type="submit"
+                           value="Update">
+
+                </div>
+                <div class="col-md-8">
+                    <table class="table table-responsive">
+                        {{ form.user.as_table }}
+                        {{ form.user_profile.as_table }}
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
