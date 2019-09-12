@@ -1,8 +1,11 @@
-{% extends 'base/base.html' %}
+{% extends 'users/base.html' %}
 
-{% block content %}
+{% block user-breadcrumb %}
+    <li class=breadcrumb-item aria-current="page">{{ user }}</li>
+    <li class=breadcrumb-item aria-current="page">Update</li>
+{% endblock %}
 
-    {% include 'base/settings-breadcrumb.html' %}
+{% block user-content %}
 
     <div class="row">
 
@@ -26,12 +29,5 @@
         </div>
 
     </div>
-
-    <script>
-        $(function () {
-            $('#settings-link').addClass('active');
-            $('#password-breadcrumb').hide();
-        })
-    </script>
 
 {% endblock %}

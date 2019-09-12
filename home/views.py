@@ -10,4 +10,4 @@ def home_detail_view(request):
 
 @login_required
 def settings_detail_view(request):
-    return redirect('users:user-update', pk=request.user.userprofile.pk)
+    return redirect('users:user-update', pk=request.user.pk)

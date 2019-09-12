@@ -1,7 +1,7 @@
 from django.views import View
 from .forms import UserForm, UserProfileForm
 from django.shortcuts import render, get_object_or_404
-from .models import UserProfile
+from .models import User
 
 
 class UserUpdateView(View):
@@ -10,34 +10,36 @@ class UserUpdateView(View):
     user_form = UserForm
     user_profile_form = UserProfileForm
 
-    def get_object(self, pk):
-        obj = None
+    def get_user(self, pk):
+        user = None
         if pk is not None:
-            obj = get_object_or_404(UserProfile, id=pk)
+            user = get_object_or_404(User, id=pk)
 
-        return obj
+        return user
 
     def get(self, request, pk):
         context = {}
-        obj = self.get_object(pk)
-        if obj is not None:
+        user = self.get_user(pk)
+        if user is not None:
             context['form'] = {
-                'user': self.user_form(instance=obj.user),
-                'user_profile': self.user_profile_form(instance=obj)
+                'user': self.user_form(
+                    instance=user),
+                'user_profile': self.user_profile_form(
+                    instance=user.userprofile)
             }
 
-            context['user'] = obj
+            context['user'] = user
 
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
         context = {}
-        obj = self.get_object(pk)
-        if obj is not None:
+        user = self.get_user(pk)
+        if user is not None:
             user_form = self.user_form(
-                request.POST, instance=obj.user)
+                request.POST, instance=user)
             user_profile_form = self.user_profile_form(
-                request.POST, request.FILES, instance=obj)
+                request.POST, request.FILES, instance=user.userprofile)
 
             if user_form.is_valid() and user_profile_form.is_valid():
                 user_form.save()
@@ -48,6 +50,6 @@ class UserUpdateView(View):
                 'user_profile': user_profile_form
             }
 
-            context['user'] = obj
+            context['user'] = user
 
         return render(request, self.template_name, context)
