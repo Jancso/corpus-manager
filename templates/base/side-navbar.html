@@ -4,17 +4,22 @@
         Home
     </a>
 
+    <a id="team-link" class="nav-link" href="{% url 'users:user-list' %}">
+        <i class="fas fa-users pr-2"></i>
+        Team
+    </a>
+
     <a id="workflow-link" class="nav-link"
        href="{% url 'workflow:workflow' %}">
         <i class="fas fa-sitemap pr-2"></i>
         Workflow
     </a>
-    {#    <a class="nav-link" href="#"><i class="fas fa-database pr-2"></i> Metadata</a>#}
+
 
     <a id="settings-link"
        class="nav-link"
        href="{% url 'home:settings-detail' %}">
-        <i class="fas fa-user-cog pr-2"></i>
+        <i class="fas fa-cog pr-2"></i>
         Settings
     </a>
 </nav>
