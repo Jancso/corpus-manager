@@ -1,7 +1,8 @@
 <div class="card">
     <h6 class="card-header">
         {{ task.name.title }}
-        <a class="float-right" href="{% url 'workflow:task-update' task.pk %}"><i class="fas fa-edit"></i></a>
+        <a class="float-right" href="{% url 'workflow:task-update' task.pk %}"><i
+                class="fas fa-edit"></i></a>
     </h6>
 
     <div class="card-body">
@@ -35,7 +36,11 @@
                 {% else %}
                     <ul class="mt-2">
                         {% for assignment in task.assignment_set.all %}
-                            <li>{{ assignment.person }}</li>
+                            <li>
+                                <a href="{% url 'users:user-detail' assignment.person.pk %}">
+                                    {{ assignment.person.get_full_name }}
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
                 {% endif %}

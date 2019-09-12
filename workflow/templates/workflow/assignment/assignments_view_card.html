@@ -24,7 +24,11 @@
                         </a>
                     </td>
                     <td>{{ assignment.task.get_name_display }}</td>
-                    <td>{{ assignment.person }}</td>
+                    <td>
+                        <a href="{% url 'users:user-detail' assignment.person.pk %}">
+                        {{ assignment.person.get_full_name }}
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

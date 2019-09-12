@@ -10,11 +10,13 @@
 
         <table class="table mt-5">
             <tbody>
-            <tr>
-                <td><i class="fas fa-user"></i></td>
-                <td>Username</td>
-                <td>{{ user }}</td>
-            </tr>
+            {% if user == request.user %}
+                <tr>
+                    <td><i class="fas fa-user"></i></td>
+                    <td>Username</td>
+                    <td>{{ user }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <td></td>
                 <td>First Name</td>
@@ -36,6 +38,28 @@
                 <td><i class="fas fa-tag"></i></td>
                 <td>Job Function</td>
                 <td>{{ user.userprofile.get_job_function_display }}</td>
+            </tr>
+            <tr>
+                <td>
+                    {% if user.is_active %}
+                        <i class="fas fa-check-square"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle"></i>
+                    {% endif %}
+                </td>
+                <td>Status</td>
+                <td>
+                    {% if user.is_active %}
+                        Active
+                    {% else %}
+                        Not active
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td><i class="fas fa-calendar-alt"></i></td>
+                <td>Joined</td>
+                <td>{{ user.date_joined }}</td>
             </tr>
             </tbody>
         </table>
