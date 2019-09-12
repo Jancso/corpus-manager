@@ -1,12 +1,16 @@
-<div class="card h-100">
+<div class="card">
     <h5 class="card-header bg-light text-center">
-        {{ user.get_full_name }}
+        <a href="{% url 'users:user-detail' user.pk %}">{{ user.get_full_name }}</a>
     </h5>
     <div class="card-body">
 
-        <img src="{{ user.userprofile.image.url }}"
+        <div class="row">
+            <div class="col-12 text-center">
+                        <img src="{{ user.userprofile.image.url }}"
              id="user-image"
-             class="p-3 rounded-circle mx-auto d-block img-fluid">
+             class="p-3 rounded-circle img-fluid">
+            </div>
+        </div>
 
         <table class="table mt-5">
             <tbody>

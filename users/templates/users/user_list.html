@@ -1,0 +1,20 @@
+{% extends 'users/base.html' %}
+
+{% block user-breadcrumb %}
+
+{% endblock %}
+
+{% block user-content %}
+    <h1 class="mb-4">Team</h1>
+
+    {% for group in object_list %}
+        <div class="row">
+            {% for object in group %}
+                <div class="col-md-3 mb-2">
+                    {% include 'users/user-short.html' with user=object %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

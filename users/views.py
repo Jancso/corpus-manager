@@ -10,6 +10,19 @@ class UserDetailView(DetailView):
     template_name = 'users/user_detail.html'
 
 
+class UserListView(View):
+
+    template_name = 'users/user_list.html'
+
+    def grouped(self, l, n):
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
+
+    def get(self, request):
+        context = {'object_list': self.grouped(User.objects.all(), 4)}
+        return render(request, self.template_name, context)
+
+
 class UserUpdateView(View):
 
     template_name = 'users/user_update.html'
