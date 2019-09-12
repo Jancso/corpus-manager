@@ -32,14 +32,21 @@ class RecordingForm(forms.ModelForm):
         return name
 
 
+class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_full_name
+
+
 class TaskForm(forms.ModelForm):
-    assignees = forms.ModelMultipleChoiceField(required=False, queryset=User.objects.all())
+    assignees = UserModelMultipleChoiceField(required=False,
+                                             queryset=User.objects.all())
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('instance'):
             initial = kwargs.setdefault('initial', {})
-            initial['assignees'] = [t.person.pk for t in
-                kwargs['instance'].assignment_set.all()]
+            initial['assignees'] = [
+                assignment.person.pk
+                for assignment in kwargs['instance'].assignment_set.all()]
 
         super().__init__(*args, **kwargs)
 
