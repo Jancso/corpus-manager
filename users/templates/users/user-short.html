@@ -6,23 +6,23 @@
 
         <div class="row">
             <div class="col-12 text-center">
-                        <img src="{{ user.userprofile.image.url }}"
-             id="user-image"
-             class="p-3 rounded-circle img-fluid">
+                <img src="{{ user.userprofile.image.url }}"
+                     id="user-image"
+                     class="p-3 rounded-circle img-fluid">
             </div>
         </div>
 
         <table class="table mt-5">
             <tbody>
             <tr>
-                <td><i class="fas fa-envelope pr-2"></i></td>
-                <td>
-                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
-                </td>
+                <td><i class="fas fa-tag pr-2"></i></td>
+                <td>Job</td>
+                <td>{{ user.userprofile.get_job_function_display }}</td>
             </tr>
             <tr>
-                <td><i class="fas fa-user-tag pr-2"></i></td>
-                <td>{{ user.userprofile.get_job_function_display }}</td>
+                <td><i class="fas fa-flag-checkered pr-2"></i></td>
+                <td>Tasks</td>
+                <td>{{ user.assignment_set.all|length }}</td>
             </tr>
             </tbody>
         </table>
