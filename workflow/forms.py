@@ -70,15 +70,15 @@ class TaskForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         status = cleaned_data.get('status')
-        start = cleaned_data.get('start')
-        end = cleaned_data.get('end')
+        assignees = cleaned_data.get('assignees')
 
         if status in [Task.STATUS_NOT_STARTED, Task.STATUS_BARRED]:
-            if start or end:
+            if assignees:
                 raise forms.ValidationError(
-                    'status only allowed '
-                    'for tasks without assignees. '
-                    'Unassign everyone for this task first.')
+                    'This task status is only allowed '
+                    'when there are no assignees. '
+                    'Either unassign everyone '
+                    'or choose a different status.')
 
         return cleaned_data
 
