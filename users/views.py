@@ -2,15 +2,16 @@ from django.views import View
 from django.views.generic.detail import DetailView
 from .forms import UserForm, UserProfileForm
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import User
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'users/user_detail.html'
 
 
-class UserListView(View):
+class UserListView(LoginRequiredMixin, View):
 
     template_name = 'users/user_list.html'
 
@@ -23,7 +24,7 @@ class UserListView(View):
         return render(request, self.template_name, context)
 
 
-class UserUpdateView(View):
+class UserUpdateView(LoginRequiredMixin, View):
 
     template_name = 'users/user_update.html'
     user_form = UserForm

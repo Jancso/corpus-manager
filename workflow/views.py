@@ -4,6 +4,8 @@ from .forms import RecordingForm, TaskForm, AssignmentForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
 from django.views.decorators.http import require_POST
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 import datetime
 
 
@@ -71,6 +73,7 @@ def _get_open_tasks():
     return tasks
 
 
+@login_required
 def workflow_view(request):
     context = {
         'recordings': _get_recs(),
@@ -80,6 +83,7 @@ def workflow_view(request):
     return render(request, 'workflow/work_flow_view.html', context)
 
 
+@login_required
 def rec_create_view(request):
     form = RecordingForm(request.POST or None)
     if form.is_valid():
@@ -96,6 +100,7 @@ def rec_create_view(request):
     return render(request, 'workflow/recording/rec_create.html', context)
 
 
+@login_required
 def rec_detail_view(request, pk):
     rec = Recording.objects.get(pk=pk)
     segmentation = rec.task_set.filter(name=Task.SEGMENTATION).get()
@@ -113,6 +118,7 @@ def rec_detail_view(request, pk):
     return render(request, 'workflow/recording/rec_detail.html', context)
 
 
+@login_required
 @require_POST
 def rec_delete_view(request, pk):
     rec = get_object_or_404(Recording, pk=pk)
@@ -120,7 +126,7 @@ def rec_delete_view(request, pk):
     return redirect('workflow:workflow')
 
 
-class RecordingUpdateView(UpdateView):
+class RecordingUpdateView(LoginRequiredMixin, UpdateView):
     model = Recording
     template_name = 'workflow/recording/rec_update.html'
     form_class = RecordingForm
@@ -129,7 +135,7 @@ class RecordingUpdateView(UpdateView):
         return reverse('workflow:rec-detail', args=(self.object.pk,))
 
 
-class TaskUpdateView(View):
+class TaskUpdateView(LoginRequiredMixin, View):
 
     def get(self, request, pk):
         task = Task.objects.get(pk=pk)
