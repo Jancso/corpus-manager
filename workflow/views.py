@@ -3,6 +3,7 @@ from .models import Recording, Task, Assignment
 from .forms import RecordingForm, TaskForm, AssignmentForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
+from django.views.decorators.http import require_POST
 import datetime
 
 
@@ -110,6 +111,13 @@ def rec_detail_view(request, pk):
         'glossing': glossing,
     }
     return render(request, 'workflow/recording/rec_detail.html', context)
+
+
+@require_POST
+def rec_delete_view(request, pk):
+    rec = get_object_or_404(Recording, pk=pk)
+    rec.delete()
+    return redirect('workflow:workflow')
 
 
 class RecordingUpdateView(UpdateView):
