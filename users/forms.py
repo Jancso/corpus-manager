@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, ImageField, FileInput
 from .models import UserProfile
 from django.contrib.auth.models import User
 
@@ -18,6 +18,8 @@ class UserProfileForm(BootstrapForm):
     class Meta:
         model = UserProfile
         fields = ['image', 'job_function']
+
+    image = ImageField(widget=FileInput)
 
 
 class UserForm(BootstrapForm):
