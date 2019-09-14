@@ -1,7 +1,7 @@
 import csv
 from io import StringIO
 from .models import Recording, Task
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 FIELDNAMES = [
     'recording name',
@@ -65,6 +65,30 @@ def to_timedelta(duration):
         return None
 
 
+def to_date(date):
+    if date:
+        if date in ['?', '???', '-', 'mpg was too large encoding']:
+            return None
+
+        if date == '2018-03-35':
+            return datetime.strptime('31.03.18', "%d.%m.%y")
+
+        if date == '08.08.209':
+            return datetime.strptime('08.08.19', "%d.%m.%y")
+
+        for fmt in ["%d.%m.%y", "%d.%m.%Y", '%Y-%m-%d']:
+            try:
+                date = datetime.strptime(date, fmt)
+            except:
+                pass
+            else:
+                return date
+
+        print(date)
+
+    return None
+
+
 def import_(file):
     file = file.read().decode()
 
@@ -91,17 +115,23 @@ def import_(file):
 
             if task_name_i == Task.SEGMENTATION:
                 status = row['status segmentation']
+                start = to_date(row['start segmentation'])
+                end = to_date(row['end segmentation'])
             elif task_name_i == Task.TRANSCRIPTION:
                 status = row['status transcription/translation']
+                start = to_date(row['start transcription/translation'])
+                end = to_date(row['end transcription/translation'])
             else:
                 status = row['status glossing']
+                start = to_date(row['start glossing'])
+                end = to_date(row['end glossing'])
 
             task, _ = Task.objects.update_or_create(
                 recording=rec,
                 name=task_name_i,
                 defaults={
                     'status': status,
-                    'start': None,
-                    'end': None
+                    'start': start,
+                    'end': end
                 }
             )
