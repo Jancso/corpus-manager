@@ -98,9 +98,9 @@ class Task(models.Model):
     NAME_CHOICES = [
         (SEGMENTATION, 'segmentation'),
         (TRANSCRIPTION, 'transcription/translation'),
-        (TRANSCRIPTION_CHECK, 'check transcription/translation'),
+        #(TRANSCRIPTION_CHECK, 'check transcription/translation'),
         (GLOSSING, 'glossing'),
-        (GLOSSING_CHECK, 'check glossing'),
+        #(GLOSSING_CHECK, 'check glossing'),
     ]
 
     name = models.CharField(choices=NAME_CHOICES,
@@ -114,16 +114,22 @@ class Task(models.Model):
     STATUS_CHECKED = 'CHECKED'
     STATUS_INCOMPLETE = 'INCOMPLETE'
     STATUS_COMPLETE = 'COMPLETE'
+    STATUS_NO_MEDIA = 'NO MEDIA'
+    STATUS_PROBLEMS = 'PROBLEMS'
+    STATUS_UNCLEAR = 'UNCLEAR'
 
     STATUS_CHOICES = [
         (STATUS_NOT_STARTED, 'not started'),
         (STATUS_BARRED, 'barred'),
-        (STATUS_DEFERRED, 'deferred'),
+        (STATUS_DEFERRED, 'defer'),
         (STATUS_RESERVED, 'reserved for'),
         (STATUS_IN_PROGRESS, 'in progress'),
-        (STATUS_CHECKED, 'checked'),
+        (STATUS_CHECKED, 'CHECK'),
         (STATUS_INCOMPLETE, 'incomplete'),
-        (STATUS_COMPLETE, 'completed'),
+        (STATUS_COMPLETE, 'complete'),
+        (STATUS_NO_MEDIA, 'no media'),
+        (STATUS_PROBLEMS, 'problems'),
+        (STATUS_UNCLEAR, 'UNCLEAR')
     ]
 
     status = models.CharField(choices=STATUS_CHOICES,

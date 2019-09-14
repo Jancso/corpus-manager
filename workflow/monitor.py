@@ -50,6 +50,10 @@ dene = {v: k for k, v in Recording.DENE_SPEECH_CHOICES}
 dene[''] = Recording.DENE_SPEECH_NA
 dene['much '] = Recording.DENE_SPEECH_HIGH
 
+status = {v: k for k, v in Task.NAME_CHOICES}
+status['completed'] = Task.STATUS_COMPLETE
+status[''] = Task.STATUS_NOT_STARTED
+
 
 def to_timedelta(duration):
     if duration:
@@ -83,8 +87,21 @@ def import_(file):
             }
         )
 
-        for task_name_i, task_name_h in Task.NAME_CHOICES:
+        for task_name_i, _ in Task.NAME_CHOICES:
+
+            if task_name_i == Task.SEGMENTATION:
+                status = row['status segmentation']
+            elif task_name_i == Task.TRANSCRIPTION:
+                status = row['status transcription/translation']
+            else:
+                status = row['status glossing']
+
             task, _ = Task.objects.update_or_create(
                 recording=rec,
-                name=task_name_i
+                name=task_name_i,
+                defaults={
+                    'status': status,
+                    'start': None,
+                    'end': None
+                }
             )
