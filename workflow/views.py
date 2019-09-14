@@ -4,9 +4,11 @@ from .forms import RecordingForm, TaskForm, UploadFileForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
 from django.views.decorators.http import require_POST
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 import datetime
+import csv
+from io import StringIO
 
 
 def _get_recs():
@@ -66,7 +68,7 @@ def _get_open_tasks():
 
         for pos, task in enumerate(ordered_tasks):
             if task.is_free():
-                if pos == 0 or ordered_tasks[pos-1].is_finished():
+                if pos == 0 or ordered_tasks[pos - 1].is_finished():
                     tasks.append(task)
                     break
 
@@ -174,10 +176,55 @@ class TaskUpdateView(LoginRequiredMixin, View):
         return render(request, 'workflow/task/task_update.html', context)
 
 
-class MonitorImportView(View):
+class MonitorImportView(UserPassesTestMixin, View):
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def import_monitor(self, file):
-        pass
+        file = file.read().decode()
+        fieldnames = [
+            'recording name',
+            'quality',
+            'child speech',
+            'directedness',
+            'Dene',
+            'audio',
+            'length',
+            'status segmentation',
+            'person segmentation',
+            'start segmentation',
+            'end segmentation',
+            'status transcription/translation',
+            'person transcription/translation',
+            'start transcription/translation',
+            'end transcription/translation',
+            'status check transcription/translation',
+            'person check transcription/translation',
+            'start check transcription/translation',
+            'end check transcription/translation',
+            'status glossing',
+            'person glossing',
+            'start glossing',
+            'end glossing',
+            'status check glossing',
+            'person check glossing',
+            'start check glossing',
+            'end check glossing',
+            'notes'
+        ]
+        csv_data = csv.DictReader(StringIO(file), fieldnames=fieldnames)
+        for row in csv_data:
+            print(row['recording name'])
+            rec, _ = Recording.objects.update_or_create(
+                name=row['recording name']
+            )
+
+            for task_name_i, task_name_h in Task.NAME_CHOICES:
+                task, _ = Task.objects.update_or_create(
+                    recording=rec,
+                    name=task_name_i
+                )
 
     def get(self, request):
         context = {'form': UploadFileForm()}
