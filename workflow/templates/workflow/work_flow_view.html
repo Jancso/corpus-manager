@@ -19,19 +19,9 @@
         </div>
 
         <div class="col-md-7">
-
-            <div class="row mb-4">
-                <div class="col-12">
-                    {% include 'workflow/recording/rec_add_button.html' %}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    {% include 'workflow/recording/rec_list_card.html' %}
-                </div>
-            </div>
-
+            <a class="btn w-100 h-100 btn-primary" href="{% url 'workflow:rec-list' %}">
+                All Recordings
+            </a>
         </div>
     </div>
 
