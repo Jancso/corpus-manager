@@ -11,6 +11,10 @@ import csv
 from io import StringIO
 
 
+def workflow_view(request):
+    return render(request, 'workflow/work_flow_view.html', {})
+
+
 def _get_recs():
     Rec = namedtuple('Rec', ['pk', 'name', 'quality', 'status'])
     recs = []
@@ -76,22 +80,22 @@ def _get_open_tasks():
 
 
 @login_required
-def workflow_view(request):
-    context = {
-        'assigned_tasks': _get_assigned_tasks(),
-    }
-    return render(request, 'workflow/work_flow_view.html', context)
-
-
-@login_required
 def rec_list_view(request):
     context = {'recordings': _get_recs()}
     return render(request, 'workflow/recording/rec_list.html', context)
 
 
+@login_required
 def open_task_list_view(request):
     context = {'tasks': _get_open_tasks(),
                'title': 'Open Tasks'}
+    return render(request, 'workflow/task/task_list.html', context)
+
+
+@login_required
+def assigned_task_list_view(request):
+    context = {'tasks': _get_assigned_tasks(),
+               'title': 'Assigned Tasks'}
     return render(request, 'workflow/task/task_list.html', context)
 
 

@@ -3,15 +3,20 @@
 {% block workflow-content %}
 
     <div class="row">
-        <div class="col-md-5 mb-4">
 
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
             <div class="row mb-4">
                 <div class="col-12">
-                    {% include "workflow/task/task_list_card.html" with tasks=open_tasks title='Open Tasks' %}
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:rec-list' %}">
+                        All Recordings
+                    </a>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-12">
                     <a class="btn w-100 h-100 btn-info"
                        href="{% url 'workflow:open-task-list' %}">
@@ -19,16 +24,21 @@
                     </a>
                 </div>
             </div>
+
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:assigned-task-list' %}">
+                        Assigned Tasks
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-7">
-            <a class="btn w-100 h-100 btn-info"
-               href="{% url 'workflow:rec-list' %}">
-                All Recordings
-            </a>
-        </div>
+        <div class="col-md-3"></div>
+
     </div>
-
 
 {% endblock %}
 
