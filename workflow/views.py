@@ -79,7 +79,6 @@ def _get_open_tasks():
 def workflow_view(request):
     context = {
         'assigned_tasks': _get_assigned_tasks(),
-        'open_tasks': _get_open_tasks()
     }
     return render(request, 'workflow/work_flow_view.html', context)
 
@@ -88,6 +87,12 @@ def workflow_view(request):
 def rec_list_view(request):
     context = {'recordings': _get_recs()}
     return render(request, 'workflow/recording/rec_list.html', context)
+
+
+def open_task_list_view(request):
+    context = {'tasks': _get_open_tasks(),
+               'title': 'Open Tasks'}
+    return render(request, 'workflow/task/task_list.html', context)
 
 
 @login_required

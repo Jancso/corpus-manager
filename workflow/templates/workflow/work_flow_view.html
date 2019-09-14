@@ -7,19 +7,23 @@
 
             <div class="row mb-4">
                 <div class="col-12">
-                    {% include "workflow/task/tasks_view_card.html" with tasks=open_tasks title='Open Tasks' %}
+                    {% include "workflow/task/task_list_card.html" with tasks=open_tasks title='Open Tasks' %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    {% include "workflow/assignment/assignments_view_card.html" with assignments=assigned_tasks title='Assigned Tasks' %}
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:open-task-list' %}">
+                        Open Tasks
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-7">
-            <a class="btn w-100 h-100 btn-primary" href="{% url 'workflow:rec-list' %}">
+            <a class="btn w-100 h-100 btn-info"
+               href="{% url 'workflow:rec-list' %}">
                 All Recordings
             </a>
         </div>
