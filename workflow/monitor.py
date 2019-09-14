@@ -50,9 +50,9 @@ dene = {v: k for k, v in Recording.DENE_SPEECH_CHOICES}
 dene[''] = Recording.DENE_SPEECH_NA
 dene['much '] = Recording.DENE_SPEECH_HIGH
 
-status = {v: k for k, v in Task.NAME_CHOICES}
-status['completed'] = Task.STATUS_COMPLETE
-status[''] = Task.STATUS_NOT_STARTED
+status_names = {v: k for k, v in Task.STATUS_CHOICES}
+status_names['completed'] = Task.STATUS_COMPLETE
+status_names[''] = Task.STATUS_NOT_STARTED
 
 
 def to_timedelta(duration):
@@ -114,15 +114,15 @@ def import_(file):
         for task_name_i, _ in Task.NAME_CHOICES:
 
             if task_name_i == Task.SEGMENTATION:
-                status = row['status segmentation']
+                status = status_names[row['status segmentation']]
                 start = to_date(row['start segmentation'])
                 end = to_date(row['end segmentation'])
             elif task_name_i == Task.TRANSCRIPTION:
-                status = row['status transcription/translation']
+                status = status_names[row['status transcription/translation']]
                 start = to_date(row['start transcription/translation'])
                 end = to_date(row['end transcription/translation'])
             else:
-                status = row['status glossing']
+                status = status_names[row['status glossing']]
                 start = to_date(row['start glossing'])
                 end = to_date(row['end glossing'])
 
