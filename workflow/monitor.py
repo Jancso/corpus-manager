@@ -1,7 +1,8 @@
 import csv
 from io import StringIO
-from .models import Recording, Task
+from .models import Recording, Task, Assignment
 from datetime import timedelta, datetime
+from users.models import User, UserProfile
 
 FIELDNAMES = [
     'recording name',
@@ -89,6 +90,87 @@ def to_date(date):
     return None
 
 
+people_dict = {
+    '': [None],
+    '???': [None],
+    'Alexandra': ['alexandra'],
+    'Alexandra Bosshard': ['alexandra'],
+    'Allison': ['allison'],
+    'Amber': ['amber'],
+    'Amelie Paulsen': ['amelie'],
+    'Andrea Lemaigre': ['andrea'],
+    'Andrea Lemaigre (Tamara L)': ['andrea', 'tamara'],
+    'Andreas Gerster': ['andreas'],
+    'Andreas Gerster(CR)': ['andreas'],
+    'Andre Mueller': ['andre'],
+    'Candace Janvier': ['candace'],
+    'Caroline': ['caroline'],
+    'Caroline Remensberger': ['caroline'],
+    'Caro Rem (CFo)': ['caroline'],
+    'C/D': [None],
+    'C/D???': [None],
+    'C/D (Allison)': [None, 'allison'],
+    'C/D (DCU)': [None, None],
+    'C/D (HP) (MR)': [None, None, None],
+    'C/D MaRue': [None, None],
+    'Chastity': ['chastity'],
+    'Chastity/Dawn': ['chastity','dawn'],
+    'Chastity Sylvestre': ['chastity'],
+    'CS/DH': [None, None],
+    'Curtis': ['curtis'],
+    'Curtis/Leanne': ['curtis', 'leanne'],
+    'Cynthia': ['cynthia'],
+    'Dagmar Jung': ['dagmar'],
+    'Dawn/Chastity': ['dawn', 'chastity'],
+    'Debora Beuret': ['debora'],
+    'DJ': ['dagmar'],
+    'DJ/CS': ['dagmar'],
+    'Erika Herman': ['erika'],
+    'Farris Lemaigre': ['farris'],
+    'Gabrielle/Curtis': ['gabrielle', 'curtis'],
+    'Gabrielle (Curtis) Fontaine': ['gabrielle', 'curtis'],
+    'Gabrielle Fontaine': ['gabrielle'],
+    'Geneva Moise': ['geneva'],
+    'Jeanette': ['jeanette'],
+    'Jeanette Wiens': ['jeanette'],
+    'Jeanette Wiens (CF)': ['jeanette'],
+    'Jeanette Wiens (LF)': ['jeanette'],
+    'Jeremiah Mercredi': ['jeremia'],
+    'Jessica/Dallas': [None, 'dallas'],
+    'Jessica Gutiw': ['gutiw'],
+    'Jessica Lemaigre': ['lemaigre'],
+    'JK (Jer (Mandy)': [None, 'jer', 'mandy'],
+    'JL?': [None],
+    'Jordan Klein': ['jordan'],
+    'Jordan Klein (AlL)': ['jordan', None],
+    'JW (Jer/Mandy)': ['jeanette', 'jer', 'mandy'],
+    'JW/Jessica Gutiw': ['jeanette', 'gutiw'],
+    'Leanne': ['leanne'],
+    'Leanne Fontaine': ['leanne'],
+    'Mary Roy': ['roy'],
+    'Mary Ruelling': ['ruelling'],
+    'Melanie Truessel': ['melanie'],
+    'new stud assist FNUNIV': [None],
+    'not started': [None],
+    'Rae Cheecham (MHE)': ['rae'],
+    'Rae Cheecham/JordanK': ['rae', 'jordan'],
+    'RM/CS': [None, None],
+    'RM (DC)': [None, None],
+    'Rolf': ['rolf'],
+    'Rolf Hotz': ['rolf'],
+    'Ruben': ['ruben'],
+    'Ruben (AF)': ['ruben'],
+    'Ruben Moegel': ['ruben'],
+    'SAP - I think this is actually SOP?': [None],
+    'Taylor Fontaine': ['taylor'],
+    'Trina (FL)': ['trina'],
+    'Trina Lemaigre': ['trina'],
+    'Trina Lemaigre (Andrea)': ['trina', 'andrea'],
+    'Trina Lemaigre (CF)': ['trina', None],
+    'Trina Lemaigre(EH)': ['trina', None],
+}
+
+
 def import_(file):
     file = file.read().decode()
 
@@ -117,14 +199,17 @@ def import_(file):
                 status = status_names[row['status segmentation']]
                 start = to_date(row['start segmentation'])
                 end = to_date(row['end segmentation'])
+                people = people_dict[row['person segmentation']]
             elif task_name_i == Task.TRANSCRIPTION:
                 status = status_names[row['status transcription/translation']]
                 start = to_date(row['start transcription/translation'])
                 end = to_date(row['end transcription/translation'])
+                people = people_dict[row['person transcription/translation']]
             else:
                 status = status_names[row['status glossing']]
                 start = to_date(row['start glossing'])
                 end = to_date(row['end glossing'])
+                people = people_dict[row['person glossing']]
 
             task, _ = Task.objects.update_or_create(
                 recording=rec,
@@ -135,3 +220,21 @@ def import_(file):
                     'end': end
                 }
             )
+
+            for person_name in people:
+                if person_name:
+
+                    user, _ = User.objects.update_or_create(
+                        username=person_name,
+                        email='',
+                        password='matterhorn'
+                    )
+
+                    UserProfile.objects.update_or_create(
+                        user=user
+                    )
+
+                    Assignment.objects.update_or_create(
+                        task=task,
+                        person=user
+                    )
