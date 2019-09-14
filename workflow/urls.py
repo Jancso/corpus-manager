@@ -5,7 +5,8 @@ from .views import (
     rec_detail_view,
     RecordingUpdateView,
     TaskUpdateView,
-    rec_delete_view
+    rec_delete_view,
+    MonitorImportView
 )
 
 app_name = 'workflow'
@@ -21,5 +22,5 @@ urlpatterns = [
          TaskUpdateView.as_view(),
          name='task-update'),
     path('recordings/<int:pk>/delete/', rec_delete_view, name='rec-delete'),
-
+    path('monitor/import/', MonitorImportView.as_view(), name='monitor-import')
 ]

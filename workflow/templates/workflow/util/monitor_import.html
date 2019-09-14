@@ -1,0 +1,13 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">Monitor Import</li>
+{% endblock %}
+
+
+{% block workflow-content %}
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Import">
+    </form>
+{% endblock %}

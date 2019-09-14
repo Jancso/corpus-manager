@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Recording, Task, Assignment
-from .forms import RecordingForm, TaskForm, AssignmentForm
+from .forms import RecordingForm, TaskForm, UploadFileForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
 from django.views.decorators.http import require_POST
@@ -172,3 +172,22 @@ class TaskUpdateView(LoginRequiredMixin, View):
             'form': task_form
         }
         return render(request, 'workflow/task/task_update.html', context)
+
+
+class MonitorImportView(View):
+
+    def import_monitor(self, file):
+        pass
+
+    def get(self, request):
+        context = {'form': UploadFileForm()}
+        return render(request, 'workflow/util/monitor_import.html', context)
+
+    def post(self, request):
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            self.import_monitor(request.FILES['file'])
+            return redirect(reverse('workflow:workflow'))
+
+        context = {'form': form}
+        return render(request, 'workflow/util/monitor_import.html', context)
