@@ -7,8 +7,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 import datetime
-import csv
-from io import StringIO
+from workflow import monitor
 
 
 def workflow_view(request):
@@ -195,51 +194,6 @@ class MonitorImportView(UserPassesTestMixin, View):
     def test_func(self):
         return self.request.user.is_superuser
 
-    def import_monitor(self, file):
-        file = file.read().decode()
-        fieldnames = [
-            'recording name',
-            'quality',
-            'child speech',
-            'directedness',
-            'Dene',
-            'audio',
-            'length',
-            'status segmentation',
-            'person segmentation',
-            'start segmentation',
-            'end segmentation',
-            'status transcription/translation',
-            'person transcription/translation',
-            'start transcription/translation',
-            'end transcription/translation',
-            'status check transcription/translation',
-            'person check transcription/translation',
-            'start check transcription/translation',
-            'end check transcription/translation',
-            'status glossing',
-            'person glossing',
-            'start glossing',
-            'end glossing',
-            'status check glossing',
-            'person check glossing',
-            'start check glossing',
-            'end check glossing',
-            'notes'
-        ]
-        csv_data = csv.DictReader(StringIO(file), fieldnames=fieldnames)
-        for row in csv_data:
-            print(row['recording name'])
-            rec, _ = Recording.objects.update_or_create(
-                name=row['recording name']
-            )
-
-            for task_name_i, task_name_h in Task.NAME_CHOICES:
-                task, _ = Task.objects.update_or_create(
-                    recording=rec,
-                    name=task_name_i
-                )
-
     def get(self, request):
         context = {'form': UploadFileForm()}
         return render(request, 'workflow/util/monitor_import.html', context)
@@ -247,7 +201,7 @@ class MonitorImportView(UserPassesTestMixin, View):
     def post(self, request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            self.import_monitor(request.FILES['file'])
+            monitor.import_(request.FILES['file'])
             return redirect(reverse('workflow:workflow'))
 
         context = {'form': form}

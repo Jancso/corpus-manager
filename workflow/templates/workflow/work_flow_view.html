@@ -34,6 +34,18 @@
                     </a>
                 </div>
             </div>
+
+            {% if request.user.is_superuser %}
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <a class="btn w-100 h-100 btn-info"
+                           href="{% url 'workflow:monitor-import' %}">
+                            Monitor Import
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
 
         <div class="col-md-3"></div>
