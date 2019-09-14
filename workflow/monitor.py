@@ -227,7 +227,10 @@ def import_(file):
                     user, _ = User.objects.update_or_create(
                         username=person_name,
                         email='',
-                        password='matterhorn'
+                        password='matterhorn',
+                        defaults={
+                            'first_name': person_name.title()
+                        }
                     )
 
                     UserProfile.objects.update_or_create(
