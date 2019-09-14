@@ -227,11 +227,13 @@ def import_(file):
                     user, _ = User.objects.update_or_create(
                         username=person_name,
                         email='',
-                        password='matterhorn',
                         defaults={
                             'first_name': person_name.title()
                         }
                     )
+
+                    user.set_password('matterhorn')
+                    user.save()
 
                     UserProfile.objects.update_or_create(
                         user=user
