@@ -26,9 +26,22 @@
 
                 </div>
 
-                <div class="card-body">
-                    {{ discussion.description }}
-                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% for rec in discussion.recordings.all %}
+                            <a href="{% url 'workflow:rec-detail' rec.pk %}"
+                               class="badge badge-dark">
+                                {{ rec.name }}
+                            </a>
+                        {% endfor %}
+                    </li>
+
+                    <li class="list-group-item">
+                        {{ discussion.description }}
+                    </li>
+                </ul>
+
 
             </div>
         </div>

@@ -222,6 +222,7 @@ def discussion_create_view(request):
         discussion = form.save(commit=False)
         discussion.author = request.user
         discussion.save()
+        form.save_m2m()
         return redirect('workflow:discussion-list')
 
     context = {'form': form}
