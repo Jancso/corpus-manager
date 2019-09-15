@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Recording, Task, Assignment, Discussion, Comment
-from .forms import RecordingForm, TaskForm, UploadFileForm, DiscussionForm
+from .forms import RecordingForm, TaskForm, UploadFileForm, DiscussionForm, CommentForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
 from django.views.decorators.http import require_POST
@@ -232,7 +232,16 @@ def discussion_create_view(request):
 @login_required
 def discussion_detail_view(request, pk):
     discussion = get_object_or_404(Discussion, pk=pk)
-    context = {'discussion': discussion}
+    new_form = CommentForm()
+    if request.method == 'POST':
+        comment = Comment()
+        comment.discussion = discussion
+        comment.author = request.user
+        posted_form = CommentForm(request.POST, instance=comment)
+        if posted_form.is_valid():
+            posted_form.save()
+
+    context = {'discussion': discussion, 'form': new_form}
     return render(request, 'workflow/forum/discussion_detail.html', context)
 
 

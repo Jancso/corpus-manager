@@ -10,7 +10,8 @@
 {% endblock %}
 
 {% block workflow-content %}
-    <div class="row">
+
+    <div class="row mb-5">
 
         <div class="col-md-12">
             <div class="card">
@@ -48,15 +49,60 @@
                         {% endfor %}
                     </li>
 
-                    <li class="list-group-item">
-                        {{ discussion.description }}
-                    </li>
                 </ul>
+
+                <div class="card-body">
+                    {{ discussion.description }}
+                </div>
 
 
             </div>
         </div>
 
+    </div>
+
+    {% for comment in discussion.comment_set.all %}
+
+        <div class="row mb-4">
+            <div class="col-md-1">
+                <img src="{{ comment.author.userprofile.image.url }}"
+                     class="img-thumbnail">
+            </div>
+            <div class="col-md-11">
+                <div class="card">
+                    <div class="card-header">
+                        <i>
+                        Comment #{{ comment.pk }}
+                        on {{ comment.create_time }} by
+                        <a href="{% url 'users:user-detail' comment.author.pk %}">
+                            {{ comment.author }}
+                        </a></i>
+                    </div>
+
+                    <div class="card-body">
+                        {{ comment.description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+
+            <div class="card">
+                <div class="card-header">Add Comment</div>
+                <div class="card-body">
+                    <form method="post">{% csrf_token %}
+                        {{ form.description }}
+                        <input class="btn btn-primary mt-2" type="submit"
+                               value="Comment">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

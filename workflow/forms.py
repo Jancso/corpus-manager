@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recording, Task, Assignment, Discussion
+from .models import Recording, Task, Assignment, Discussion, Comment
 from django.contrib.auth.models import User
 from django.forms import ModelChoiceField
 import re
@@ -125,3 +125,15 @@ class DiscussionForm(BootstrapForm):
                                               widget=forms.SelectMultiple(
                                                   attrs={'size': 10})
                                               )
+
+
+class CommentForm(BootstrapForm):
+
+    class Meta:
+        model = Comment
+        fields = ['description']
+
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows': 4})
+    )
