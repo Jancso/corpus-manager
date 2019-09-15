@@ -1,0 +1,15 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-content %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+            {% include 'workflow/forum/discussion_create_card.html' with form=form %}
+        </div>
+
+        <div class="col-md-3"></div>
+    </div>
+
+{% endblock %}

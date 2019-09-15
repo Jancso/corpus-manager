@@ -9,7 +9,9 @@ from .views import (
     MonitorImportView,
     rec_list_view,
     open_task_list_view,
-    assigned_task_list_view
+    assigned_task_list_view,
+    discussion_list_view,
+    discussion_create_view
 )
 
 app_name = 'workflow'
@@ -30,5 +32,7 @@ urlpatterns = [
          TaskUpdateView.as_view(),
          name='task-update'),
     path('recordings/<int:pk>/delete/', rec_delete_view, name='rec-delete'),
+    path('discussions/', discussion_list_view, name='discussion-list'),
+    path('discussion/create/', discussion_create_view, name='discussion-create'),
     path('monitor/import/', MonitorImportView.as_view(), name='monitor-import')
 ]

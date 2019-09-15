@@ -1,0 +1,34 @@
+<div class="accordion" id="accordion-discussions">
+
+    {% for discussion in discussions %}
+
+        <div class="card">
+            <div class="card-header" id="heading{{ discussion.pk }}">
+
+                    <button class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#collapse{{ discussion.pk }}"
+                            aria-expanded="true"
+                            aria-controls="collapse{{ discussion.pk }}">
+                        {{ discussion.title }}
+                    </button>
+                    <br>
+                    <i class="pl-5">
+                        opened on {{ discussion.create_time }} by
+                        <a href="{% url 'users:user-detail' discussion.author.pk %}">{{ discussion.author }}</a></i>
+
+            </div>
+
+            <div id="collapse{{ discussion.pk }}"
+                 class="collapse"
+                 aria-labelledby="heading{{ discussion.pk }}"
+                 data-parent="#accordion-discussions">
+                <div class="card-body">
+                    {{ discussion.description }}
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>

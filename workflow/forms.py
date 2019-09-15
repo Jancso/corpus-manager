@@ -1,6 +1,7 @@
 from django import forms
-from .models import Recording, Task, Assignment
+from .models import Recording, Task, Assignment, Discussion
 from django.contrib.auth.models import User
+from django.forms import ModelChoiceField
 import re
 
 
@@ -99,3 +100,25 @@ class AssignmentForm(forms.ModelForm):
 
 class UploadFileForm(forms.Form):
     file = forms.FileField()
+
+
+class BootstrapForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class RecordingMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+
+class DiscussionForm(BootstrapForm):
+
+    class Meta:
+        model = Discussion
+        fields = ['title', 'description', 'recordings']
+
+    recordings = RecordingMultipleChoiceField(required=False,
+                                              queryset=Recording.objects.order_by('name'))

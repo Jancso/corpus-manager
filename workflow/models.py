@@ -158,3 +158,20 @@ class Assignment(models.Model):
 
     class Meta:
         unique_together = ('task', 'person')
+
+
+class Discussion(models.Model):
+    title = models.CharField(max_length=50, unique=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True)
+    modify_time = models.DateTimeField(auto_now=True)
+    description = models.TextField()
+    recordings = models.ManyToManyField(Recording)
+
+
+class Comment(models.Model):
+    discussion = models.ForeignKey(Discussion, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True)
+    modify_time = models.DateTimeField(auto_now=True)
+    description = models.TextField()

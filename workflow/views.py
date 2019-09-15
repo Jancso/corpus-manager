@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Recording, Task, Assignment
-from .forms import RecordingForm, TaskForm, UploadFileForm
+from .models import Recording, Task, Assignment, Discussion, Comment
+from .forms import RecordingForm, TaskForm, UploadFileForm, DiscussionForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
 from django.views.decorators.http import require_POST
@@ -206,3 +206,23 @@ class MonitorImportView(UserPassesTestMixin, View):
 
         context = {'form': form}
         return render(request, 'workflow/util/monitor_import.html', context)
+
+
+@login_required
+def discussion_list_view(request):
+    discussions = Discussion.objects.order_by('-create_time')
+    context = {'discussions': discussions}
+    return render(request, 'workflow/forum/discussion_list.html', context)
+
+
+@login_required
+def discussion_create_view(request):
+    form = DiscussionForm(request.POST or None)
+    if form.is_valid():
+        discussion = form.save(commit=False)
+        discussion.author = request.user
+        discussion.save()
+        return redirect('workflow:discussion-list')
+
+    context = {'form': form}
+    return render(request, 'workflow/forum/discussion_create.html', context)
