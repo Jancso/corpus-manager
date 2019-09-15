@@ -9,7 +9,8 @@
             Discussion #{{ comment.discussion.pk }}</a>
     </li>
     <li class="breadcrumb-item">
-        Comment #{{ comment.pk }}
+        <a href="{% url 'workflow:discussion-detail' comment.discussion.pk %}#comment-{{ comment.pk }}">
+            Comment #{{ comment.pk }}</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">
         Update

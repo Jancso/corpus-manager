@@ -260,5 +260,6 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CommentForm
 
     def get_success_url(self):
-        return reverse('workflow:discussion-detail',
-                       args=(self.object.discussion.pk,))
+        return reverse(
+            'workflow:discussion-detail',
+            args=(self.object.discussion.pk,)) + f'#comment-{self.object.pk}'
