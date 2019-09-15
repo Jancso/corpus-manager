@@ -1,5 +1,14 @@
 {% extends 'workflow/base.html' %}
 
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'workflow:discussion-list' %}">Forum</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Open new Discussion
+    </li>
+{% endblock %}
+
 {% block workflow-content %}
 
     <div class="row">
