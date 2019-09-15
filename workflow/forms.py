@@ -121,4 +121,7 @@ class DiscussionForm(BootstrapForm):
         fields = ['title', 'description', 'recordings']
 
     recordings = RecordingMultipleChoiceField(required=False,
-                                              queryset=Recording.objects.order_by('name'))
+                                              queryset=Recording.objects.order_by('name'),
+                                              widget=forms.SelectMultiple(
+                                                  attrs={'size': 10})
+                                              )
