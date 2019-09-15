@@ -234,3 +234,12 @@ def discussion_detail_view(request, pk):
     discussion = get_object_or_404(Discussion, pk=pk)
     context = {'discussion': discussion}
     return render(request, 'workflow/forum/discussion_detail.html', context)
+
+
+class DisussionUpdateView(LoginRequiredMixin, UpdateView):
+    model = Discussion
+    template_name = 'workflow/forum/discussion_update.html'
+    form_class = DiscussionForm
+
+    def get_success_url(self):
+        return reverse('workflow:discussion-detail', args=(self.object.pk,))

@@ -12,7 +12,8 @@ from .views import (
     assigned_task_list_view,
     discussion_list_view,
     discussion_create_view,
-    discussion_detail_view
+    discussion_detail_view,
+    DisussionUpdateView
 )
 
 app_name = 'workflow'
@@ -36,5 +37,6 @@ urlpatterns = [
     path('discussions/', discussion_list_view, name='discussion-list'),
     path('discussion/create/', discussion_create_view, name='discussion-create'),
     path('discussion/<int:pk>/', discussion_detail_view, name='discussion-detail'),
+    path('discussion/<int:pk>/update/', DisussionUpdateView.as_view(), name='discussion-update'),
     path('monitor/import/', MonitorImportView.as_view(), name='monitor-import')
 ]

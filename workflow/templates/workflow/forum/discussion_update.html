@@ -1,0 +1,46 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'workflow:discussion-list' %}">Forum</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'workflow:discussion-detail' discussion.pk %}">Discussion
+            #{{ discussion.pk }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Update
+    </li>
+{% endblock workflow-breadcrumb %}
+
+{% block workflow-content %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <h6 class="card-header">Update Discussion
+                    #{{ discussion.pk }}
+                </h6>
+
+                <div class="card-body">
+                    <form method="post">{% csrf_token %}
+                        <table class="table table-responsive">
+                            {{ form.as_table }}
+                        </table>
+
+                        <input class="btn btn-primary"
+                               type="submit"
+                               value="Update">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3"></div>
+
+    </div>
+
+{% endblock %}
