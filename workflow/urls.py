@@ -13,7 +13,8 @@ from .views import (
     discussion_list_view,
     discussion_create_view,
     discussion_detail_view,
-    DisussionUpdateView
+    DisussionUpdateView,
+    CommentUpdateView
 )
 
 app_name = 'workflow'
@@ -38,5 +39,6 @@ urlpatterns = [
     path('discussion/create/', discussion_create_view, name='discussion-create'),
     path('discussion/<int:pk>/', discussion_detail_view, name='discussion-detail'),
     path('discussion/<int:pk>/update/', DisussionUpdateView.as_view(), name='discussion-update'),
+    path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('monitor/import/', MonitorImportView.as_view(), name='monitor-import')
 ]

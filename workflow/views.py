@@ -252,3 +252,13 @@ class DisussionUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('workflow:discussion-detail', args=(self.object.pk,))
+
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    template_name = 'workflow/forum/comment_update.html'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('workflow:discussion-detail',
+                       args=(self.object.discussion.pk,))
