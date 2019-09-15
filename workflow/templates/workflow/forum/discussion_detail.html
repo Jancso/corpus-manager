@@ -1,5 +1,28 @@
 {% extends 'workflow/base.html' %}
 
 {% block workflow-content %}
-    Detail View
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ discussion.title }}</h5>
+                    <i>
+                        opened on {{ discussion.create_time }} by
+                        <a href="{% url 'users:user-detail' discussion.author.pk %}">
+                            {{ discussion.author }}
+                        </a>
+                    </i>
+
+                </div>
+
+                <div class="card-body">
+                    {{ discussion.description }}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
 {% endblock %}

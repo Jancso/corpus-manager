@@ -5,12 +5,12 @@
         <div class="card">
             <div class="card-header" id="heading{{ discussion.pk }}">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <a class="h5" href="{% url 'workflow:discussion-detail' discussion.pk %}">
                             {{ discussion.title }}
                         </a>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <button class="btn btn-info w-100"
                                 type="button"
                                 data-toggle="collapse"
@@ -22,8 +22,6 @@
                     </div>
                 </div>
 
-
-                <br>
                 <i>
                     opened on {{ discussion.create_time }} by
                     <a href="{% url 'users:user-detail' discussion.author.pk %}">
