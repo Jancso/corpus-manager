@@ -226,3 +226,10 @@ def discussion_create_view(request):
 
     context = {'form': form}
     return render(request, 'workflow/forum/discussion_create.html', context)
+
+
+@login_required
+def discussion_detail_view(request, pk):
+    discussion = get_object_or_404(Discussion, pk=pk)
+    context = {'discussion': discussion}
+    return render(request, 'workflow/forum/discussion_detail.html', context)

@@ -6,7 +6,9 @@
             <div class="card-header" id="heading{{ discussion.pk }}">
                 <div class="row">
                     <div class="col-md-8">
-                        <h5>{{ discussion.title }}</h5>
+                        <a class="h5" href="{% url 'workflow:discussion-detail' discussion.pk %}">
+                            {{ discussion.title }}
+                        </a>
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-info w-100"
