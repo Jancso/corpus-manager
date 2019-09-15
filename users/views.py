@@ -20,7 +20,8 @@ class UserListView(LoginRequiredMixin, View):
             yield l[i:i + n]
 
     def get(self, request):
-        context = {'object_list': self.grouped(User.objects.all(), 4)}
+        context = {'object_list': self.grouped(
+            User.objects.order_by('first_name'), 4)}
         return render(request, self.template_name, context)
 
 
