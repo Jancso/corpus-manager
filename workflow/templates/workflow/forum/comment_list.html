@@ -1,0 +1,39 @@
+{% for comment in discussion.comment_set.all %}
+
+    <div class="row mb-4">
+        <div class="col-md-1">
+            <img src="{{ comment.author.userprofile.image.url }}"
+                 class="img-thumbnail">
+        </div>
+
+        <div class="col-md-11">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-9">
+
+                            <i>
+                                commented on {{ comment.create_time }} by
+                                <a href="{% url 'users:user-detail' comment.author.pk %}">
+                                    {{ comment.author }}
+                                </a>
+                            </i>
+                        </div>
+
+                        <div class="col-md-3">
+                            <a class="float-right"
+                               href="{% url 'workflow:comment-update' comment.pk %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    {{ comment.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}

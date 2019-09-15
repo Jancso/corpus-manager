@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-header">Add Comment</div>
+    <div class="card-body">
+        <form method="post">{% csrf_token %}
+            {{ form.description }}
+            <input class="btn btn-primary mt-2" type="submit"
+                   value="Comment">
+        </form>
+    </div>
+</div>

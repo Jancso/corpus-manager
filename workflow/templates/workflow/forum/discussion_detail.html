@@ -12,108 +12,17 @@
 {% block workflow-content %}
 
     <div class="row mb-5">
-
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-
-                    <div class="row">
-                        <div class="col-md-10">
-                            <h5>{{ discussion.title }}</h5>
-                            <i>
-                                #{{ discussion.pk }}
-                                opened on {{ discussion.create_time }} by
-                                <a href="{% url 'users:user-detail' discussion.author.pk %}">
-                                    {{ discussion.author }}
-                                </a>
-                            </i>
-                        </div>
-                        <div class="col-md-2">
-                            <a class="float-right"
-                               href="{% url 'workflow:discussion-update' discussion.pk %}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        {% for rec in discussion.recordings.all %}
-                            <a href="{% url 'workflow:rec-detail' rec.pk %}"
-                               class="badge badge-dark">
-                                {{ rec.name }}
-                            </a>
-                        {% endfor %}
-                    </li>
-
-                </ul>
-
-                <div class="card-body">
-                    {{ discussion.description }}
-                </div>
-
-
-            </div>
+            {% include 'workflow/forum/discussion_detail_header.html' %}
         </div>
-
     </div>
 
-    {% for comment in discussion.comment_set.all %}
-
-        <div class="row mb-4">
-            <div class="col-md-1">
-                <img src="{{ comment.author.userprofile.image.url }}"
-                     class="img-thumbnail">
-            </div>
-            <div class="col-md-11">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-9">
-
-                                <i>
-                                    commented on {{ comment.create_time }} by
-                                    <a href="{% url 'users:user-detail' comment.author.pk %}">
-                                        {{ comment.author }}
-                                    </a>
-                                </i>
-                            </div>
-
-                            <div class="col-md-3">
-                                <a class="float-right"
-                                   href="{% url 'workflow:comment-update' comment.pk %}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        {{ comment.description }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    {% endfor %}
+    {% include 'workflow/forum/comment_list.html' %}
 
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-11">
-
-            <div class="card">
-                <div class="card-header">Add Comment</div>
-                <div class="card-body">
-                    <form method="post">{% csrf_token %}
-                        {{ form.description }}
-                        <input class="btn btn-primary mt-2" type="submit"
-                               value="Comment">
-                    </form>
-                </div>
-            </div>
+            {% include 'workflow/forum/discussion_detail_add_comment.html' %}
         </div>
     </div>
 

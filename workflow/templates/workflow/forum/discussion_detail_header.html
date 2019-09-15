@@ -1,0 +1,39 @@
+<div class="card">
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-10">
+                <h5>{{ discussion.title }}</h5>
+                <i>
+                    #{{ discussion.pk }}
+                    opened on {{ discussion.create_time }} by
+                    <a href="{% url 'users:user-detail' discussion.author.pk %}">
+                        {{ discussion.author }}
+                    </a>
+                </i>
+            </div>
+            <div class="col-md-2">
+                <a class="float-right"
+                   href="{% url 'workflow:discussion-update' discussion.pk %}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            {% for rec in discussion.recordings.all %}
+                <a href="{% url 'workflow:rec-detail' rec.pk %}"
+                   class="badge badge-dark">
+                    {{ rec.name }}
+                </a>
+            {% endfor %}
+        </li>
+    </ul>
+
+    <div class="card-body">
+        {{ discussion.description }}
+    </div>
+
+</div>
