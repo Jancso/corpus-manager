@@ -4,19 +4,30 @@
 
         <div class="card">
             <div class="card-header" id="heading{{ discussion.pk }}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>{{ discussion.title }}</h5>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-info w-100"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#collapse{{ discussion.pk }}"
+                                aria-expanded="true"
+                                aria-controls="collapse{{ discussion.pk }}">
+                            <i class="fas fa-angle-double-down"></i>
+                        </button>
+                    </div>
+                </div>
 
-                    <button class="btn btn-link"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#collapse{{ discussion.pk }}"
-                            aria-expanded="true"
-                            aria-controls="collapse{{ discussion.pk }}">
-                        {{ discussion.title }}
-                    </button>
-                    <br>
-                    <i class="pl-5">
-                        opened on {{ discussion.create_time }} by
-                        <a href="{% url 'users:user-detail' discussion.author.pk %}">{{ discussion.author }}</a></i>
+
+                <br>
+                <i>
+                    opened on {{ discussion.create_time }} by
+                    <a href="{% url 'users:user-detail' discussion.author.pk %}">
+                        {{ discussion.author }}
+                    </a>
+                </i>
 
             </div>
 

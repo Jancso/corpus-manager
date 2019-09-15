@@ -5,8 +5,16 @@
     <div class="col-md-3"></div>
 
     <div class="col-md-6">
-        {% include 'workflow/forum/discussion_create_button.html' %}
-        {% include 'workflow/forum/discussion_list_card.html' with discussions=discussions %}
+        <div class="row">
+            <div class="col-12 mb-4">
+                {% include 'workflow/forum/discussion_create_button.html' %}
+            </div>
+            <div class="col-12">
+                {% include 'workflow/forum/discussion_list_card.html' with discussions=discussions %}
+            </div>
+        </div>
+
+
     </div>
 
     <div class="col-md-3"></div>
