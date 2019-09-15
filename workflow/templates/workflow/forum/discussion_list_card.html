@@ -11,7 +11,7 @@
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <button class="btn btn-info w-100"
+                        <button class="btn btn-secondary w-100"
                                 type="button"
                                 data-toggle="collapse"
                                 data-target="#collapse{{ discussion.pk }}"
@@ -23,6 +23,7 @@
                 </div>
 
                 <i>
+                    #{{ discussion.pk }}
                     opened on {{ discussion.create_time }} by
                     <a href="{% url 'users:user-detail' discussion.author.pk %}">
                         {{ discussion.author }}

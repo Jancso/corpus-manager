@@ -1,5 +1,14 @@
 {% extends 'workflow/base.html' %}
 
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'workflow:discussion-list' %}">Forum</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        Discussion #{{ discussion.pk }}
+    </li>
+{% endblock %}
+
 {% block workflow-content %}
     <div class="row">
 
@@ -8,6 +17,7 @@
                 <div class="card-header">
                     <h5>{{ discussion.title }}</h5>
                     <i>
+                        #{{ discussion.pk }}
                         opened on {{ discussion.create_time }} by
                         <a href="{% url 'users:user-detail' discussion.author.pk %}">
                             {{ discussion.author }}

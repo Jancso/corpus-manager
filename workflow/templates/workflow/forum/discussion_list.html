@@ -1,23 +1,29 @@
 {% extends 'workflow/base.html' %}
 
+{% block workflow-breadcrumb %}
+    <li class="breadcrumb-item active" aria-current="page">
+        Forum
+    </li>
+{% endblock %}
+
 {% block workflow-content %}
     <div class="row">
-    <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
 
-    <div class="col-md-10">
-        <div class="row">
-            <div class="col-12 mb-4">
-                {% include 'workflow/forum/discussion_create_button.html' %}
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    {% include 'workflow/forum/discussion_create_button.html' %}
+                </div>
+                <div class="col-12">
+                    {% include 'workflow/forum/discussion_list_card.html' with discussions=discussions %}
+                </div>
             </div>
-            <div class="col-12">
-                {% include 'workflow/forum/discussion_list_card.html' with discussions=discussions %}
-            </div>
+
+
         </div>
 
-
-    </div>
-
-    <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
 
     </div>
 {% endblock %}
