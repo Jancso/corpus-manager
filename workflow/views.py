@@ -125,13 +125,14 @@ def rec_detail_view(request, pk):
     transcription = rec.task_set.filter(name=Task.TRANSCRIPTION).get()
     glossing = rec.task_set.filter(name=Task.GLOSSING).get()
 
-    t = glossing.assignment_set
+    discussions = Discussion.objects.filter(recordings=pk)
 
     context = {
         'recording': rec,
         'segmentation': segmentation,
         'transcription': transcription,
         'glossing': glossing,
+        'discussions': discussions
     }
     return render(request, 'workflow/recording/rec_detail.html', context)
 
