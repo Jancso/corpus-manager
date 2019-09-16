@@ -1,6 +1,9 @@
 {% extends 'workflow/base.html' %}
 
 {% block workflow-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'workflow:rec-list' %}">Recordings</a>
+    </li>
     <li class="breadcrumb-item" aria-current="page">
         {{ recording.name }}
     </li>
