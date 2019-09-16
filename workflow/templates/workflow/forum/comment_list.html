@@ -15,7 +15,7 @@
                             <i>
                                 commented on {{ comment.create_time }} by
                                 <a href="{% url 'users:user-detail' comment.author.pk %}">
-                                    {{ comment.author }}
+                                    {{ comment.author.username }}
                                 </a>
                             </i>
                         </div>

@@ -1,6 +1,6 @@
 <div class="card">
     <h6 class="card-header">
-        {{ user.get_full_name }}
+        {{ user.username }}
     </h6>
     <div class="card-body">
 
@@ -10,13 +10,11 @@
 
         <table class="table mt-5">
             <tbody>
-            {% if user == request.user %}
-                <tr>
-                    <td><i class="fas fa-user"></i></td>
-                    <td>Username</td>
-                    <td>{{ user }}</td>
-                </tr>
-            {% endif %}
+            <tr>
+                <td><i class="fas fa-user"></i></td>
+                <td>Username</td>
+                <td>{{ user.username }}</td>
+            </tr>
             <tr>
                 <td></td>
                 <td>First Name</td>

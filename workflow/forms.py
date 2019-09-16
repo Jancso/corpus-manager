@@ -35,7 +35,7 @@ class RecordingForm(forms.ModelForm):
 
 class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
-        return obj.get_full_name
+        return obj.username
 
 
 class TaskForm(forms.ModelForm):
