@@ -1,6 +1,6 @@
 <div class="card">
     <h6 class="card-header">
-        {{ title }} <span class="dot ml-2 number-circle">{{ assignments|length }}</span>
+        {{ title }} <span class="badge badge-dark">{{ assignments|length }}</span>
         {% include 'workflow/util/table-filter-input.html' with filter_input_id='assignments-input' %}
     </h6>
 

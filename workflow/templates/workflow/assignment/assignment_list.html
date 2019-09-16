@@ -1,0 +1,25 @@
+{% extends 'workflow/base.html' %}
+
+{% block workflow-breadcrumb %}
+    <li class=breadcrumb-item>
+        <a href="{% url 'workflow:rec-list' %}">
+            Recordings
+        </a>
+    </li>
+    <li class=breadcrumb-item aria-current="page">{{ title }}</li>
+{% endblock %}
+
+
+{% block workflow-content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+
+        <div class="col-md-7">
+            {% include "workflow/assignment/assignment_list_card.html" with assignments=assignments title=title %}
+        </div>
+
+        <div class="col-md-2"></div>
+
+    </div>
+
+{% endblock %}

@@ -67,6 +67,13 @@ def _get_assigned_tasks():
     return filtered_assignments
 
 
+@login_required
+def assigned_task_list_view(request):
+    context = {'assignments': _get_assigned_tasks(),
+               'title': 'Assigned Tasks'}
+    return render(request, 'workflow/assignment/assignment_list.html', context)
+
+
 def _get_open_tasks():
     tasks = []
     recordings = Recording.objects.all()
@@ -91,13 +98,6 @@ def _get_open_tasks():
 def open_task_list_view(request):
     context = {'tasks': _get_open_tasks(),
                'title': 'Open Tasks'}
-    return render(request, 'workflow/task/task_list.html', context)
-
-
-@login_required
-def assigned_task_list_view(request):
-    context = {'tasks': _get_assigned_tasks(),
-               'title': 'Assigned Tasks'}
     return render(request, 'workflow/task/task_list.html', context)
 
 
