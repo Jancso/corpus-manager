@@ -15,12 +15,12 @@ def workflow_view(request):
 
 
 def _get_recs():
-    Rec = namedtuple('Rec', ['pk', 'name', 'quality', 'status'])
+    Rec = namedtuple('Rec', ['pk', 'name', 'quality', 'task', 'status'])
     recs = []
     recordings = Recording.objects.all()
 
     for recording in recordings:
-        tasks = Task.objects.filter(recording__name=recording.name)
+        tasks = recording.task_set.all()
         segmentation = tasks.filter(name=Task.SEGMENTATION).get()
         transcription = tasks.filter(name=Task.TRANSCRIPTION).get()
         glossing = tasks.filter(name=Task.GLOSSING).get()
@@ -28,24 +28,33 @@ def _get_recs():
         ordered_tasks = [segmentation, transcription, glossing]
 
         status = 'SOMETHING WENT WRONG'
+        task_name = 'SOMETHING WENT WRONG'
         for task in ordered_tasks:
             if task.is_finished():
-                if task == Task.GLOSSING:
+                if task.name == Task.GLOSSING:
+                    task_name = 'FINISHED'
                     status = 'FINISHED'
                     break
             else:
-                status = \
-                    f'{task.get_status_display()} {task.get_name_display()}'
+                task_name = task.get_name_display()
+                status = task.get_status_display()
                 break
 
         recs.append(Rec(
             recording.pk,
             recording.name,
             recording.get_quality_display(),
+            task_name,
             status
         ))
 
     return recs
+
+
+@login_required
+def rec_list_view(request):
+    context = {'recordings': _get_recs()}
+    return render(request, 'workflow/recording/rec_list.html', context)
 
 
 def _get_assigned_tasks():
@@ -76,12 +85,6 @@ def _get_open_tasks():
                     break
 
     return tasks
-
-
-@login_required
-def rec_list_view(request):
-    context = {'recordings': _get_recs()}
-    return render(request, 'workflow/recording/rec_list.html', context)
 
 
 @login_required

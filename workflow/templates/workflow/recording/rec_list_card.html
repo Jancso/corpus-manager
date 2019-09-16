@@ -1,14 +1,15 @@
 <div class="card">
     <h6 class="card-header">
-        Recordings <span class="dot ml-2 number-circle">{{ recordings|length }}</span>
+        Recordings <span class="badge badge-dark ml-2">{{ recordings|length }}</span>
         {% include 'workflow/util/table-filter-input.html' with filter_input_id='recs-overview-input' %}
     </h6>
     <div class="card-body">
-        <table id="rec-tasks-table" class="table table-hover table-responsive table-sm">
+        <table id="rec-tasks-table" class="table table-hover table-responsive">
             <thead>
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Quality</th>
+                <th scope="col">Current Task</th>
                 <th scope="col">Status</th>
             </tr>
             </thead>
@@ -18,6 +19,7 @@
                 <tr>
                     <td><a href="{% url 'workflow:rec-detail' rec.pk %}">{{ rec.name }}</a></td>
                     <td>{{ rec.quality }}</td>
+                    <td>{{ rec.task }}</td>
                     <td>{{ rec.status }}</td>
                 </tr>
             {% endfor %}
