@@ -10,6 +10,7 @@ import datetime
 from workflow import monitor
 
 
+@login_required
 def workflow_view(request):
     return render(request, 'workflow/work_flow_view.html', {})
 
