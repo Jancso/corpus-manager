@@ -23,5 +23,7 @@ sudo chown www-data:www-data db.sqlite3
 sudo chown -R www-data media/
 sudo chown www-data:www-data ../dene-webapp/
 
+sed -i 's,${HOME},'"${HOME}"',g' dene/prod/apache2.conf
 sudo cp dene/prod/apache2.conf /etc/apache2/apache2.conf
+# apachectl configtest
 sudo systemctl restart apache2.service
