@@ -9,6 +9,8 @@ git clone https://github.com/Jancso/dene-webapp.git
 cd dene-webapp
 
 cp dene/prod/settings.py dene/
+# set host in settings.py: ALLOWED_HOSTS
+
 mkdir prod_static
 
 python3 -m venv venv
