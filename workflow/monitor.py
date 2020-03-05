@@ -58,7 +58,7 @@ status_names[''] = Task.STATUS_NOT_STARTED
 
 def to_timedelta(duration):
     if duration:
-        if duration == '0':
+        if duration in ['0', '???', 'invalid']:
             return None
         hours, minutes, seconds = duration.split(':')
         timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))

@@ -2,9 +2,58 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Language(models.Model):
+    iso_code = models.CharField(max_length=3)
+    name = models.CharField(max_length=50)
+
+
+class Participant(models.Model):
+    added_by = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=10, unique=True)
+    full_name = models.CharField(max_length=50)
+    birth_date = models.CharField(max_length=50)
+
+    GENDER_FEMALE = 'F'
+    GENDER_MALE = 'M'
+
+    GENDER_CHOICES = [
+        (GENDER_FEMALE, 'Female'),
+        (GENDER_MALE, 'Male')
+    ]
+
+    gender = models.CharField(choices=GENDER_CHOICES,
+                              max_length=10,
+                              null=True)
+
+    education = models.CharField(max_length=100)
+
+    language_biography = models.CharField(max_length=200)
+    languages = models.ManyToManyField(Language, through='ParticipantLangInfo')
+
+
+class ParticipantLangInfo:
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE)
+    main = models.BooleanField()
+    first = models.BooleanField()
+    second = models.BooleanField()
+
+
+class Session(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    date = models.DateField()
+    location = models.CharField(max_length=50)
+    duration = models.DurationField()
+    situation = models.CharField(max_length=200)
+    content = models.CharField(max_length=200)
+    comments = models.CharField(max_length=200)
+    participants = models.ManyToManyField(Participant)
+
+
 class Recording(models.Model):
     name = models.CharField(max_length=50,
                             unique=True)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
 
     QUALITY_HIGH = 'H'
     QUALITY_MEDIUM = 'M'
@@ -83,6 +132,21 @@ class Recording(models.Model):
     audio = models.CharField(max_length=100, null=True, blank=True)
     length = models.DurationField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
+
+
+class File(models.Model):
+    name = models.CharField(max_length=50)
+
+    TYPE_AUDIO = 'A'
+    TYPE_VIDEO = 'V'
+
+    TYPE_CHOICES = [
+        (TYPE_AUDIO, 'audio'),
+        (TYPE_VIDEO, 'video')
+    ]
+
+    type = models.CharField(choices=TYPE_CHOICES, max_length=5)
+    
 
 
 class Task(models.Model):
