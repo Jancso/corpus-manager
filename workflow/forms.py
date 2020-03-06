@@ -1,5 +1,6 @@
 from django import forms
-from .models import Recording, Task, Assignment, Discussion, Comment
+from .models import Task, Assignment, Discussion, Comment
+from metadata.models import Recording
 from django.contrib.auth.models import User
 from django.forms import ModelChoiceField
 import re

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from .models import Recording, Task, Assignment, Discussion, Comment
+from .models import Task, Assignment, Discussion, Comment
+from metadata.models import Recording
 from .forms import RecordingForm, TaskForm, UploadFileForm, DiscussionForm, CommentForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View

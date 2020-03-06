@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'home',
     'registration',
     'users',
+    'metadata',
     'workflow',
     'django.contrib.admin',
     'django.contrib.auth',

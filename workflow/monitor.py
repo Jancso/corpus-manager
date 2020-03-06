@@ -1,6 +1,7 @@
 import csv
 from io import StringIO
-from .models import Recording, Task, Assignment
+from .models import Task, Assignment
+from metadata.models import Recording
 from datetime import timedelta, datetime
 from users.models import User, UserProfile
 
