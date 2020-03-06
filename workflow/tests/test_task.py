@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test import Client
@@ -6,7 +7,7 @@ from metadata.models import Recording
 from workflow.models import Task
 
 
-class RecordingTest(TestCase):
+class TaskTest(TestCase):
 
     def setUp(self):
         user = User.objects.create(username='test')
@@ -20,7 +21,14 @@ class RecordingTest(TestCase):
         Task.objects.create(recording=rec, name=Task.TRANSCRIPTION)
         Task.objects.create(recording=rec, name=Task.GLOSSING)
 
-    def test_workflow_recordings(self):
-        response = self.c.get('/workflow/recordings/')
+    def test_task_1_update(self):
+        response = self.c.get('/workflow/tasks/1/update/')
         self.assertEqual(response.status_code, 200)
 
+    def test_open_tasks(self):
+        response = self.c.get('/workflow/tasks/open')
+        self.assertEqual(response.status_code, 200)
+
+    def test_assigned_tasks(self):
+        response = self.c.get('/workflow/tasks/assigned')
+        self.assertEqual(response.status_code, 200)
