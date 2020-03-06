@@ -31,7 +31,7 @@ class Participant(models.Model):
     languages = models.ManyToManyField(Language, through='ParticipantLangInfo')
 
 
-class ParticipantLangInfo:
+class ParticipantLangInfo(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
     main = models.BooleanField()
@@ -53,7 +53,7 @@ class Session(models.Model):
 class Recording(models.Model):
     name = models.CharField(max_length=50,
                             unique=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True)
 
     QUALITY_HIGH = 'H'
     QUALITY_MEDIUM = 'M'
@@ -167,7 +167,6 @@ class File(models.Model):
     bytes = models.IntegerField()
     location = models.CharField(max_length=50)
 
-    
 
 class Task(models.Model):
 
