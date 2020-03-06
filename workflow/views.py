@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.views.decorators.http import require_POST
+
+from metadata.forms import RecordingForm
 from .models import Task, Assignment, Discussion, Comment
 from metadata.models import Recording
 from .forms import TaskForm, UploadFileForm, DiscussionForm, CommentForm
-from metadata.forms import RecordingForm
 from collections import namedtuple
 from django.views.generic.edit import UpdateView, View
-from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 import datetime
@@ -57,7 +58,7 @@ def _get_recs():
 @login_required
 def rec_list_view(request):
     context = {'recordings': _get_recs()}
-    return render(request, 'metadata/recording/rec_list.html', context)
+    return render(request, 'workflow/recording/rec_list.html', context)
 
 
 def _get_assigned_tasks():
@@ -105,23 +106,6 @@ def open_task_list_view(request):
 
 
 @login_required
-def rec_create_view(request):
-    form = RecordingForm(request.POST or None)
-    if form.is_valid():
-        rec = form.save()
-        Task.objects.create(recording=rec, name=Task.SEGMENTATION)
-        Task.objects.create(recording=rec, name=Task.TRANSCRIPTION)
-        Task.objects.create(recording=rec, name=Task.GLOSSING)
-
-        return redirect('workflow:workflow')
-
-    context = {
-        'form': form
-    }
-    return render(request, 'metadata/recording/rec_create.html', context)
-
-
-@login_required
 def rec_detail_view(request, pk):
     rec = Recording.objects.get(pk=pk)
     segmentation = rec.task_set.filter(name=Task.SEGMENTATION).get()
@@ -137,7 +121,7 @@ def rec_detail_view(request, pk):
         'glossing': glossing,
         'discussions': discussions
     }
-    return render(request, 'metadata/recording/rec_detail.html', context)
+    return render(request, 'workflow/recording/rec_detail.html', context)
 
 
 @login_required

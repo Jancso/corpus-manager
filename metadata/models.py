@@ -4,7 +4,7 @@ from django.db import models
 class Recording(models.Model):
     name = models.CharField(max_length=50,
                             unique=True)
-    session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE, null=True)
+    session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE, null=True, blank=True)
 
     QUALITY_HIGH = 'H'
     QUALITY_MEDIUM = 'M'

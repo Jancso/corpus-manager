@@ -1,11 +1,8 @@
 from django.urls import path
 from .views import (
     workflow_view,
-    rec_create_view,
     rec_detail_view,
-    RecordingUpdateView,
     TaskUpdateView,
-    rec_delete_view,
     MonitorImportView,
     rec_list_view,
     open_task_list_view,
@@ -16,6 +13,8 @@ from .views import (
     DisussionUpdateView,
     CommentUpdateView
 )
+from metadata.views import rec_create_view, rec_delete_view, \
+    RecordingUpdateView
 
 app_name = 'workflow'
 
