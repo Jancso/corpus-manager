@@ -1,18 +1,14 @@
 from django.urls import path
-from .views import (
+from workflow.views.views import (
     workflow_view,
-    rec_detail_view,
-    TaskUpdateView,
-    MonitorImportView,
-    rec_list_view,
-    open_task_list_view,
-    assigned_task_list_view,
-    discussion_list_view,
-    discussion_create_view,
-    discussion_detail_view,
-    DisussionUpdateView,
-    CommentUpdateView
+    MonitorImportView
 )
+from workflow.views.task_views import assigned_task_list_view, \
+    open_task_list_view, TaskUpdateView
+from workflow.views.rec_views import rec_list_view, rec_detail_view
+from workflow.views.forum_views import discussion_list_view, \
+    discussion_create_view, discussion_detail_view, CommentUpdateView, \
+    DisussionUpdateView
 from metadata.views import rec_create_view, rec_delete_view, \
     RecordingUpdateView
 
