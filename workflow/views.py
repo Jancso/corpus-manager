@@ -57,7 +57,7 @@ def _get_recs():
 @login_required
 def rec_list_view(request):
     context = {'recordings': _get_recs()}
-    return render(request, 'workflow/recording/rec_list.html', context)
+    return render(request, 'metadata/recording/rec_list.html', context)
 
 
 def _get_assigned_tasks():
@@ -118,7 +118,7 @@ def rec_create_view(request):
     context = {
         'form': form
     }
-    return render(request, 'workflow/recording/rec_create.html', context)
+    return render(request, 'metadata/recording/rec_create.html', context)
 
 
 @login_required
@@ -137,7 +137,7 @@ def rec_detail_view(request, pk):
         'glossing': glossing,
         'discussions': discussions
     }
-    return render(request, 'workflow/recording/rec_detail.html', context)
+    return render(request, 'metadata/recording/rec_detail.html', context)
 
 
 @login_required
@@ -150,7 +150,7 @@ def rec_delete_view(request, pk):
 
 class RecordingUpdateView(LoginRequiredMixin, UpdateView):
     model = Recording
-    template_name = 'workflow/recording/rec_update.html'
+    template_name = 'metadata/recording/rec_update.html'
     form_class = RecordingForm
 
     def get_success_url(self):
