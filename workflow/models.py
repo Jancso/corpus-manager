@@ -137,6 +137,8 @@ class Recording(models.Model):
 class File(models.Model):
     name = models.CharField(max_length=50)
 
+    recording = models.ForeignKey(Recording, on_delete=models.CASCADE)
+
     TYPE_AUDIO = 'A'
     TYPE_VIDEO = 'V'
 
@@ -146,8 +148,26 @@ class File(models.Model):
     ]
 
     type = models.CharField(choices=TYPE_CHOICES, max_length=5)
-    
 
+    FORMAT_MP4 = 'mp4'
+    FORMAT_MTS = 'mts'
+    FORMAT_WAV = 'wav'
+    FORMAT_MOV = 'mov'
+
+    FORMAT_CHOICES = [
+        (FORMAT_MOV, 'MOV'),
+        (FORMAT_MP4, 'MP4'),
+        (FORMAT_MTS, 'MTS'),
+        (FORMAT_WAV, 'WAV')
+    ]
+
+    format = models.CharField(choices=FORMAT_CHOICES, max_length=3)
+
+    duration = models.DurationField()
+    bytes = models.IntegerField()
+    location = models.CharField(max_length=50)
+
+    
 
 class Task(models.Model):
 
