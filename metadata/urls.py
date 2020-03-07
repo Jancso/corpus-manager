@@ -1,7 +1,8 @@
 from django.urls import path
 
-from metadata.views import rec_create_view, rec_delete_view, \
-    RecordingUpdateView, metadata_view, rec_list_view
+from metadata.views.rec_views import rec_create_view, rec_delete_view, \
+    RecordingUpdateView, rec_list_view
+from metadata.views.views import metadata_view
 
 app_name = 'metadata'
 
