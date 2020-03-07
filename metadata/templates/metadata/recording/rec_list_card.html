@@ -1,0 +1,50 @@
+<div class="card">
+    <h6 class="card-header">
+        {{ title }}
+        <span class="badge badge-dark ml-2">{{ recs|length }}</span>
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='recs-input' %}
+    </h6>
+
+    <div class="card-body">
+
+        <table id="recs-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Session</th>
+                <th scope="col">Quality</th>
+                <th scope="col">Child Speech</th>
+                <th scope="col">Directedness</th>
+                <th scope="col">Dene Speech</th>
+                <th scope="col">Audio</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Notes</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for rec in recs %}
+                <tr>
+{#                    <td>#}
+{#                        <a href="{% url 'workflow:rec-detail' task.recording.pk %}">#}
+{#                            {{ task.recording.name }}#}
+{#                        </a>#}
+{#                    </td>#}
+
+                    <td>{{ rec.name }}</td>
+                    <td>{{ rec.session }}</td>
+                    <td>{{ rec.get_quality_display }}</td>
+                    <td>{{ rec.get_child_speech_display }}</td>
+                    <td>{{ rec.get_directedness_display }}</td>
+                    <td>{{ rec.get_dene_speech_display }}</td>
+                    <td>{{ rec.get_audio_display }}</td>
+                    <td>{{ rec.length }}</td>
+                    <td>{{ rec.notes }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='recs-table' filter_input_id='recs-input' %}

@@ -1,0 +1,31 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-breadcrumb %}
+    <li class=breadcrumb-item>
+        <a href="{% url 'metadata:rec-list' %}">
+            Recordings
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block metadata-content %}
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="row mb-4">
+                <div class="col-12">
+                    {% include 'metadata/recording/rec_add_button.html' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    {% include "metadata/recording/rec_list_card.html" with recs=recs %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

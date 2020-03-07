@@ -18,6 +18,13 @@ def metadata_view(request):
 
 
 @login_required
+def rec_list_view(request):
+    recs = Recording.objects.all()
+    context = {'recs': recs}
+    return render(request, 'metadata/recording/rec_list.html', context)
+
+
+@login_required
 def rec_create_view(request):
     form = RecordingForm(request.POST or None)
     if form.is_valid():
@@ -26,7 +33,7 @@ def rec_create_view(request):
         Task.objects.create(recording=rec, name=Task.TRANSCRIPTION)
         Task.objects.create(recording=rec, name=Task.GLOSSING)
 
-        return redirect('workflow:workflow')
+        return redirect('metadata:rec-list')
 
     context = {
         'form': form
