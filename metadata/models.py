@@ -125,11 +125,10 @@ class ParticipantLangInfo(models.Model):
 class Session(models.Model):
     name = models.CharField(max_length=50, unique=True)
     date = models.DateField()
-    location = models.CharField(max_length=50)
-    duration = models.DurationField()
-    situation = models.CharField(max_length=200)
-    content = models.CharField(max_length=200)
-    comments = models.CharField(max_length=200)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    situation = models.CharField(max_length=200, null=True, blank=True)
+    content = models.CharField(max_length=200, null=True, blank=True)
+    comments = models.CharField(max_length=200, null=True, blank=True)
     participants = models.ManyToManyField('metadata.Participant')
 
 

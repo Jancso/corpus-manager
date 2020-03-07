@@ -14,5 +14,11 @@ class SessionTest(TestCase):
         self.c = Client()
         self.c.login(username='test', password='test')
 
-        rec = Session.objects.create(
-            name='deslas-AAA-2000-01-01')
+        Session.objects.create(
+            name='deslas-AAA-2000-01-01',
+            date='2000-01-01',
+        )
+
+    def test_session_list(self):
+        response = self.c.get('/metadata/sessions/')
+        self.assertEqual(response.status_code, 200)
