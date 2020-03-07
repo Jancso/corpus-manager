@@ -1,0 +1,40 @@
+<div class="card">
+    <h6 class="card-header">
+        Files
+        <span class="badge badge-dark ml-2">{{ files|length }}</span>
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='files-input' %}
+    </h6>
+
+    <div class="card-body">
+
+        <table id="sessions-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Recording</th>
+                <th scope="col">Type</th>
+                <th scope="col">Format</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Bytes</th>
+                <th scope="col">Location</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr>
+                    <td>{{ file.name }}</td>
+                    <td>{{ file.recording }}</td>
+                    <td>{{ file.type }}</td>
+                    <td>{{ file.format }}</td>
+                    <td>{{ file.duration }}</td>
+                    <td>{{ file.bytes }}</td>
+                    <td>{{ file.location }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='files-table' filter_input_id='files-input' %}

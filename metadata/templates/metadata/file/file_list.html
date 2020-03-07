@@ -1,0 +1,26 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-breadcrumb %}
+    <li class=breadcrumb-item>
+        <a href="{% url 'metadata:file-list' %}">
+            Files
+        </a>
+    </li>
+{% endblock %}
+
+
+{% block metadata-content %}
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="row">
+                <div class="col-12">
+                    {% include "metadata/file/file_list_card.html" with files=files %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

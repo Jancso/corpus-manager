@@ -162,5 +162,5 @@ class File(models.Model):
     format = models.CharField(choices=FORMAT_CHOICES, max_length=3)
 
     duration = models.DurationField()
-    bytes = models.IntegerField()
+    size = models.IntegerField()
     location = models.CharField(max_length=50)
