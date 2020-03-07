@@ -1,0 +1,40 @@
+<div class="card">
+    <h6 class="card-header">
+        Sessions
+        <span class="badge badge-dark ml-2">{{ sessions|length }}</span>
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='sessions-input' %}
+    </h6>
+
+    <div class="card-body">
+
+        <table id="sessions-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Location</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Situation</th>
+                <th scope="col">Content</th>
+                <th scope="col">Comments</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for session in sessions %}
+                <tr>
+                    <td>{{ session.name }}</td>
+                    <td>{{ session.date }}</td>
+                    <td>{{ session.location }}</td>
+                    <td>{{ session.duration }}</td>
+                    <td>{{ session.situation }}</td>
+                    <td>{{ session.content }}</td>
+                    <td>{{ session.comments }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='sessions-table' filter_input_id='sessions-input' %}
