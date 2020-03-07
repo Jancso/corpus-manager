@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+    <nav class="mb-5" aria-label="breadcrumb">
+        <ol id="metadata-breadcrumb" class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'metadata:metadata-view' %}">Metadata</a>
+            </li>
+            {% block metadata-breadcrumb %}
+            {% endblock %}
+        </ol>
+    </nav>
+
+    {% block metadata-content %}
+
+    {% endblock %}
+
+    <script>
+        $(function () {
+            $('#metadata-link').addClass('active');
+        })
+    </script>
+
+{% endblock %}

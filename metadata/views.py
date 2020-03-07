@@ -13,6 +13,11 @@ from workflow.models import Task
 
 
 @login_required
+def metadata_view(request):
+    return render(request, 'metadata/metadata_overview.html', {})
+
+
+@login_required
 def rec_create_view(request):
     form = RecordingForm(request.POST or None)
     if form.is_valid():

@@ -1,0 +1,54 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-content %}
+
+    <div class="row">
+
+        <div class="col-md-3"></div>
+
+        <div class="col-md-6">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:rec-list' %}">
+                        Sessions
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:open-task-list' %}">
+                        Participants
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:assigned-task-list' %}">
+                        Recordings
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-info"
+                       href="{% url 'workflow:assigned-task-list' %}">
+                        Files
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3"></div>
+
+    </div>
+
+{% endblock %}
+
