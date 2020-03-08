@@ -1,6 +1,6 @@
 <div class="card">
     <h6 class="card-header">
-        {{ title }}
+        Recordings
         <span class="badge badge-dark ml-2">{{ recs|length }}</span>
         {% include 'workflow/util/table-filter-input.html' with filter_input_id='recs-input' %}
     </h6>
@@ -32,7 +32,7 @@
 {#                    </td>#}
 
                     <td>{{ rec.name }}</td>
-                    <td>{{ rec.session }}</td>
+                    <td>{{ rec.session.name }}</td>
                     <td>{{ rec.get_quality_display }}</td>
                     <td>{{ rec.get_child_speech_display }}</td>
                     <td>{{ rec.get_directedness_display }}</td>

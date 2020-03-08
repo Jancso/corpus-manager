@@ -4,7 +4,7 @@ from django.db import models
 class Recording(models.Model):
     name = models.CharField(max_length=50,
                             unique=True)
-    session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE, null=True, blank=True)
+    session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE)
 
     QUALITY_HIGH = 'H'
     QUALITY_MEDIUM = 'M'
@@ -161,6 +161,6 @@ class File(models.Model):
 
     format = models.CharField(choices=FORMAT_CHOICES, max_length=3)
 
-    duration = models.DurationField()
-    size = models.IntegerField()
-    location = models.CharField(max_length=50)
+    duration = models.DurationField(null=True, blank=True)
+    size = models.IntegerField(null=True, blank=True)
+    location = models.CharField(max_length=50, null=True, blank=True)

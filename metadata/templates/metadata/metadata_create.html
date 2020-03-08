@@ -1,11 +1,8 @@
 {% extends 'metadata/base.html' %}
 
 {% block metadata-breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="{% url 'metadata:rec-list' %}">Recordings</a>
-    </li>
     <li class="breadcrumb-item" aria-current="page">
-        Add recording
+        Add recording information
     </li>
 {% endblock %}
 
@@ -14,7 +11,7 @@
         <div class="col-3"></div>
 
         <div class="col-6">
-            {% include 'metadata/recording/rec_create_card.html' %}
+            {% include 'metadata/metadata_create_card.html' %}
         </div>
 
         <div class="col-3"></div>

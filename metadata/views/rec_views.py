@@ -7,9 +7,8 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 
-from metadata.forms import RecordingForm
+from metadata.forms import RecordingCreateForm
 from metadata.models import Recording
-from workflow.models import Task
 
 
 @login_required
@@ -17,23 +16,6 @@ def rec_list_view(request):
     recs = Recording.objects.all()
     context = {'recs': recs}
     return render(request, 'metadata/recording/rec_list.html', context)
-
-
-@login_required
-def rec_create_view(request):
-    form = RecordingForm(request.POST or None)
-    if form.is_valid():
-        rec = form.save()
-        Task.objects.create(recording=rec, name=Task.SEGMENTATION)
-        Task.objects.create(recording=rec, name=Task.TRANSCRIPTION)
-        Task.objects.create(recording=rec, name=Task.GLOSSING)
-
-        return redirect('metadata:rec-list')
-
-    context = {
-        'form': form
-    }
-    return render(request, 'metadata/recording/rec_create.html', context)
 
 
 @login_required
@@ -47,7 +29,7 @@ def rec_delete_view(request, pk):
 class RecordingUpdateView(LoginRequiredMixin, UpdateView):
     model = Recording
     template_name = 'metadata/recording/rec_update.html'
-    form_class = RecordingForm
+    form_class = RecordingCreateForm
 
     def get_success_url(self):
         return reverse('workflow:rec-detail', args=(self.object.pk,))

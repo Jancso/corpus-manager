@@ -2,10 +2,36 @@ import re
 
 from django import forms
 
-from metadata.models import Recording
+from metadata.models import Recording, File
 
 
-class RecordingForm(forms.ModelForm):
+class FileForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = File
+        fields = ['duration', 'size', 'location']
+
+
+class RecordingCreateForm(forms.ModelForm):
+
+    FILES_WAV = 'wav'
+    FILES_MOV = 'mov'
+    FILES_MTS = 'mts'
+    FILES_MP4 = 'mp4'
+
+    FILES_CHOICES = [
+        (FILES_WAV, 'WAV'),
+        (FILES_MTS, 'MTS'),
+        (FILES_MOV, 'MOV'),
+        (FILES_MP4, 'MP4'),
+    ]
+
+    files = forms.MultipleChoiceField(choices=FILES_CHOICES)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,7 +40,9 @@ class RecordingForm(forms.ModelForm):
 
     class Meta:
         model = Recording
-        fields = '__all__'
+        fields = [
+            'name', 'quality', 'child_speech', 'directedness',
+            'dene_speech', 'audio', 'notes']
 
     notes = forms.CharField(
         required=False,

@@ -4,9 +4,21 @@
 
     <div class="row">
 
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
 
-        <div class="col-md-6">
+        <div class="col-md-2 d-flex">
+            <div class="row w-100 h-50 align-self-center">
+                <a href="{% url 'metadata:metadata-create' %}"
+                   class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-plus-square pr-2"></i> Create New Entry
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div>
+
+
+        <div class="col-md-5">
             <div class="row mb-4">
                 <div class="col-12">
                     <a class="btn w-100 h-100 btn-info"
@@ -35,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="row mb-4">
+            <div class="row">
                 <div class="col-12">
                     <a class="btn w-100 h-100 btn-info"
                        href="{% url 'metadata:file-list' %}">
@@ -46,7 +58,7 @@
 
         </div>
 
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
 
     </div>
 
