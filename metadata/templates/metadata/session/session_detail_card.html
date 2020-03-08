@@ -1,0 +1,46 @@
+<div class="card">
+    <h6 class="card-header">
+        Session
+{#        <a class="float-right" href="{% url 'metadata:rec-update' recording.pk %}">#}
+{#            <i class="fas fa-edit"></i>#}
+{#        </a>#}
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-hover table-responsive">
+            <tbody>
+            <tr>
+                <th scope="row">Name:</th>
+                <td>{{ session.name }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Date:</th>
+                <td>{{ session.date }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Duration:</th>
+                <td>{{ session.duration }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Location:</th>
+                <td>{{ session.location }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Situation:</th>
+                <td>{{ session.situation }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Comments:</th>
+                <td>{{ session.comments }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -9,3 +9,10 @@ def session_list_view(request):
     sessions = Session.objects.all()
     context = {'sessions': sessions}
     return render(request, 'metadata/session/session_list.html', context)
+
+
+@login_required
+def session_detail_view(request, pk):
+    session = Session.objects.get(pk=pk)
+    context = {'session': session}
+    return render(request, 'metadata/session/session_detail.html', context)

@@ -22,7 +22,10 @@
             <tbody>
             {% for session in sessions %}
                 <tr>
-                    <td>{{ session.name }}</td>
+                    <td>
+                        <a href="{% url 'metadata:session-detail' session.pk %}">
+                            {{ session.name }}</a>
+                    </td>
                     <td>{{ session.date }}</td>
                     <td>{{ session.location }}</td>
                     <td>{{ session.situation }}</td>

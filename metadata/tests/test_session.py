@@ -25,3 +25,7 @@ class SessionTest(TestCase):
     def test_session_list(self):
         response = self.c.get('/metadata/sessions/')
         self.assertEqual(response.status_code, 200)
+
+    def test_session_detail(self):
+        response = self.c.get('/metadata/sessions/1/')
+        self.assertEqual(response.status_code, 200)
