@@ -8,13 +8,16 @@ from workflow.models import Task
 
 class RecordingTest(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
         user = User.objects.create(username='test')
         user.set_password('test')
         user.save()
-        self.c = Client()
-        self.c.login(username='test', password='test')
+        cls.c = Client()
+        cls.c.login(username='test', password='test')
 
+    def setUp(self):
         session = Session.objects.create(
             name='deslas-AAA-2000-01-01', date='2000-01-01')
 

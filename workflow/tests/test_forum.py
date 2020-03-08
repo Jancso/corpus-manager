@@ -7,17 +7,20 @@ from workflow.models import Discussion, Comment
 
 class ForumTest(TestCase):
 
-    def setUp(self):
-        user = User.objects.create(username='test')
-        user.set_password('test')
-        user.save()
-        self.c = Client()
-        self.c.login(username='test', password='test')
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = User.objects.create(username='test')
+        cls.user.set_password('test')
+        cls.user.save()
+        cls.c = Client()
+        cls.c.login(username='test', password='test')
 
+    def setUp(self):
         discussion = Discussion.objects.create(
-            title='Title', description='Description', author=user)
+            title='Title', description='Description', author=self.user)
         Comment.objects.create(
-            discussion=discussion, author=user, description='Description')
+            discussion=discussion, author=self.user, description='Description')
 
     def test_discussions(self):
         response = self.c.get('/workflow/discussions/')
