@@ -1,0 +1,38 @@
+<div class="card">
+    <h6 class="card-header">
+        Recordings
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-hover table-responsive">
+
+            {% for recording in session.recording_set.all %}
+                <tbody>
+                <tr>
+                    <td>
+                        <a href="{% url 'workflow:rec-detail' recording.pk %}">
+                            {{ recording.name }}
+                        </a>
+
+                        <ul class="mt-2">
+                            {% for task in recording.task_set.all %}
+                                <li>{{ task.name }}: {{ task.get_status_display }}</li>
+                            {% endfor %}
+
+                        </ul>
+
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+
+

@@ -14,5 +14,6 @@ def session_list_view(request):
 @login_required
 def session_detail_view(request, pk):
     session = Session.objects.get(pk=pk)
+    recs = session.recording_set.all()
     context = {'session': session}
     return render(request, 'metadata/session/session_detail.html', context)
