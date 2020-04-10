@@ -1,0 +1,13 @@
+<div class="card">
+    <h6 class="card-header">
+        Participants
+        <span class="badge badge-dark ml-2">{{ participants|length }}</span>
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='participants-input' %}
+    </h6>
+
+    <div class="card-body">
+        {{ participants.as_table }}
+    </div>
+</div>
+
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='participants-table' filter_input_id='participants-input' %}

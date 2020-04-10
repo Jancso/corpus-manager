@@ -5,6 +5,7 @@ from metadata.views.rec_views import rec_delete_view, \
 from metadata.views.views import metadata_view, metadata_create_view
 from metadata.views.session_views import session_list_view, session_detail_view, SessionUpdateView, session_delete_view
 from metadata.views.file_views import file_list_view
+from metadata.views.participant_views import participant_list_view
 
 app_name = 'metadata'
 
@@ -17,6 +18,8 @@ urlpatterns = [
     path('sessions/<int:pk>/', session_detail_view, name='session-detail'),
     path('sessions/<int:pk>/update/', SessionUpdateView.as_view(), name='session-update'),
     path('sessions/<int:pk>/delete/', session_delete_view, name='session-delete'),
+
+    path('participants/', participant_list_view, name='participant-list'),
 
     path('recordings/', rec_list_view, name='rec-list'),
     path('recordings/<int:pk>/delete/', rec_delete_view, name='rec-delete'),
