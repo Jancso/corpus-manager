@@ -2,22 +2,39 @@ import re
 
 from django import forms
 
-from metadata.models import Recording, File
+from metadata.models import Recording, File, Session
 
 
-class FileForm(forms.ModelForm):
-
+class BootstrapForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+
+class FileForm(BootstrapForm):
     class Meta:
         model = File
         fields = ['duration', 'size', 'location']
 
 
-class RecordingCreateForm(forms.ModelForm):
+class SessionForm(BootstrapForm):
+    class Meta:
+        model = Session
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        date = cleaned_data.get('date')
+
+        if name and date:
+            if str(date) not in name:
+                raise forms.ValidationError(
+                    'Dates in session name and date field do not match.')
+
+
+class RecordingCreateForm(BootstrapForm):
 
     FILES_WAV = 'wav'
     FILES_MOV = 'mov'

@@ -129,7 +129,7 @@ class Session(models.Model):
     situation = models.CharField(max_length=200, null=True, blank=True)
     content = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
-    participants = models.ManyToManyField('metadata.Participant')
+    participants = models.ManyToManyField('metadata.Participant', blank=True)
 
 
 class File(models.Model):
