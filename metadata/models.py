@@ -91,10 +91,10 @@ class Language(models.Model):
 
 
 class Participant(models.Model):
-    added_by = models.CharField(max_length=50)
+    added_by = models.CharField(max_length=50, null=True, blank=True)
     short_name = models.CharField(max_length=10, unique=True)
     full_name = models.CharField(max_length=50)
-    birth_date = models.CharField(max_length=50)
+    birth_date = models.CharField(max_length=50, null=True, blank=True)
 
     GENDER_FEMALE = 'F'
     GENDER_MALE = 'M'
@@ -106,12 +106,12 @@ class Participant(models.Model):
 
     gender = models.CharField(choices=GENDER_CHOICES,
                               max_length=10,
-                              null=True)
+                              null=True, blank=True)
 
-    education = models.CharField(max_length=100)
+    education = models.CharField(max_length=100, null=True, blank=True)
 
-    language_biography = models.CharField(max_length=200)
-    languages = models.ManyToManyField('metadata.Language', through='ParticipantLangInfo')
+    language_biography = models.CharField(max_length=200, null=True, blank=True)
+    languages = models.ManyToManyField('metadata.Language', through='ParticipantLangInfo', blank=True)
 
 
 class ParticipantLangInfo(models.Model):

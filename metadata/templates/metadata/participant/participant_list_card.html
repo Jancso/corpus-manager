@@ -6,7 +6,33 @@
     </h6>
 
     <div class="card-body">
-        {{ participants.as_table }}
+        <table id="participants-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Added by</th>
+                <th scope="col">Short Name</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Birth date</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Education</th>
+                <th scope="col">Language Biography</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <td>{{ participant.added_by }}</td>
+                    <td>{{ participant.short_name }}</td>
+                    <td>{{ participant.full_name }}</td>
+                    <td>{{ participant.birth_date }}</td>
+                    <td>{{ participant.gender }}</td>
+                    <td>{{ participant.education }}</td>
+                    <td>{{ participant.language_biography }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
