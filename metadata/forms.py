@@ -2,7 +2,7 @@ import re
 
 from django import forms
 
-from metadata.models import Recording, File, Session
+from metadata.models import Recording, File, Session, Participant
 
 
 class BootstrapForm(forms.ModelForm):
@@ -32,6 +32,12 @@ class SessionForm(BootstrapForm):
             if str(date) not in name:
                 raise forms.ValidationError(
                     'Dates in session name and date field do not match.')
+
+
+class ParticipantForm(BootstrapForm):
+    class Meta:
+        model = Participant
+        fields = '__all__'
 
 
 class RecordingCreateForm(BootstrapForm):

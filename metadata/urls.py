@@ -5,7 +5,7 @@ from metadata.views.rec_views import rec_delete_view, \
 from metadata.views.views import metadata_view, metadata_create_view
 from metadata.views.session_views import session_list_view, session_detail_view, SessionUpdateView, session_delete_view
 from metadata.views.file_views import file_list_view
-from metadata.views.participant_views import participant_list_view, ParticipantCreateView, participant_detail_view
+from metadata.views.participant_views import participant_list_view, ParticipantCreateView, participant_detail_view, ParticipantUpdateView
 
 app_name = 'metadata'
 
@@ -22,6 +22,7 @@ urlpatterns = [
     path('participants/', participant_list_view, name='participant-list'),
     path('participants/create/', ParticipantCreateView.as_view(), name='participant-create'),
     path('participants/<int:pk>/', participant_detail_view, name='participant-detail'),
+    path('participants/<int:pk>/update/', ParticipantUpdateView.as_view(), name='participant-update'),
 
     path('recordings/', rec_list_view, name='rec-list'),
     path('recordings/<int:pk>/delete/', rec_delete_view, name='rec-delete'),

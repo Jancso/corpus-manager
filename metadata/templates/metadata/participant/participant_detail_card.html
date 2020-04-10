@@ -1,6 +1,9 @@
 <div class="card">
     <h6 class="card-header">
         Participant {{ participant.short_name }}
+        <a class="float-right" href="{% url 'metadata:participant-update' participant.pk %}">
+            <i class="fas fa-edit"></i>
+        </a>
     </h6>
 
     <div class="card-body">
