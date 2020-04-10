@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from metadata.forms import ParticipantForm
 
@@ -36,3 +38,11 @@ class ParticipantUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('metadata:participant-detail', args=(self.object.pk,))
+
+
+@login_required
+@require_POST
+def participant_delete_view(_, pk):
+    session = get_object_or_404(Participant, pk=pk)
+    session.delete()
+    return redirect('metadata:participant-list')

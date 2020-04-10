@@ -2,7 +2,7 @@
 <button type="button" class="btn btn-danger" data-toggle="modal"
         data-target="#exampleModal">
     <i class="fas fa-trash-alt pr-2"></i>
-    Delete session
+    Delete participant
 </button>
 
 <!-- Modal -->
@@ -12,7 +12,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Delete {{ session.name }}
+                    Delete {{ participant.short_name }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
@@ -20,19 +20,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the session
-                <p class="pt-2"><b>{{ session.name }}</b>
+                Are you sure you want to delete the participant
+                <p class="pt-2"><b>{{ participant.short_name }}</b>
                 <p>?
-
-                <p>
-                All associated recordings and files will be deleted as well!
-                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                         data-dismiss="modal">No, don't delete
                 </button>
-                <form action="{% url 'metadata:session-delete' session.pk %}"
+                <form action="{% url 'metadata:participant-delete' participant.pk %}"
                       method="POST">{% csrf_token %}
                     <input class="btn btn-danger" type="submit"
                            value="Yes, delete">
