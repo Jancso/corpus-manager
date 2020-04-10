@@ -33,3 +33,7 @@ class SessionTest(TestCase):
     def test_session_update(self):
         response = self.c.get('/metadata/sessions/1/update/')
         self.assertEqual(response.status_code, 200)
+
+    def test_session_delete(self):
+        response = self.c.post('/metadata/sessions/1/delete/')
+        self.assertEqual(response.status_code, 302)

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 from django.urls import reverse
 
@@ -30,3 +31,11 @@ class SessionUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('metadata:session-detail', args=(self.object.pk,))
+
+
+@login_required
+@require_POST
+def session_delete_view(_, pk):
+    session = get_object_or_404(Session, pk=pk)
+    session.delete()
+    return redirect('metadata:session-list')
