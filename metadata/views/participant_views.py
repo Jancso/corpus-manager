@@ -18,3 +18,10 @@ class ParticipantCreateView(CreateView):
     template_name = 'metadata/participant/participant_create.html'
     fields = '__all__'
     success_url = reverse_lazy('metadata:participant-list')
+
+
+@login_required
+def participant_detail_view(request, pk):
+    participant = Participant.objects.get(pk=pk)
+    context = {'participant': participant}
+    return render(request, 'metadata/participant/participant_detail.html', context)

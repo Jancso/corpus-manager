@@ -1,0 +1,48 @@
+<div class="card">
+    <h6 class="card-header">
+        Participant {{ participant.short_name }}
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-hover table-responsive">
+            <tbody>
+            <tr>
+                <th scope="row">Added by:</th>
+                <td>{{ participant.added_by }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Short Name:</th>
+                <td>{{ participant.short_name }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Full Name:</th>
+                <td>{{ participant.full_name }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Birth Date:</th>
+                <td>{{ participant.birth_date }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Gender:</th>
+                <td>{{ participant.gender }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Education:</th>
+                <td>{{ participant.education }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Language Biography:</th>
+                <td>{{ participant.language_biography }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

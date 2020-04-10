@@ -14,8 +14,6 @@
                 <th scope="col">Full Name</th>
                 <th scope="col">Birth date</th>
                 <th scope="col">Gender</th>
-                <th scope="col">Education</th>
-                <th scope="col">Language Biography</th>
             </tr>
 
             </thead>
@@ -23,12 +21,14 @@
             {% for participant in participants %}
                 <tr>
                     <td>{{ participant.added_by }}</td>
-                    <td>{{ participant.short_name }}</td>
+                    <td>
+                        <a href="{% url 'metadata:participant-detail' participant.pk %}">
+                            {{ participant.short_name }}
+                        </a>
+                    </td>
                     <td>{{ participant.full_name }}</td>
                     <td>{{ participant.birth_date }}</td>
                     <td>{{ participant.gender }}</td>
-                    <td>{{ participant.education }}</td>
-                    <td>{{ participant.language_biography }}</td>
                 </tr>
             {% endfor %}
             </tbody>
