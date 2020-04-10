@@ -25,14 +25,16 @@
             <tbody>
             {% for rec in recs %}
                 <tr>
-{#                    <td>#}
-{#                        <a href="{% url 'workflow:rec-detail' task.recording.pk %}">#}
-{#                            {{ task.recording.name }}#}
-{#                        </a>#}
-{#                    </td>#}
-
-                    <td>{{ rec.name }}</td>
-                    <td>{{ rec.session.name }}</td>
+                    <td>
+                        <a href="{% url 'workflow:rec-detail' rec.pk %}">
+                            {{ rec.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'metadata:session-detail' rec.session.pk %}">
+                            {{ rec.session.name }}
+                        </a>
+                    </td>
                     <td>{{ rec.get_quality_display }}</td>
                     <td>{{ rec.get_child_speech_display }}</td>
                     <td>{{ rec.get_directedness_display }}</td>
