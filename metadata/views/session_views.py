@@ -58,7 +58,7 @@ def session_participants_create_view(request, pk):
                 if participant and session and role:
                     SessionParticipant(participant=participant, session=session, role=role).save()
             # once all books are saved, redirect to book list view
-            return redirect('metadata:session-list')
+            return redirect('metadata:session-detail', pk=pk)
 
     return render(request, 'metadata/session/session_participants_create.html', {
         'formset': formset,
