@@ -5,8 +5,8 @@ from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 from django.urls import reverse
 
-from metadata.models import Session
-from metadata.forms import SessionForm
+from metadata.models import Session, SessionParticipant
+from metadata.forms import SessionForm, SessionParticipantFormset
 
 
 @login_required
@@ -39,3 +39,27 @@ def session_delete_view(_, pk):
     session = get_object_or_404(Session, pk=pk)
     session.delete()
     return redirect('metadata:session-list')
+
+
+def session_participants_create_view(request, pk):
+    heading_message = 'Formset Demo'
+    if request.method == 'GET':
+        formset = SessionParticipantFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = SessionParticipantFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                # extract name from each form and save
+                participant = form.cleaned_data.get('participant')
+                role = form.cleaned_data.get('role')
+                session = Session.objects.get(pk=pk)
+                # save book instance
+                if participant and session and role:
+                    SessionParticipant(participant=participant, session=session, role=role).save()
+            # once all books are saved, redirect to book list view
+            return redirect('metadata:session-list')
+
+    return render(request, 'metadata/session/session_participants_create.html', {
+        'formset': formset,
+        'heading': heading_message,
+    })

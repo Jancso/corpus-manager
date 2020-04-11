@@ -1,0 +1,118 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-content %}
+
+    <form class="form-horizontal" method="POST" action="">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="row form-row mb-5">
+
+                <div class="col-5">
+                    <div class="row mb-3">
+                        <div class="col-3">
+                           <label>{{ form.participant.label }}</label>
+                        </div>
+                        <div class="col-4">
+                            {{ form.participant }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3">
+                           <label>{{ form.role.label }}</label>
+                        </div>
+                        <div class="col-4">
+                            {{ form.role }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 d-flex align-self-center">
+                    <button type="button" class="btn btn-success add-form-row">+</button>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row spacer mt-5">
+            <div class="col-4 offset-2">
+                <button type="submit" class="btn btn-block btn-primary">
+                    Create
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <script type='text/javascript'>
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+)');
+            var replacement = prefix + '-' + ndx;
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.replace(id_regex, replacement);
+        }
+
+        function cloneMore(selector, prefix) {
+            // clone last form row
+            var newElement = $(selector).clone(true);
+            // number of forms
+            var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+
+            // find all input elements, such as select,
+            // not of type button, submit and reset
+            newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+                console.log($(this).prop("tagName"))
+                console.log('test')
+
+                // get a new name for the new input element based on total
+                var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');
+                // ... and a new id
+                var id = 'id_' + name;
+                // set attribute
+                $(this).attr({
+                    'name': name,
+                    'id': id
+                });
+            });
+
+            total++;
+            $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+            $(selector).after(newElement);
+            var conditionRow = $('.form-row:not(:last)');
+            conditionRow.find('.btn.add-form-row')
+                .removeClass('btn-success').addClass('btn-danger')
+                .removeClass('add-form-row').addClass('remove-form-row')
+                .html('--');
+            return false;
+        }
+
+        function deleteForm(prefix, btn) {
+            var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+            if (total > 1) {
+                btn.closest('.form-row').remove();
+                var forms = $('.form-row');
+                $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+                for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                    $(forms.get(i)).find(':input').each(function () {
+                        updateElementIndex(this, prefix, i);
+                    });
+                }
+            }
+            return false;
+        }
+
+        $(document).on('click', '.add-form-row', function (e) {
+            e.preventDefault();
+            cloneMore('.form-row:last', 'form');
+            return false;
+        });
+        $(document).on('click', '.remove-form-row', function (e) {
+            e.preventDefault();
+            deleteForm('form', $(this));
+            return false;
+        });
+    </script>
+
+
+
+
+{% endblock %}

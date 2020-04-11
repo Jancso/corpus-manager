@@ -1,8 +1,9 @@
 import re
 
 from django import forms
+from django.forms import formset_factory
 
-from metadata.models import Recording, File, Session, Participant
+from metadata.models import Recording, File, Session, Participant, SessionParticipant
 
 
 class BootstrapForm(forms.ModelForm):
@@ -38,6 +39,15 @@ class ParticipantForm(BootstrapForm):
     class Meta:
         model = Participant
         fields = '__all__'
+
+
+class SessionParticipantForm(BootstrapForm):
+    class Meta:
+        model = SessionParticipant
+        fields = ['participant', 'role']
+
+
+SessionParticipantFormset = formset_factory(SessionParticipantForm, extra=1)
 
 
 class RecordingCreateForm(BootstrapForm):
