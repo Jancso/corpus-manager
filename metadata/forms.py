@@ -2,6 +2,7 @@ import re
 
 from django import forms
 from django.forms import formset_factory
+from django.forms import BaseFormSet
 
 from metadata.models import Recording, File, Session, Participant, SessionParticipant
 
@@ -42,12 +43,38 @@ class ParticipantForm(BootstrapForm):
 
 
 class SessionParticipantForm(BootstrapForm):
+    def __init__(self, *args, session, **kwargs):
+        self.session = session
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model = SessionParticipant
         fields = ['participant', 'role']
 
+    def clean_participant(self):
+        participant = self.cleaned_data.get('participant')
+        if SessionParticipant.objects.filter(session=self.session, participant=participant):
+            raise forms.ValidationError('Participant already exists!')
 
-SessionParticipantFormset = formset_factory(SessionParticipantForm, extra=1)
+        return participant
+
+
+class SessionParticipantFormset(BaseFormSet):
+    def clean(self):
+        if any(self.errors):
+            return
+
+        participants = set()
+        for form in self.forms:
+            if self.can_delete and self._should_delete_form(form):
+                continue
+            participant = form.cleaned_data.get('participant')
+            if participant in participants:
+                raise forms.ValidationError('Same participant used twice.')
+            participants.add(participant)
+
+
+SessionParticipantFormset = formset_factory(SessionParticipantForm, extra=1, formset=SessionParticipantFormset)
 
 
 class RecordingCreateForm(BootstrapForm):

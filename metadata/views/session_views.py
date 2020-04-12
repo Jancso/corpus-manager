@@ -44,16 +44,16 @@ def session_delete_view(_, pk):
 
 def session_participants_create_view(request, pk):
     heading_message = 'Formset Demo'
+    session = Session.objects.get(pk=pk)
     if request.method == 'GET':
-        formset = SessionParticipantFormset(request.GET or None)
+        formset = SessionParticipantFormset(request.GET or None, form_kwargs={'session': session})
     elif request.method == 'POST':
-        formset = SessionParticipantFormset(request.POST)
+        formset = SessionParticipantFormset(request.POST, form_kwargs={'session': session})
         if formset.is_valid():
             for form in formset:
                 # extract name from each form and save
                 participant = form.cleaned_data.get('participant')
                 role = form.cleaned_data.get('role')
-                session = Session.objects.get(pk=pk)
                 # save book instance
                 if participant and session and role:
                     SessionParticipant(participant=participant, session=session, role=role).save()
