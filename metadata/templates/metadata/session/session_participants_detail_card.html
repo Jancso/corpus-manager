@@ -16,6 +16,13 @@
                 <tr>
                     <td>{{ participant.participant.short_name }}</td>
                     <td>{{ participant.role }}</td>
+                    <td>
+                        <form action="{% url 'metadata:session-participant-delete' spk=session.pk ppk=participant.pk %}"
+                              method="POST">{% csrf_token %}
+                            <input class="btn btn-danger" type="submit"
+                                   value="--">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

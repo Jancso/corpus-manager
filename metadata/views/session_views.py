@@ -5,7 +5,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 from django.urls import reverse
 
-from metadata.models import Session, SessionParticipant
+from metadata.models import Session, SessionParticipant, Participant
 from metadata.forms import SessionForm, SessionParticipantFormset
 
 
@@ -64,3 +64,11 @@ def session_participants_create_view(request, pk):
         'formset': formset,
         'heading': heading_message,
     })
+
+
+@login_required
+@require_POST
+def session_participant_delete_view(_, spk, ppk):
+    session_participant = get_object_or_404(SessionParticipant, pk=ppk)
+    session_participant.delete()
+    return redirect('metadata:session-detail', pk=spk)

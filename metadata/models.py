@@ -171,6 +171,9 @@ class SessionParticipant(models.Model):
     role = models.CharField(choices=ROLE_CHOICES,
                             max_length=20)
 
+    class Meta:
+        unique_together = ('session', 'participant')
+
 
 class File(models.Model):
     name = models.CharField(max_length=50)
