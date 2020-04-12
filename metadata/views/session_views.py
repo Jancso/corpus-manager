@@ -50,13 +50,10 @@ def session_participants_create_view(request, pk):
         formset = SessionParticipantFormset(request.POST, form_kwargs={'session': session})
         if formset.is_valid():
             for form in formset:
-                # extract name from each form and save
                 participant = form.cleaned_data.get('participant')
                 role = form.cleaned_data.get('role')
-                # save book instance
                 if participant and session and role:
                     SessionParticipant(participant=participant, session=session, role=role).save()
-            # once all books are saved, redirect to book list view
             return redirect('metadata:session-detail', pk=pk)
 
     return render(request, 'metadata/session/session_participants_create.html', {
