@@ -14,7 +14,11 @@
             <tbody>
             {% for participant in participants %}
                 <tr>
-                    <td>{{ participant.participant.short_name }}</td>
+                    <td>
+                        <a href="{% url 'metadata:participant-detail' participant.participant.pk %}">
+                            {{ participant.participant.short_name }}
+                        </a>
+                        </td>
                     <td>{{ participant.role }}</td>
                     <td>
                         <form action="{% url 'metadata:session-participant-delete' spk=session.pk ppk=participant.pk %}"
