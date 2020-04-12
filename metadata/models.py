@@ -166,7 +166,7 @@ class SessionParticipant(models.Model):
         "greatgrandmother"
     }
 
-    ROLE_CHOICES = [(role, role) for role in roles]
+    ROLE_CHOICES = [(role, role) for role in sorted(roles)]
 
     role = models.CharField(choices=ROLE_CHOICES,
                             max_length=20)
