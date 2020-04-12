@@ -23,8 +23,7 @@
                     <td>
                         <form action="{% url 'metadata:session-participant-delete' spk=session.pk ppk=participant.pk %}"
                               method="POST">{% csrf_token %}
-                            <input class="btn btn-danger" type="submit"
-                                   value="--">
+                            <button class="btn participant-trash" type="submit"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>

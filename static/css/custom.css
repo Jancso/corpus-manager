@@ -63,3 +63,8 @@
 .hint {
     font-size: 14px;
 }
+
+.participant-trash {
+    font-size: 10pt;
+    color: rgb(220, 53, 69);
+}
