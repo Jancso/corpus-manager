@@ -43,7 +43,6 @@ def session_delete_view(_, pk):
 
 
 def session_participants_create_view(request, pk):
-    heading_message = 'Formset Demo'
     session = Session.objects.get(pk=pk)
     if request.method == 'GET':
         formset = SessionParticipantFormset(request.GET or None, form_kwargs={'session': session})
@@ -62,7 +61,7 @@ def session_participants_create_view(request, pk):
 
     return render(request, 'metadata/session/session_participants_create.html', {
         'formset': formset,
-        'heading': heading_message,
+        'session': session
     })
 
 
