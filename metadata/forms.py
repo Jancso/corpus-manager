@@ -42,10 +42,17 @@ class ParticipantForm(BootstrapForm):
         fields = '__all__'
 
 
+class ParticipantModelMultipleChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.short_name
+
+
 class SessionParticipantForm(BootstrapForm):
     def __init__(self, *args, session, **kwargs):
         self.session = session
         super().__init__(*args, **kwargs)
+
+    participant = ParticipantModelMultipleChoiceField(queryset=Participant.objects.order_by('short_name'))
 
     class Meta:
         model = SessionParticipant
