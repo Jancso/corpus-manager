@@ -1,0 +1,25 @@
+<div class="card">
+    <h6 class="card-header">
+        Languages
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">ISO Code</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for language in participant.participantlanginfo_set.all %}
+                <tr>
+                    <td>{{ language.language.name }}</td>
+                    <td>{{ language.language.iso_code }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
