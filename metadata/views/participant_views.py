@@ -86,3 +86,11 @@ class ParticipantLangInfoCreateView(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, self.template, context)
+
+
+@login_required
+@require_POST
+def participant_language_delete_view(_, ppk, lpk):
+    participant_lang_info = get_object_or_404(ParticipantLangInfo, pk=lpk)
+    participant_lang_info.delete()
+    return redirect('metadata:participant-detail', pk=ppk)

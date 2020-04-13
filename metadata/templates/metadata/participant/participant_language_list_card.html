@@ -12,6 +12,7 @@
                 <th scope="col">Main</th>
                 <th scope="col">First</th>
                 <th scope="col">Second</th>
+                <th scope="col"></th>
             </tr>
 
             </thead>
@@ -23,6 +24,14 @@
                     <td>{{ language.main }}</td>
                     <td>{{ language.first }}</td>
                     <td>{{ language.second }}</td>
+                    <td>
+                        <form action="{% url 'metadata:participant-lang-delete' ppk=participant.pk lpk=language.pk %}"
+                              method="POST">{% csrf_token %}
+                            <button class="btn participant-trash"
+                                    type="submit"><i
+                                    class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
