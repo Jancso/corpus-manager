@@ -1,0 +1,26 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'metadata:participant-list' %}">
+            Participants
+        </a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        Create
+    </li>
+{% endblock %}
+
+{% block metadata-content %}
+
+    <div class="row">
+        <div class="col-3"></div>
+
+        <div class="col-6">
+            {% include 'metadata/participant/participant_create_card.html' %}
+        </div>
+
+        <div class="col-3"></div>
+    </div>
+
+{% endblock %}

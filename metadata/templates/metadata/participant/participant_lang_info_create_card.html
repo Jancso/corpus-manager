@@ -1,0 +1,13 @@
+<div class="card">
+    <h6 class="card-header">Add Language for participant</h6>
+
+    <div class="card-body">
+        <form method="post">{% csrf_token %}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+            <input class="btn btn-primary" type="submit"
+                   value="Save">
+        </form>
+    </div>
+</div>

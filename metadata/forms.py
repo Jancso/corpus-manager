@@ -4,7 +4,7 @@ from django import forms
 from django.forms import formset_factory
 from django.forms import BaseFormSet
 
-from metadata.models import Recording, File, Session, Participant, SessionParticipant
+from metadata.models import Recording, File, Session, Participant, SessionParticipant, ParticipantLangInfo, Language
 
 
 class BootstrapForm(forms.ModelForm):
@@ -82,6 +82,19 @@ class SessionParticipantFormset(BaseFormSet):
 
 
 SessionParticipantFormset = formset_factory(SessionParticipantForm, extra=1, formset=SessionParticipantFormset)
+
+
+class ParticipantLangModelMultipleChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+
+class ParticipantLangInfoForm(BootstrapForm):
+    class Meta:
+        model = ParticipantLangInfo
+        exclude = ['participant']
+
+    language = ParticipantLangModelMultipleChoiceField(queryset=Language.objects.order_by('name'))
 
 
 class RecordingCreateForm(BootstrapForm):

@@ -9,6 +9,9 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">ISO Code</th>
+                <th scope="col">Main</th>
+                <th scope="col">First</th>
+                <th scope="col">Second</th>
             </tr>
 
             </thead>
@@ -17,6 +20,9 @@
                 <tr>
                     <td>{{ language.language.name }}</td>
                     <td>{{ language.language.iso_code }}</td>
+                    <td>{{ language.main }}</td>
+                    <td>{{ language.first }}</td>
+                    <td>{{ language.second }}</td>
                 </tr>
             {% endfor %}
             </tbody>
