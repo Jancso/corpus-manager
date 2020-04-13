@@ -15,7 +15,7 @@ def language_list_view(request):
                   'metadata/language/language_list.html', context)
 
 
-def update_languages():
+def update_languages_from_SIL():
     Language.objects.all().delete()
 
     url = 'https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3.tab'
@@ -35,6 +35,24 @@ def update_languages():
             languages.append(Language(iso_code=iso, name=name))
 
         Language.objects.bulk_create(languages)
+
+
+def update_languages():
+    Language.objects.all().delete()
+
+    languages = [
+        ('Dene', 'chp'),
+        ('English', 'eng'),
+        ('German', 'deu'),
+        ('French', 'fra')
+    ]
+
+    objs = []
+
+    for name, iso_code in languages:
+        objs.append(Language(iso_code=iso_code, name=name))
+
+    Language.objects.bulk_create(objs)
 
 
 @login_required
