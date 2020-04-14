@@ -64,7 +64,12 @@
     font-size: 14px;
 }
 
-.participant-trash {
+.participant-lang-trash {
     font-size: 10pt;
     color: rgb(220, 53, 69);
+    line-height: 13px;
+}
+
+.participant-lang-edit {
+    font-size: 10pt;
 }

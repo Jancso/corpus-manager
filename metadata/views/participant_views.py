@@ -94,3 +94,29 @@ def participant_language_delete_view(_, ppk, lpk):
     participant_lang_info = get_object_or_404(ParticipantLangInfo, pk=lpk)
     participant_lang_info.delete()
     return redirect('metadata:participant-detail', pk=ppk)
+
+
+class ParticipantLangUpdateView(LoginRequiredMixin, View):
+
+    def get(self, request, ppk, lpk):
+        participant_lang_info = ParticipantLangInfo.objects.get(pk=lpk)
+        form = ParticipantLangInfoForm(instance=participant_lang_info)
+        context = {
+            'participant_lang_info': participant_lang_info,
+            'form': form
+        }
+        return render(request, 'metadata/participant/participant_language_update.html', context)
+
+    def post(self, request, ppk, lpk):
+        participant_lang_info = ParticipantLangInfo.objects.get(pk=lpk)
+        form = ParticipantLangInfoForm(request.POST, instance=participant_lang_info)
+
+        if form.is_valid():
+            form.save()
+            return redirect('metadata:participant-detail', pk=ppk)
+
+        context = {
+            'participant_lang_info': participant_lang_info,
+            'form': form
+        }
+        return render(request, 'metadata/participant/participant_language_update.html', context)

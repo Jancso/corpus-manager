@@ -1,0 +1,38 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'metadata:participant-list' %}">
+            Participants
+        </a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{% url 'metadata:participant-detail' participant_lang_info.participant.pk %}">
+            {{ participant_lang_info.participant.short_name }}
+        </a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a href="{% url 'metadata:language-list' %}">
+            Languages
+        </a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        {{ participant_lang_info.language.name }}
+    </li>
+
+    <li class=breadcrumb-item aria-current="page">Update</li>
+{% endblock %}
+
+{% block metadata-content %}
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            {% include 'metadata/participant/participant_update_card.html' %}
+        </div>
+        <div class="col-md-3">
+
+        </div>
+    </div>
+{% endblock %}

@@ -13,6 +13,7 @@
                 <th scope="col">First</th>
                 <th scope="col">Second</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
 
             </thead>
@@ -27,10 +28,15 @@
                     <td>
                         <form action="{% url 'metadata:participant-lang-delete' ppk=participant.pk lpk=language.pk %}"
                               method="POST">{% csrf_token %}
-                            <button class="btn participant-trash"
+                            <button class="btn participant-lang-trash"
                                     type="submit"><i
                                     class="fas fa-trash-alt"></i></button>
                         </form>
+                    </td>
+                    <td>
+                        <a href="{% url 'metadata:participant-lang-update' ppk=participant.pk lpk=language.pk %}">
+                            <i class="fas fa-edit participant-lang-edit"></i>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
