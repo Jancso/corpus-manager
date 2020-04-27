@@ -11,6 +11,7 @@ from metadata.views.participant_views import \
     participant_list_view, ParticipantCreateView, participant_detail_view, \
     ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView
 from metadata.views.language_views import language_list_view, language_list_update_view
+from metadata.views.import_views import participants_import_view
 
 app_name = 'metadata'
 
@@ -37,6 +38,7 @@ urlpatterns = [
     path('participants/<int:pk>/languages/create/', ParticipantLangInfoCreateView.as_view(), name='participant-lang-create'),
     path('participants/<int:ppk>/languages/<int:lpk>/delete/', participant_language_delete_view , name='participant-lang-delete'),
     path('participants/<int:ppk>/languages/<int:lpk>/update/', ParticipantLangUpdateView.as_view(), name='participant-lang-update'),
+    path('participants/import/', participants_import_view, name='participant-import'),
 
     path('recordings/', rec_list_view, name='rec-list'),
     path('recordings/<int:pk>/delete/', rec_delete_view, name='rec-delete'),

@@ -93,8 +93,9 @@ class Language(models.Model):
 class Participant(models.Model):
     added_by = models.CharField(max_length=50, null=True, blank=True)
     short_name = models.CharField(max_length=10, unique=True)
-    full_name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=50, null=True, blank=True)
     birth_date = models.CharField(max_length=50, null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
 
     GENDER_FEMALE = 'F'
     GENDER_MALE = 'M'
@@ -111,6 +112,8 @@ class Participant(models.Model):
     education = models.CharField(max_length=100, null=True, blank=True)
 
     language_biography = models.CharField(max_length=200, null=True, blank=True)
+
+    description = models.CharField(max_length=200, null=True, blank=True)
 
 
 class ParticipantLangInfo(models.Model):
