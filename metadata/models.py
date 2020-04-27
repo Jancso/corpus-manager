@@ -120,6 +120,9 @@ class ParticipantLangInfo(models.Model):
     first = models.BooleanField()
     second = models.BooleanField()
 
+    class Meta:
+        unique_together = ('participant', 'language')
+
 
 class Session(models.Model):
     name = models.CharField(max_length=50, unique=True)
