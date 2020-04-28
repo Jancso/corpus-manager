@@ -34,3 +34,7 @@ class RecordingTest(TestCase):
     def test_recording_list(self):
         response = self.c.get('/metadata/recordings/')
         self.assertEqual(response.status_code, 200)
+
+    def test_recording_create(self):
+        response = self.c.get('/metadata/recordings/create/')
+        self.assertEqual(response.status_code, 200)

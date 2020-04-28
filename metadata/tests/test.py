@@ -14,10 +14,6 @@ class MetadataTest(TestCase):
         cls.c = Client()
         cls.c.login(username='test', password='test')
 
-    def test_metdata_create(self):
-        response = self.c.get('/metadata/create/')
-        self.assertEqual(response.status_code, 200)
-
     def test_metdata(self):
         response = self.c.get('/metadata/')
         self.assertEqual(response.status_code, 200)
