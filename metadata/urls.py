@@ -11,7 +11,7 @@ from metadata.views.participant_views import \
     participant_list_view, ParticipantCreateView, participant_detail_view, \
     ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView
 from metadata.views.language_views import language_list_view, language_list_update_view
-from metadata.views.import_views import participants_import_view
+from metadata.views.import_views import participants_import_view, sessions_import_view
 
 app_name = 'metadata'
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('sessions/<int:pk>/delete/', session_delete_view, name='session-delete'),
     path('sessions/<int:pk>/participants/create/', session_participants_create_view, name='session-participants-create'),
     path('sessions/<int:spk>/participants/<int:ppk>/delete/', session_participant_delete_view, name='session-participant-delete'),
+    path('sessions/import/', sessions_import_view, name='session-import'),
 
     path('participants/', participant_list_view, name='participant-list'),
     path('participants/create/', ParticipantCreateView.as_view(), name='participant-create'),
