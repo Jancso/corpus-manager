@@ -15,6 +15,13 @@ from workflow.models import Task
 
 
 @login_required
+def rec_detail_view(request, pk):
+    recording = Recording.objects.get(pk=pk)
+    context = {'recording': recording}
+    return render(request, 'metadata/recording/rec_detail.html', context)
+
+
+@login_required
 def rec_list_view(request):
     recs = Recording.objects.all()
     context = {'recs': recs}
