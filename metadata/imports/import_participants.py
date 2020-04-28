@@ -1,4 +1,4 @@
-from metadata.models import Participant
+from metadata.models import Participant, ParticipantLangInfo, Language
 import csv
 
 
@@ -9,26 +9,61 @@ def import_participants():
 
     with open(participants_path) as f:
         reader = csv.DictReader(f)
-        objs = []
+        participant_objects = []
+        lang_info_objects = []
+
         participants = set()
+
         for row in reader:
 
             if row['Short name'] in participants:
                 print(row['Short name'], ' is used twice!')
                 continue
 
-            objs.append(Participant(
-                added_by=row['Added by'] if row['Added by'] else None,
-                short_name=row['Short name'] if row['Short name'] else None,
-                full_name=row['Full name'] if row['Full name'] else None,
-                birth_date=row['Birth date'] if row['Birth date'] else None,
-                age=int(row['Age']) if row['Age'] else None,
-                gender=row['Gender'] if row['Gender'] else None,
-                education=row['Education'] if row['Education'] else None,
-                language_biography=row['Language biography'] if row['Language biography'] else None,
-                description=row['Description'] if row['Description'] else None,
-            ))
+            row = dict(row)
+
+            # make empty fields None
+            for field in row:
+                if row[field] == '':
+                    row[field] = None
+                else:
+                    if field == 'Age':
+                        row[field] = int(row[field])
+
+            participant = Participant.objects.create(added_by=row['Added by'],
+                                      short_name=row['Short name'],
+                                      full_name=row['Full name'],
+                                      birth_date=row['Birth date'],
+                                      age=row['Age'], gender=row['Gender'],
+                                      education=row['Education'],
+                                      language_biography=row[
+                                          'Language biography'],
+                                      description=row['Description'])
 
             participants.add(row['Short name'])
 
-        Participant.objects.bulk_create(objs)
+            langs = {}
+
+            for field in ['First languages', 'Second languages', 'Main language']:
+                if row[field] is not None:
+                    for lang in row[field].split('/'):
+                        if lang in langs:
+                            part_lang_info = langs[lang]
+                        else:
+                            language = Language.objects.get(name=lang)
+                            part_lang_info = ParticipantLangInfo(
+                                participant=participant,
+                                language=language,
+                                main=False,
+                                first=False,
+                                second=False)
+                            langs[lang] = part_lang_info
+
+                        if field == 'First languages':
+                            part_lang_info.first = True
+                        elif field == 'Second languages':
+                            part_lang_info.second = True
+                        elif field == 'Main language':
+                            part_lang_info.main = True
+
+            ParticipantLangInfo.objects.bulk_create(langs.values())
