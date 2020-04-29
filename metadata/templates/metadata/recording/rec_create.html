@@ -1,8 +1,13 @@
 {% extends 'metadata/base.html' %}
 
 {% block metadata-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'metadata:rec-list' %}">
+            Recordings
+        </a>
+    </li>
     <li class="breadcrumb-item" aria-current="page">
-        Add recording information
+        Create
     </li>
 {% endblock %}
 
