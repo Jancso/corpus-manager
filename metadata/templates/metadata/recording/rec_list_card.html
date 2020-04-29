@@ -11,14 +11,11 @@
             <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Session</th>
                 <th scope="col">Quality</th>
                 <th scope="col">Child Speech</th>
                 <th scope="col">Directedness</th>
                 <th scope="col">Dene Speech</th>
                 <th scope="col">Audio</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Notes</th>
             </tr>
 
             </thead>
@@ -30,18 +27,11 @@
                             {{ rec.name }}
                         </a>
                     </td>
-                    <td>
-                        <a href="{% url 'metadata:session-detail' rec.session.pk %}">
-                            {{ rec.session.name }}
-                        </a>
-                    </td>
                     <td>{{ rec.get_quality_display }}</td>
                     <td>{{ rec.get_child_speech_display }}</td>
                     <td>{{ rec.get_directedness_display }}</td>
                     <td>{{ rec.get_dene_speech_display }}</td>
                     <td>{{ rec.get_audio_display }}</td>
-                    <td>{{ rec.length }}</td>
-                    <td>{{ rec.notes }}</td>
                 </tr>
             {% endfor %}
             </tbody>
