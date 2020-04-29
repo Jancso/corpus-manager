@@ -1,7 +1,8 @@
 import csv
+import re
 from io import StringIO
 from .models import Task, Assignment
-from metadata.models import Recording
+from metadata.models import Recording, Session
 from datetime import timedelta, datetime
 from users.models import User, UserProfile
 
@@ -55,6 +56,7 @@ dene['much '] = Recording.DENE_SPEECH_HIGH
 status_names = {v: k for k, v in Task.STATUS_CHOICES}
 status_names['completed'] = Task.STATUS_COMPLETE
 status_names[''] = Task.STATUS_NOT_STARTED
+status_names['complete/in progress'] = Task.STATUS_COMPLETE
 
 
 def to_timedelta(duration):
@@ -104,6 +106,7 @@ people_dict = {
     'Andreas Gerster': ['andreas'],
     'Andreas Gerster(CR)': ['andreas'],
     'Andre Mueller': ['andre'],
+    'Andre Muellet (AP)': ['andre'],
     'Candace Janvier': ['candace'],
     'Caroline': ['caroline'],
     'Caroline Remensberger': ['caroline'],
@@ -128,6 +131,7 @@ people_dict = {
     'DJ/CS': ['dagmar'],
     'Erika Herman': ['erika'],
     'Farris Lemaigre': ['farris'],
+    'FaLemaigre/Trrina Lemaigre': ['farris', 'trina'],
     'Gabrielle/Curtis': ['gabrielle', 'curtis'],
     'Gabrielle (Curtis) Fontaine': ['gabrielle', 'curtis'],
     'Gabrielle Fontaine': ['gabrielle'],
@@ -152,6 +156,7 @@ people_dict = {
     'Mary Ruelling': ['ruelling'],
     'Melanie Truessel': ['melanie'],
     'new stud assist FNUNIV': [None],
+    'next': [None],
     'not started': [None],
     'Rae Cheecham (MHE)': ['rae'],
     'Rae Cheecham/JordanK': ['rae', 'jordan'],
@@ -164,6 +169,7 @@ people_dict = {
     'Ruben Moegel': ['ruben'],
     'SAP - I think this is actually SOP?': [None],
     'Taylor Fontaine': ['taylor'],
+    'Taylor Fontaine(Leanne Fontaine)': ['taylor', 'leanne'],
     'Trina (FL)': ['trina'],
     'Trina Lemaigre': ['trina'],
     'Trina Lemaigre (Andrea)': ['trina', 'andrea'],
@@ -172,7 +178,21 @@ people_dict = {
 }
 
 
+def _get_session_code(rec_name):
+    regex = re.compile(r"deslas-[A-Z]{3,}-\d\d\d\d-\d\d-\d\d(-\d+)?")
+    match = regex.search(rec_name)
+
+    if match:
+        return match.group()
+    else:
+        return None
+
+
 def import_(file):
+    Recording.objects.all().delete()
+    Task.objects.all().delete()
+    Assignment.objects.all().delete()
+
     file = file.read().decode()
 
     reader = csv.DictReader(StringIO(file), fieldnames=FIELDNAMES)
@@ -181,8 +201,16 @@ def import_(file):
 
     for row in reader:
 
+        session_name = _get_session_code(row['recording name'])
+        try:
+            session = Session.objects.get(name=session_name)
+        except Session.DoesNotExist:
+            print(f'Session {session_name} does not exist!')
+            continue
+
         rec, _ = Recording.objects.update_or_create(
             name=row['recording name'],
+            session=session,
             defaults={
                 'quality': quality_names[row['quality']],
                 'child_speech': child_speech[row['child speech']],
