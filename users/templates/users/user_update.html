@@ -3,7 +3,7 @@
 {% block user-breadcrumb %}
     <li class=breadcrumb-item aria-current="page">
         <a href="{% url 'users:user-detail' user.pk %}">
-            {{ user.get_full_name }}
+            {{ user.username }}
         </a>
     </li>
     <li class=breadcrumb-item aria-current="page">Update</li>

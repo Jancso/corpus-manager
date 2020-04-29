@@ -19,7 +19,7 @@ class UserProfileForm(BootstrapForm):
         model = UserProfile
         fields = ['image', 'job_function']
 
-    image = ImageField(widget=FileInput)
+    image = ImageField(widget=FileInput, required=False)
 
 
 class UserForm(BootstrapForm):
