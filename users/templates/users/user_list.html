@@ -5,16 +5,75 @@
 {% endblock %}
 
 {% block user-content %}
+    <div class="row mb-2">
+        <div class="col-12">
+            <h4>Active Users</h4>
+        </div>
+    </div>
 
-    {% for group in object_list %}
-        <div class="row">
-            {% for object in group %}
-                <div class="col-md-3 mb-2">
-                    {% include 'users/user-short.html' with user=object %}
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>Staff</h5>
+        </div>
+    </div>
+
+    <div class="row mb-3 mt-3">
+        <div class="col-12">
+            {% for staff_user_group in users.active.staff %}
+                <div class="row">
+                    {% for user in staff_user_group %}
+                        <div class="col-xl-3 mb-2">
+                            {% include 'users/user-short.html' with user=user %}
+                        </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>
-    {% endfor %}
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>Not Staff</h5>
+        </div>
+    </div>
+
+    <div class="row mb-3 mt-3">
+        <div class="col-12">
+            {% for staff_user_group in users.active.not_staff %}
+                <div class="row">
+                    {% for user in staff_user_group %}
+                        <div class="col-xl-3 mb-2">
+                            {% include 'users/user-short.html' with user=user %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <hr/>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <h4>Inactive Users</h4>
+        </div>
+    </div>
+
+    <div class="row mb-3 mt-3">
+        <div class="col-12">
+            {% for staff_user_group in users.inactive %}
+                <div class="row">
+                    {% for user in staff_user_group %}
+                        <div class="col-xl-3 mb-2">
+                            {% include 'users/user-short.html' with user=user %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 
     <script>
         $(function () {

@@ -20,8 +20,22 @@ class UserListView(LoginRequiredMixin, View):
             yield l[i:i + n]
 
     def get(self, request):
-        context = {'object_list': self.grouped(
-            User.objects.order_by('first_name'), 4)}
+        staff = self.grouped(User.objects.filter(
+                is_active=True, is_staff=True).order_by('username'), 4)
+        not_staff = self.grouped(User.objects.filter(
+                is_active=True, is_staff=False).order_by('username'), 4)
+        inactive = self.grouped(User.objects.filter(
+                is_active=False).order_by('username'), 4)
+
+        context = {
+            'active': {
+                'staff': staff,
+                'not_staff': not_staff
+            },
+            'inactive': inactive
+        }
+
+        context = {'users': context}
         return render(request, self.template_name, context)
 
 
