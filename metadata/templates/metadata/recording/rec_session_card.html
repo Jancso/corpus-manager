@@ -1,0 +1,50 @@
+<div class="card">
+    <h6 class="card-header">
+        Session
+    </h6>
+
+    <div class="card-body">
+        <table class="table table-hover table-responsive">
+            <tbody>
+            <tr>
+                <th scope="row">Session:</th>
+                <td>
+                    <a href="{% url 'metadata:session-detail' recording.session.pk %}">
+                        {{ recording.session.name }}
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">Date:</th>
+                <td>{{ recording.session.date }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Situation:</th>
+                <td>{{ recording.session.situation }}</td>
+            </tr>
+
+            <tr>
+                <th scope="row">Participants:</th>
+                <td>
+                    {% for sess_part in  recording.session.sessionparticipant_set.all %}
+                        {% if forloop.last %}
+                            <a href="{% url 'metadata:participant-detail' sess_part.participant.pk %}">
+                                {{ sess_part.participant.short_name }}
+                            </a>
+                        {% else %}
+                            <a href="{% url 'metadata:participant-detail' sess_part.participant.pk %}">
+                                {{ sess_part.participant.short_name }}
+                            </a>,
+                        {% endif %}
+                    {% endfor %}
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
