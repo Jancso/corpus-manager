@@ -22,7 +22,7 @@
             {% for staff_user_group in users.active.staff %}
                 <div class="row">
                     {% for user in staff_user_group %}
-                        <div class="col-xl-3 mb-2">
+                        <div class="col-xl-2 mb-2">
                             {% include 'users/user-short.html' with user=user %}
                         </div>
                     {% endfor %}
@@ -42,7 +42,7 @@
             {% for staff_user_group in users.active.not_staff %}
                 <div class="row">
                     {% for user in staff_user_group %}
-                        <div class="col-xl-3 mb-2">
+                        <div class="col-xl-2 mb-2">
                             {% include 'users/user-short.html' with user=user %}
                         </div>
                     {% endfor %}
@@ -65,7 +65,7 @@
             {% for staff_user_group in users.inactive %}
                 <div class="row">
                     {% for user in staff_user_group %}
-                        <div class="col-xl-3 mb-2">
+                        <div class="col-xl-2 mb-2">
                             {% include 'users/user-short.html' with user=user %}
                         </div>
                     {% endfor %}
