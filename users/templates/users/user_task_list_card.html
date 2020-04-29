@@ -10,6 +10,8 @@
             <tr>
                 <th scope="col">Recording</th>
                 <th scope="col">Task</th>
+                <th scope="col">Start</th>
+                <th scope="col">Finished</th>
             </tr>
             </thead>
             <tbody>
@@ -22,6 +24,8 @@
 
                     </td>
                     <td>{{ assignment.task.name.title }}</td>
+                    <td>{{ assignment.task.start }}</td>
+                    <td>{{ assignment.task.end }}</td>
                 </tr>
             {% endfor %}
             </tbody>

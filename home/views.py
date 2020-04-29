@@ -7,9 +7,9 @@ from workflow.models import Task
 def home_detail_view(request):
     user = request.user
     current_assignments = user.assignment_set.exclude(
-        task__status__in=Task.finished_task_statuses)
+        task__status__in=Task.finished_task_statuses).order_by('task__start')
     finished_assignments = user.assignment_set.filter(
-        task__status__in=Task.finished_task_statuses)
+        task__status__in=Task.finished_task_statuses).order_by('-task__end')
     context = {
         'user': user,
         'current_assignments': current_assignments,
