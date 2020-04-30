@@ -24,8 +24,8 @@ class MonitorImportView(UserPassesTestMixin, View):
     def post(self, request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            monitor.import_(request.FILES['file'])
-            return redirect(reverse('workflow:workflow'))
+            monitor.import_(request.FILES['monitor_file'])
+            return redirect(reverse('workflow:monitor-import'))
 
         context = {'form': form}
         return render(request, 'workflow/util/monitor_import.html', context)

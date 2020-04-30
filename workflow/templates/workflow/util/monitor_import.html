@@ -6,12 +6,15 @@
 
 
 {% block workflow-content %}
-    <div id="monitor-import">
-        <form class="mb-5" method="post" enctype="multipart/form-data">{% csrf_token %}
-            {{ form.as_p }}
-            <input id="monitor-import-btn" class="btn btn-primary"
-                   type="submit" value="Import">
-        </form>
+    <div id="monitor-import" class="row">
+        <div class="col-5">
+            <form class="mb-5" method="post"
+                  enctype="multipart/form-data">{% csrf_token %}
+                {{ form.as_p }}
+                <input id="monitor-import-btn" class="btn btn-primary"
+                       type="submit" value="Import">
+            </form>
+        </div>
     </div>
 
     <script>
