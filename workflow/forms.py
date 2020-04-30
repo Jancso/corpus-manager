@@ -71,18 +71,6 @@ class AssignmentForm(forms.ModelForm):
         fields = '__all__'
 
 
-class UploadFileForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control-file'
-
-    participants_file = forms.FileField(required=False)
-    sessions_file = forms.FileField(required=False)
-    monitor_file = forms.FileField(required=False)
-    files_file = forms.FileField(required=False)
-
-
 class BootstrapForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

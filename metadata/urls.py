@@ -2,7 +2,7 @@ from django.urls import path
 
 from metadata.views.rec_views import rec_delete_view, \
     RecordingUpdateView, rec_list_view, rec_create_view, rec_detail_view
-from metadata.views.views import metadata_view
+from metadata.views.views import metadata_view, MetadataImportView
 from metadata.views.session_views import \
     session_list_view, session_detail_view, SessionUpdateView, \
     session_delete_view, session_participants_create_view, session_participant_delete_view
@@ -11,7 +11,6 @@ from metadata.views.participant_views import \
     participant_list_view, ParticipantCreateView, participant_detail_view, \
     ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView
 from metadata.views.language_views import language_list_view, language_list_update_view
-from metadata.views.import_views import participants_import_view, sessions_import_view
 
 app_name = 'metadata'
 
@@ -27,7 +26,6 @@ urlpatterns = [
     path('sessions/<int:pk>/delete/', session_delete_view, name='session-delete'),
     path('sessions/<int:pk>/participants/create/', session_participants_create_view, name='session-participants-create'),
     path('sessions/<int:spk>/participants/<int:ppk>/delete/', session_participant_delete_view, name='session-participant-delete'),
-    path('sessions/import/', sessions_import_view, name='session-import'),
 
     path('participants/', participant_list_view, name='participant-list'),
     path('participants/create/', ParticipantCreateView.as_view(), name='participant-create'),
@@ -37,7 +35,6 @@ urlpatterns = [
     path('participants/<int:pk>/languages/create/', ParticipantLangInfoCreateView.as_view(), name='participant-lang-create'),
     path('participants/<int:ppk>/languages/<int:lpk>/delete/', participant_language_delete_view , name='participant-lang-delete'),
     path('participants/<int:ppk>/languages/<int:lpk>/update/', ParticipantLangUpdateView.as_view(), name='participant-lang-update'),
-    path('participants/import/', participants_import_view, name='participant-import'),
 
     path('recordings/', rec_list_view, name='rec-list'),
     path('recordings/<int:pk>/', rec_detail_view, name='rec-detail'),
@@ -45,5 +42,7 @@ urlpatterns = [
     path('recordings/<int:pk>/update/', RecordingUpdateView.as_view(), name='rec-update'),
     path('recordings/create/', rec_create_view, name='rec-create'),
 
-    path('files/', file_list_view, name='file-list')
+    path('files/', file_list_view, name='file-list'),
+
+    path('import/', MetadataImportView.as_view(), name='metadata-import')
 ]

@@ -1,8 +1,5 @@
 from django.urls import path
-from workflow.views.views import (
-    workflow_view,
-    MonitorImportView
-)
+from workflow.views.views import workflow_view
 from workflow.views.task_views import assigned_task_list_view, \
     open_task_list_view, TaskUpdateView
 from workflow.views.rec_views import rec_list_view, rec_detail_view
@@ -27,6 +24,4 @@ urlpatterns = [
     path('discussions/<int:pk>/', discussion_detail_view, name='discussion-detail'),
     path('discussions/<int:pk>/update/', DisussionUpdateView.as_view(), name='discussion-update'),
     path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
-
-    path('monitor/import/', MonitorImportView.as_view(), name='monitor-import')
 ]

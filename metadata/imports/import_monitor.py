@@ -1,7 +1,7 @@
 import csv
 import re
 from io import StringIO
-from .models import Task, Assignment
+from workflow.models import Task, Assignment
 from metadata.models import Recording, Session
 from datetime import timedelta, datetime
 from users.models import User, UserProfile
@@ -188,7 +188,7 @@ def _get_session_code(rec_name):
         return None
 
 
-def import_(file):
+def import_monitor(file):
     Recording.objects.all().delete()
     Task.objects.all().delete()
     Assignment.objects.all().delete()
