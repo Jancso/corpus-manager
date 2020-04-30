@@ -5,6 +5,7 @@ from django.views.generic.edit import View
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from workflow import monitor
+from metadata.imports import import_sessions
 
 
 @login_required
@@ -24,10 +25,15 @@ class MonitorImportView(UserPassesTestMixin, View):
     def post(self, request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            monitor.import_(request.FILES['monitor_file'])
+            if 'monitor_file' in request.FILES:
+                monitor_file = request.FILES['monitor_file']
+                monitor.import_(monitor_file)
+
+            if 'sessions_file' in request.FILES:
+                sessions_file = request.FILES['sessions_file']
+                import_sessions.import_sessions(sessions_file)
+
             return redirect(reverse('workflow:monitor-import'))
 
         context = {'form': form}
         return render(request, 'workflow/util/monitor_import.html', context)
-
-
