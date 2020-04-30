@@ -5,7 +5,7 @@ from django.views.generic.edit import View
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from workflow import monitor
-from metadata.imports import import_sessions
+from metadata.imports import import_sessions, import_participants
 
 
 @login_required
@@ -32,6 +32,10 @@ class MonitorImportView(UserPassesTestMixin, View):
             if 'sessions_file' in request.FILES:
                 sessions_file = request.FILES['sessions_file']
                 import_sessions.import_sessions(sessions_file)
+
+            if 'participants_file' in request.FILES:
+                participants_file = request.FILES['participants_file']
+                import_participants.import_participants(participants_file)
 
             return redirect(reverse('workflow:monitor-import'))
 
