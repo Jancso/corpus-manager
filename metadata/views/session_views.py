@@ -1,5 +1,8 @@
+import csv
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
@@ -68,3 +71,41 @@ def session_participant_delete_view(_, spk, ppk):
     session_participant = get_object_or_404(SessionParticipant, pk=ppk)
     session_participant.delete()
     return redirect('metadata:session-detail', pk=spk)
+
+
+@login_required
+def session_csv_export(_):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sessions.csv"'
+
+    fieldnames = [
+        'Code',
+        'Date',
+        'Location',
+        'Length of recording',
+        'Situation',
+        'Content',
+        'Participants and roles',
+        'Comments'
+    ]
+
+    writer = csv.DictWriter(response, fieldnames=fieldnames)
+    writer.writeheader()
+    for session in Session.objects.all():
+        # fetch participants and roles
+        participants = []
+        for p in session.sessionparticipant_set.all():
+            part_role = f'{p.participant.short_name} ({p.role})'
+            participants.append(part_role)
+        participants_and_roles = ', '.join(participants)
+
+        writer.writerow({'Code': session.name,
+                         'Date': session.date,
+                         'Location': session.location,
+                         'Length of recording': '',
+                         'Situation': session.situation,
+                         'Content': session.content,
+                         'Participants and roles': participants_and_roles,
+                         'Comments': session.comments})
+
+    return response
