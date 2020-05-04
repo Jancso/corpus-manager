@@ -136,45 +136,14 @@ class Session(models.Model):
     comments = models.CharField(max_length=200, null=True, blank=True)
 
 
+class Role(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+
 class SessionParticipant(models.Model):
     session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE)
     participant = models.ForeignKey('metadata.Participant', on_delete=models.CASCADE)
-    roles = {
-        "aunt",
-        "brother",
-        "child",
-        "classmate",
-        "cousin",
-        "family friend",
-        "father",
-        "grandfather",
-        "grandmother",
-        "great grandfather",
-        "great grandmother",
-        "greataunt",
-        "greatuncle",
-        "linguist",
-        "mother",
-        "nephew",
-        "niece",
-        "older brother",
-        "older sister",
-        "playmate",
-        "recorder",
-        "relative",
-        "researcher",
-        "sister",
-        "stepfather",
-        "teacher",
-        "uncle",
-        "unknown",
-        "greatgrandmother"
-    }
-
-    ROLE_CHOICES = [(role, role) for role in sorted(roles)]
-
-    role = models.CharField(choices=ROLE_CHOICES,
-                            max_length=20)
+    roles = models.ManyToManyField(Role)
 
     class Meta:
         unique_together = ('session', 'participant')

@@ -56,7 +56,7 @@ class SessionParticipantForm(BootstrapForm):
 
     class Meta:
         model = SessionParticipant
-        fields = ['participant', 'role']
+        fields = ['participant', 'roles']
 
     def clean_participant(self):
         participant = self.cleaned_data.get('participant')

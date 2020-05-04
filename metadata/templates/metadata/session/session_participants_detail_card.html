@@ -19,7 +19,11 @@
                             {{ participant.participant.short_name }}
                         </a>
                         </td>
-                    <td>{{ participant.role }}</td>
+                    <td>
+                        {% for role in participant.roles.all %}
+                            {{ role.name }},
+                        {% endfor %}
+                    </td>
                     <td>
                         <form action="{% url 'metadata:session-participant-delete' spk=session.pk ppk=participant.pk %}"
                               method="POST">{% csrf_token %}

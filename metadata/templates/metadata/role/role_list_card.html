@@ -1,0 +1,28 @@
+<div class="card">
+    <h6 class="card-header">
+        Roles
+        <span class="badge badge-dark ml-2">{{ roles|length }}</span>
+        {% include 'workflow/util/table-filter-input.html' with filter_input_id='roles-input' %}
+    </h6>
+
+    <div class="card-body">
+
+        <table id="roles-table" class="table table-responsive table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for role in roles %}
+                <tr>
+                    <td>{{ role.name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'workflow/util/table-filter-function.html' with filter_table_id='roles-table' filter_input_id='roles-input' %}

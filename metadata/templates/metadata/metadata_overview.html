@@ -44,6 +44,17 @@
                 </div>
             </div>
 
+            <hr/>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-primary"
+                       href="{% url 'metadata:role-list' %}">
+                        Roles
+                    </a>
+                </div>
+            </div>
+
             {% if request.user.is_superuser %}
                 <div class="row mt-5">
                     <div class="col-12">

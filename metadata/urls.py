@@ -3,6 +3,7 @@ from django.urls import path
 from metadata.views.rec_views import rec_delete_view, \
     RecordingUpdateView, rec_list_view, rec_create_view, rec_detail_view
 from metadata.views.views import metadata_view, MetadataImportView
+from metadata.views.role_views import role_import_view, role_list_view
 from metadata.views.session_views import \
     session_list_view, session_detail_view, SessionUpdateView, \
     session_delete_view, session_participants_create_view, session_participant_delete_view, session_csv_export
@@ -19,6 +20,9 @@ urlpatterns = [
 
     path('languages/', language_list_view, name='language-list'),
     path('languages/update/', language_list_update_view, name='language-list-update'),
+
+    path('roles/', role_list_view, name='role-list'),
+    path('roles/import/', role_import_view, name='role-import'),
 
     path('sessions/', session_list_view, name='session-list'),
     path('sessions/<int:pk>/', session_detail_view, name='session-detail'),

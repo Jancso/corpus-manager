@@ -1,6 +1,6 @@
 from io import StringIO
 
-from metadata.models import Session, SessionParticipant, Participant
+from metadata.models import Session, SessionParticipant, Participant, Role
 import csv
 from django.db.utils import IntegrityError
 
@@ -34,12 +34,9 @@ def import_sessions(file):
             continue
 
         if row['Participants and roles'] is not None:
-            session_participants = []
 
             for part_role in row['Participants and roles'].split(', '):
                 part, role = part_role.split(' ', maxsplit=1)
-                # TODO: (mother & recorder)
-                role = role[1:-1].split('&')[0]
 
                 try:
                     participant = Participant.objects.get(short_name=part)
@@ -47,12 +44,15 @@ def import_sessions(file):
                     print(f'Participant {part} does not exist!')
                     continue
 
-                session_participant = SessionParticipant(
+                session_participant = SessionParticipant.objects.create(
                     participant=participant,
-                    session=session,
-                    role=role
+                    session=session
                 )
 
-                session_participants.append(session_participant)
-
-            SessionParticipant.objects.bulk_create(session_participants)
+                roles = role[1:-1].split(' & ')
+                for role in roles:
+                    try:
+                        role_obj = Role.objects.get(name=role)
+                        session_participant.roles.add(role_obj)
+                    except Role.DoesNotExist:
+                        print(f'role "{role}" does not exist!')
