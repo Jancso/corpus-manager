@@ -1,5 +1,8 @@
+import csv
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.generic.edit import CreateView, UpdateView
@@ -8,7 +11,7 @@ from django.urls import reverse_lazy
 from metadata.forms import ParticipantForm, ParticipantLangInfoForm
 from django.views import View
 
-from metadata.models import Participant, ParticipantLangInfo
+from metadata.models import Participant, ParticipantLangInfo, Session
 
 
 @login_required
@@ -120,3 +123,60 @@ class ParticipantLangUpdateView(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, 'metadata/participant/participant_language_update.html', context)
+
+
+@login_required
+def participant_csv_export(_):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="participants.csv"'
+
+    fieldnames = [
+        'Added by',
+        'Short name',
+        'Full name',
+        'Birth date',
+        'Age',
+        'Gender',
+        'Education',
+        'First languages',
+        'Second languages',
+        'Main language',
+        'Language biography',
+        'Description',
+        'Contact address',
+        'E-mail/Phone'
+    ]
+
+    writer = csv.DictWriter(response, fieldnames=fieldnames)
+    writer.writeheader()
+    for participant in Participant.objects.all():
+
+        first_langs = []
+        second_langs = []
+        main_lang = []
+        for lang in ParticipantLangInfo.objects.filter(participant=participant):
+            if lang.main:
+                main_lang.append(lang.language.name)
+            if lang.first:
+                first_langs.append(lang.language.name)
+            if lang.second:
+                second_langs.append(lang.language.name)
+
+        writer.writerow({
+            'Added by': participant.added_by,
+            'Short name': participant.short_name,
+            'Full name': participant.full_name,
+            'Birth date': participant.birth_date,
+            'Age': participant.age,
+            'Gender': participant.gender,
+            'Education': participant.education,
+            'First languages': ', '.join(first_langs),
+            'Second languages': ', '.join(second_langs),
+            'Main language': ', '.join(main_lang),
+            'Language biography': participant.language_biography,
+            'Description': participant.description,
+            'Contact address': '',
+            'E-mail/Phone': ''
+        })
+
+    return response
