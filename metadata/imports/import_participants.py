@@ -4,6 +4,8 @@ from metadata.models import Participant, ParticipantLangInfo, Language
 import csv
 import re
 
+from metadata.util.generate_random_code import generate_random_code
+
 
 def import_participants(file):
     Participant.objects.all().delete()
@@ -46,6 +48,7 @@ def import_participants(file):
         participant = Participant.objects.create(
             added_by=row['Added by'],
             short_name=row['Short name'],
+            anonymized=generate_random_code(),
             full_name=row['Full name'],
             birth_day=birth_day,
             birth_month=birth_month,

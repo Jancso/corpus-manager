@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col">Added by</th>
                 <th scope="col">Short Name</th>
+                <th scope="col">Anonymized Code</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">Birth date</th>
                 <th scope="col">Gender</th>
@@ -26,6 +27,7 @@
                             {{ participant.short_name }}
                         </a>
                     </td>
+                    <td>{{ participant.anonymized }}</td>
                     <td>{{ participant.full_name }}</td>
                     <td>{{ participant.get_birth_date }}</td>
                     <td>{{ participant.gender }}</td>
