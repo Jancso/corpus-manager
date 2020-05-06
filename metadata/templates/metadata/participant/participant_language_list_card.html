@@ -28,14 +28,14 @@
                     <td>
                         <form action="{% url 'metadata:participant-lang-delete' ppk=participant.pk lpk=language.pk %}"
                               method="POST">{% csrf_token %}
-                            <button class="btn participant-lang-trash"
+                            <button class="btn trash-icon"
                                     type="submit"><i
                                     class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                     <td>
                         <a href="{% url 'metadata:participant-lang-update' ppk=participant.pk lpk=language.pk %}">
-                            <i class="fas fa-edit participant-lang-edit"></i>
+                            <i class="fas fa-edit edit-icon"></i>
                         </a>
                     </td>
                 </tr>
