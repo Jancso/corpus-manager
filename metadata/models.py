@@ -1,4 +1,5 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 
 from django.db import models
 
@@ -162,6 +163,19 @@ class Session(models.Model):
             return tcs[0].participant
         else:
             return None
+
+    def get_target_child_age(self):
+        tc = self.get_target_child()
+        if tc:
+            birth_date = tc.get_birth_date()
+            if birth_date and self.date:
+                delta = self.date - relativedelta(
+                    years=birth_date.year,
+                    days=birth_date.day,
+                    months=birth_date.month)
+                return f'{delta.year};{delta.month}.{delta.day}'
+
+        return None
 
 
 class Role(models.Model):
