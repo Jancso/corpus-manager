@@ -4,7 +4,8 @@ from django import forms
 from django.forms import formset_factory
 from django.forms import BaseFormSet
 
-from metadata.models import Recording, File, Session, Participant, SessionParticipant, ParticipantLangInfo, Language
+from metadata.models import Recording, File, Session, Participant, \
+    SessionParticipant, ParticipantLangInfo, Language, Role
 
 
 class BootstrapForm(forms.ModelForm):
@@ -47,12 +48,18 @@ class ParticipantModelMultipleChoiceField(forms.ModelChoiceField):
         return obj.short_name
 
 
+class ParticipantRoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return obj.name
+
+
 class SessionParticipantForm(BootstrapForm):
     def __init__(self, *args, session, **kwargs):
         self.session = session
         super().__init__(*args, **kwargs)
 
     participant = ParticipantModelMultipleChoiceField(queryset=Participant.objects.order_by('short_name'))
+    roles = ParticipantRoleModelMultipleChoiceField(queryset=Role.objects.order_by('name'))
 
     class Meta:
         model = SessionParticipant
