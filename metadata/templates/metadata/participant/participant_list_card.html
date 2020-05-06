@@ -27,7 +27,7 @@
                         </a>
                     </td>
                     <td>{{ participant.full_name }}</td>
-                    <td>{{ participant.birth_date }}</td>
+                    <td>{{ participant.get_birth_date }}</td>
                     <td>{{ participant.gender }}</td>
                 </tr>
             {% endfor %}

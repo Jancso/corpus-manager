@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 
@@ -94,7 +96,18 @@ class Participant(models.Model):
     added_by = models.CharField(max_length=50, null=True, blank=True)
     short_name = models.CharField(max_length=10, unique=True)
     full_name = models.CharField(max_length=50, null=True, blank=True)
-    birth_date = models.CharField(max_length=50, null=True, blank=True)
+    birth_day = models.IntegerField(
+        choices=[(i, i) for i in range(1, 32)],
+        null=True,
+        blank=True)
+    birth_month = models.IntegerField(
+        choices=[(i, i) for i in range(1, 13)],
+        null=True,
+        blank=True)
+    birth_year = models.IntegerField(
+        choices=[(i, i) for i in range(1900, 2100)],
+        null=True,
+        blank=True)
     age = models.IntegerField(null=True, blank=True)
 
     GENDER_FEMALE = 'F'
@@ -114,6 +127,14 @@ class Participant(models.Model):
     language_biography = models.CharField(max_length=200, null=True, blank=True)
 
     description = models.CharField(max_length=200, null=True, blank=True)
+
+    def get_birth_date(self):
+        if self.birth_day and self.birth_month and self.birth_year:
+            return datetime.date(self.birth_year,
+                                 self.birth_month,
+                                 self.birth_day)
+        else:
+            return self.birth_year
 
 
 class ParticipantLangInfo(models.Model):
