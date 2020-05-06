@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from metadata.imports.import_languages import import_languages
 from metadata.models import Language
-
-import requests
-import csv
 
 
 @login_required
@@ -15,47 +13,7 @@ def language_list_view(request):
                   'metadata/language/language_list.html', context)
 
 
-def update_languages_from_SIL():
-    Language.objects.all().delete()
-
-    url = 'https://iso639-3.sil.org/sites/iso639-3/files/downloads/iso-639-3.tab'
-
-    with requests.Session() as s:
-        download = s.get(url)
-
-        decoded_content = download.content.decode('utf-8')
-
-        languages = []
-
-        reader = csv.reader(decoded_content.splitlines(), delimiter='\t')
-        for row in reader:
-            iso = row[0]
-            name = row[6]
-
-            languages.append(Language(iso_code=iso, name=name))
-
-        Language.objects.bulk_create(languages)
-
-
-def update_languages():
-    Language.objects.all().delete()
-
-    languages = [
-        ('Dene', 'chp'),
-        ('English', 'eng'),
-        ('German', 'deu'),
-        ('French', 'fra')
-    ]
-
-    objs = []
-
-    for name, iso_code in languages:
-        objs.append(Language(iso_code=iso_code, name=name))
-
-    Language.objects.bulk_create(objs)
-
-
 @login_required
-def language_list_update_view(_):
-    update_languages()
-    return redirect('metadata:language-list')
+def language_import_view(_):
+    import_languages()
+    return redirect('metadata:metadata-import')

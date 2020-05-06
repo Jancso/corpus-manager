@@ -6,6 +6,17 @@
 
 
 {% block metadata-content %}
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="{% url 'metadata:language-import' %}" class="btn btn-primary btn-sm">
+                Import Languages
+            </a>
+        </div>
+    </div>
+
+    <hr/>
+
     <div class="row mb-4">
         <div class="col-12">
             <a href="{% url 'metadata:role-import' %}" class="btn btn-primary btn-sm">
