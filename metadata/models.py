@@ -143,10 +143,18 @@ class Role(models.Model):
 class SessionParticipant(models.Model):
     session = models.ForeignKey('metadata.Session', on_delete=models.CASCADE)
     participant = models.ForeignKey('metadata.Participant', on_delete=models.CASCADE)
-    roles = models.ManyToManyField(Role)
+    roles = models.ManyToManyField(Role, through='metadata.SessionParticipantRole')
 
     class Meta:
         unique_together = ('session', 'participant')
+
+
+class SessionParticipantRole(models.Model):
+    session_participant = models.ForeignKey('metadata.SessionParticipant', on_delete=models.CASCADE)
+    role = models.ForeignKey('metadata.Role', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('session_participant', 'role')
 
 
 class File(models.Model):

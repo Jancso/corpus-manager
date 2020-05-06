@@ -8,7 +8,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 from django.urls import reverse
 
-from metadata.models import Session, SessionParticipant, Participant
+from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
 from metadata.forms import SessionForm, SessionParticipantFormset
 
 
@@ -60,7 +60,11 @@ def session_participants_create_view(request, pk):
                         participant=participant, session=session)
                     session_participant.save()
                     for role in roles:
-                        session_participant.roles.add(role)
+                        SessionParticipantRole.objects.create(
+                            session_participant=session_participant,
+                            role=role
+                        )
+
             return redirect('metadata:session-detail', pk=pk)
 
     return render(request, 'metadata/session/session_participants_create.html', {
