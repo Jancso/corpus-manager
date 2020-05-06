@@ -2,6 +2,7 @@ from io import StringIO
 
 from metadata.models import Participant, ParticipantLangInfo, Language
 import csv
+import re
 
 
 def import_participants(file):
@@ -28,15 +29,33 @@ def import_participants(file):
                 if field == 'Age':
                     row[field] = int(row[field])
 
-        participant = Participant.objects.create(added_by=row['Added by'],
-                                  short_name=row['Short name'],
-                                  full_name=row['Full name'],
-                                  birth_date=row['Birth date'],
-                                  age=row['Age'], gender=row['Gender'],
-                                  education=row['Education'],
-                                  language_biography=row[
-                                      'Language biography'],
-                                  description=row['Description'])
+        birth_day = None
+        birth_month = None
+        birth_year = None
+        if row['Birth date']:
+            match = re.fullmatch(r'(\d{4})-(\d{2})-(\d{2})', row['Birth date'])
+            if match:
+                birth_day = match.group(3)
+                birth_month = match.group(2)
+                birth_year = match.group(1)
+            else:
+                match = re.fullmatch(r'(\d{4})', row['Birth date'])
+                if match:
+                    birth_year = match.group()
+
+        participant = Participant.objects.create(
+            added_by=row['Added by'],
+            short_name=row['Short name'],
+            full_name=row['Full name'],
+            birth_day=birth_day,
+            birth_month=birth_month,
+            birth_year=birth_year,
+            age=row['Age'],
+            gender=row['Gender'],
+            education=row['Education'],
+            language_biography=row['Language biography'],
+            description=row['Description']
+        )
 
         participants.add(row['Short name'])
 
