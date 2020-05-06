@@ -21,7 +21,11 @@
                         </td>
                     <td>
                         {% for role in participant.roles.all %}
-                            {{ role.name }},
+                            {% if forloop.last %}
+                                {{ role.name }}
+                            {% else %}
+                                {{ role.name }},
+                            {% endif %}
                         {% endfor %}
                     </td>
                     <td>
