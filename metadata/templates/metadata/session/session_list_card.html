@@ -12,6 +12,7 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Date</th>
+                <th scope="col">Name of target child</th>
                 <th scope="col">Situation</th>
             </tr>
 
@@ -24,6 +25,7 @@
                             {{ session.name }}</a>
                     </td>
                     <td>{{ session.date }}</td>
+                    <td>{{ session.get_target_child.short_name }}</td>
                     <td>{{ session.situation }}</td>
                 </tr>
             {% endfor %}

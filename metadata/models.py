@@ -135,6 +135,13 @@ class Session(models.Model):
     content = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
 
+    def get_target_child(self):
+        tcs = self.sessionparticipant_set.filter(roles__name__exact='child')
+        if tcs:
+            return tcs[0].participant
+        else:
+            return None
+
 
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
