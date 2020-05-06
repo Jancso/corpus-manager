@@ -54,9 +54,13 @@ def session_participants_create_view(request, pk):
         if formset.is_valid():
             for form in formset:
                 participant = form.cleaned_data.get('participant')
-                role = form.cleaned_data.get('role')
-                if participant and session and role:
-                    SessionParticipant(participant=participant, session=session, role=role).save()
+                roles = form.cleaned_data.get('roles')
+                if participant and session and roles:
+                    session_participant = SessionParticipant(
+                        participant=participant, session=session)
+                    session_participant.save()
+                    for role in roles:
+                        session_participant.roles.add(role)
             return redirect('metadata:session-detail', pk=pk)
 
     return render(request, 'metadata/session/session_participants_create.html', {
