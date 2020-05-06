@@ -40,7 +40,18 @@ class SessionForm(BootstrapForm):
 class ParticipantForm(BootstrapForm):
     class Meta:
         model = Participant
-        fields = '__all__'
+        exclude = ['anonymized']
+
+    def clean_short_name(self):
+        short_name = self.cleaned_data.get('short_name')
+        participants = Participant.objects.filter(anonymized=short_name)
+        if participants:
+            raise forms.ValidationError(
+                f'Short name already used as anonymized code')
+        if not short_name.isupper():
+            raise forms.ValidationError(
+                f'Short name has to be uppercase')
+        return short_name
 
 
 class ParticipantModelMultipleChoiceField(forms.ModelChoiceField):

@@ -12,6 +12,7 @@ from metadata.forms import ParticipantForm, ParticipantLangInfoForm
 from django.views import View
 
 from metadata.models import Participant, ParticipantLangInfo, Session
+from metadata.util.generate_random_code import generate_random_code
 
 
 @login_required
@@ -24,9 +25,14 @@ def participant_list_view(request):
 
 class ParticipantCreateView(CreateView):
     model = Participant
+    form_class = ParticipantForm
     template_name = 'metadata/participant/participant_create.html'
-    fields = '__all__'
     success_url = reverse_lazy('metadata:participant-list')
+
+    def form_valid(self, form):
+        participant = form.save(commit=False)
+        participant.anonymized = generate_random_code()
+        return super().form_valid(form)
 
 
 @login_required

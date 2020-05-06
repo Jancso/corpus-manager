@@ -96,6 +96,7 @@ class Language(models.Model):
 class Participant(models.Model):
     added_by = models.CharField(max_length=50, null=True, blank=True)
     short_name = models.CharField(max_length=10, unique=True)
+    anonymized = models.CharField(max_length=3, unique=True)
     full_name = models.CharField(max_length=50, null=True, blank=True)
     birth_day = models.IntegerField(
         choices=[(i, i) for i in range(1, 32)],
