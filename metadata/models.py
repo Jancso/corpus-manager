@@ -2,6 +2,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from django.db import models
+from hurry.filesize import size
 
 
 class Recording(models.Model):
@@ -232,3 +233,6 @@ class File(models.Model):
     duration = models.DurationField(null=True, blank=True)
     size = models.IntegerField(null=True, blank=True)
     location = models.CharField(max_length=50, null=True, blank=True)
+
+    def get_human_readable_size(self):
+        return size(self.size)

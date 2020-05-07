@@ -8,12 +8,16 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Size</th>
                 </tr>
             </thead>
             <tbody>
                 {% for file in  recording.file_set.all %}
                     <tr>
                         <td>{{ file.name }}</td>
+                        <td>{{ file.duration }}</td>
+                        <td>{{ file.get_human_readable_size }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

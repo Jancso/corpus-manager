@@ -24,11 +24,15 @@
             {% for file in files %}
                 <tr>
                     <td>{{ file.name }}</td>
-                    <td>{{ file.recording.name }}</td>
+                    <td>
+                        <a href="{% url 'metadata:rec-detail' file.recording.pk %}">
+                            {{ file.recording.name }}
+                        </a>
+                    </td>
                     <td>{{ file.type }}</td>
                     <td>{{ file.format }}</td>
                     <td>{{ file.duration }}</td>
-                    <td>{{ file.size }}</td>
+                    <td>{{ file.get_human_readable_size }}</td>
                     <td>{{ file.location }}</td>
                 </tr>
             {% endfor %}
