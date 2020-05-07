@@ -68,6 +68,7 @@ def session_delete_view(_, pk):
     return redirect('metadata:session-list')
 
 
+@login_required
 def session_participants_create_view(request, pk):
     session = Session.objects.get(pk=pk)
     if request.method == 'GET':

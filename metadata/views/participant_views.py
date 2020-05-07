@@ -23,7 +23,7 @@ def participant_list_view(request):
                   context)
 
 
-class ParticipantCreateView(CreateView):
+class ParticipantCreateView(LoginRequiredMixin, CreateView):
     model = Participant
     form_class = ParticipantForm
     template_name = 'metadata/participant/participant_create.html'

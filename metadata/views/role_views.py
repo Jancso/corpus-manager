@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 from django.shortcuts import render, redirect
 
 from metadata.imports.import_roles import import_roles
@@ -11,6 +11,7 @@ def role_import_view(_):
     return redirect('metadata:metadata-import')
 
 
+@login_required
 def role_list_view(request):
     return render(request,
                   'metadata/role/role_list.html',
