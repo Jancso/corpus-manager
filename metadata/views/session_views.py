@@ -7,9 +7,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 from django.urls import reverse
+from django.views.generic.base import View
 
 from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
-from metadata.forms import SessionForm, SessionParticipantFormset
+from metadata.forms import SessionForm, SessionParticipantFormset, \
+    SessionParticipantForm, SessionParticipantUpdateForm
 
 
 @login_required
@@ -35,6 +37,27 @@ class SessionUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('metadata:session-detail', args=(self.object.pk,))
+
+
+class SessionParticipantUpdateView(LoginRequiredMixin, View):
+    template = 'metadata/session/session_participant_update.html'
+
+    def get(self, request, spk, ppk):
+        session_participant = SessionParticipant.objects.get(pk=ppk)
+        form = SessionParticipantUpdateForm(instance=session_participant)
+        context = {'form': form, 'session_participant': session_participant}
+        return render(request, self.template, context)
+
+    def post(self, request, spk, ppk):
+        session_participant = SessionParticipant.objects.get(pk=ppk)
+        form = SessionParticipantUpdateForm(request.POST, instance=session_participant)
+
+        if form.is_valid():
+            form.save()
+            return redirect('metadata:session-detail', pk=spk)
+
+        context = {'form': form, 'session_participant': session_participant}
+        return render(request, self.template, context)
 
 
 @login_required

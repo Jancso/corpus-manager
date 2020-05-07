@@ -64,6 +64,14 @@ class ParticipantRoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         return obj.name
 
 
+class SessionParticipantUpdateForm(BootstrapForm):
+    roles = ParticipantRoleModelMultipleChoiceField(queryset=Role.objects.order_by('name'))
+
+    class Meta:
+        model = SessionParticipant
+        fields = ['roles']
+
+
 class SessionParticipantForm(BootstrapForm):
     def __init__(self, *args, session, **kwargs):
         self.session = session
