@@ -34,6 +34,13 @@
         <div class="col-md-1"></div>
 
         <div class="col-md-6">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a class="btn btn-primary" href="{% url 'metadata:rec-detail' recording.pk %}">
+                    Show associated metadata
+                    </a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12 mb-2">
                     {% include 'workflow/task/task_view_card.html' with task=segmentation %}
