@@ -1,4 +1,4 @@
-from metadata.imports import import_sessions, import_participants, import_monitor
+from metadata.imports import import_sessions, import_participants, import_monitor, import_files
 from metadata.forms import UploadFileForm
 from django.views.generic.edit import View
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -34,6 +34,10 @@ class MetadataImportView(UserPassesTestMixin, View):
             if 'participants_file' in request.FILES:
                 participants_file = request.FILES['participants_file']
                 import_participants.import_participants(participants_file)
+
+            if 'files_file' in request.FILES:
+                files_file = request.FILES['files_file']
+                import_files.import_files(files_file)
 
             return redirect(reverse('metadata:metadata-import'))
 
