@@ -4,62 +4,73 @@
     </h6>
     <div class="card-body">
 
-        <img src="{{ user.userprofile.image.url }}"
-             id="user-image"
-             class="p-3 rounded-circle mx-auto d-block img-fluid">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <img src="{{ user.userprofile.image.url }}"
+                     id="user-image"
+                     class="rounded-circle mx-auto d-block img-fluid img-thumbnail">
+            </div>
+            <div class="col-3"></div>
+        </div>
 
-        <table class="table mt-5">
-            <tbody>
-            <tr>
-                <td><i class="fas fa-user"></i></td>
-                <td>Username</td>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>First Name</td>
-                <td>{{ user.first_name }}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Last Name</td>
-                <td>{{ user.last_name }}</td>
-            </tr>
-            <tr>
-                <td><i class="fas fa-envelope"></i></td>
-                <td>Email</td>
-                <td>
-                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
-                </td>
-            </tr>
-            <tr>
-                <td><i class="fas fa-tag"></i></td>
-                <td>Job Function</td>
-                <td>{{ user.userprofile.get_job_function_display }}</td>
-            </tr>
-            <tr>
-                <td>
-                    {% if user.is_active %}
-                        <i class="fas fa-check-square"></i>
-                    {% else %}
-                        <i class="fas fa-times-circle"></i>
-                    {% endif %}
-                </td>
-                <td>Status</td>
-                <td>
-                    {% if user.is_active %}
-                        Active
-                    {% else %}
-                        Not active
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td><i class="fas fa-calendar-alt"></i></td>
-                <td>Joined</td>
-                <td>{{ user.date_joined }}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-12">
+                <table class="table mt-5">
+                    <tbody>
+                    <tr>
+                        <td><i class="fas fa-user"></i></td>
+                        <td>Username</td>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>First Name</td>
+                        <td>{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Last Name</td>
+                        <td>{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-envelope"></i></td>
+                        <td>Email</td>
+                        <td>
+                            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-tag"></i></td>
+                        <td>Job Function</td>
+                        <td>{{ user.userprofile.get_job_function_display }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if user.is_active %}
+                                <i class="fas fa-check-square"></i>
+                            {% else %}
+                                <i class="fas fa-times-circle"></i>
+                            {% endif %}
+                        </td>
+                        <td>Status</td>
+                        <td>
+                            {% if user.is_active %}
+                                Active
+                            {% else %}
+                                Not active
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-calendar-alt"></i></td>
+                        <td>Joined</td>
+                        <td>{{ user.date_joined }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
