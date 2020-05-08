@@ -1,9 +1,9 @@
 from django.views import View
 from django.views.generic.detail import DetailView
-from .forms import UserForm, UserProfileForm
+from users.forms import UserForm, UserProfileForm
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import User
+from users.models import User
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):

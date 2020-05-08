@@ -4,7 +4,7 @@ import unittest
 from django.test import Client
 from django.urls import reverse
 
-from users.urls import urlpatterns
+from users.urls.users_urls import urlpatterns
 
 
 class TestLogins(unittest.TestCase):
