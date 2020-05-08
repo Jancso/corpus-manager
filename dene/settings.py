@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 # NB: order matters!
 INSTALLED_APPS = [
+    'backup',
     'registration',
     'users',
     'metadata',

@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+    <nav class="mb-5" aria-label="breadcrumb">
+        <ol id="metadata-breadcrumb" class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'backup:backup-view' %}">Backup</a>
+            </li>
+            {% block backup-breadcrumb %}
+            {% endblock %}
+        </ol>
+    </nav>
+
+    {% block backup-content %}
+
+    {% endblock %}
+
+    <script>
+        $(function () {
+            $('#backup-link').addClass('active');
+        })
+    </script>
+
+{% endblock %}
