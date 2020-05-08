@@ -1,7 +1,7 @@
 from django.views import View
 from django.views.generic.detail import DetailView
 from users.forms import UserForm, UserProfileForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users.models import User
 
@@ -84,6 +84,8 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
             if user_form.is_valid() and user_profile_form.is_valid():
                 user_form.save()
                 user_profile_form.save()
+
+                return redirect('home:home-detail')
 
             context['form'] = {
                 'user': user_form,

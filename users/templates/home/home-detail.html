@@ -9,14 +9,28 @@
         <div class="col-md-1">
         </div>
 
-        <div class="col-md-2">
-            {% include 'users/user-short.html' %}
+        <div class="col-md-4">
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    {% include 'users/user_detail_card.html' %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <a class="btn btn-primary" href="{% url 'home:settings-detail' %}">
+                        Update profile
+                    </a>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-md-1">
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="row mb-3">
                 <div class="col-12">
                     {% include 'users/user_task_list_card.html' with assignments=current_assignments title='Your current Tasks' %}
