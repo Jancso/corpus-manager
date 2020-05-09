@@ -1,0 +1,27 @@
+<div class="card">
+    <h6 class="card-header">
+        Scheduler
+    </h6>
+
+    <div class="card-body">
+
+        <div class="alert alert-info">
+            Set how often backups should be made.
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="post">{% csrf_token %}
+                    <table class="table">
+                        {{ form.as_table }}
+                    </table>
+
+                    <input class="btn btn-primary" type="submit"
+                           value="Set scheduler">
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
