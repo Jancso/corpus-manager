@@ -6,11 +6,25 @@
 
         <div class="col-md-4"></div>
 
-        <div class="col-md-4">
-            Backup Test
-        </div>
+        <div class="col-md-4 text-center">
 
-        <div class="col-md-2"></div>
+            <div class="card">
+
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        You don't have backups yet!
+                    </div>
+
+                    <a class="btn btn-primary"
+                       href="{% url 'backup:token-create-view' %}">
+                        Set up Backup
+                    </a>
+                </div>
+
+            </div>
+
+
+        </div>
 
     </div>
 
