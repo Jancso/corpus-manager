@@ -8,10 +8,17 @@ class BootstrapForm(forms.Form):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class TokenForm(BootstrapForm):
-    repository = forms.URLField()
-    username = forms.CharField()
-    token = forms.CharField()
+class RepoForm(BootstrapForm):
+    repository = forms.CharField(label="Repository's URL")
+
+    def clean_repository(self):
+        repository_url = self.cleaned_data['repository']
+
+        if not repository_url.startswith('git@'):
+            raise forms.ValidationError("Not a SSH URL")
+
+        return repository_url
+
 
 
 class SchedulerForm(BootstrapForm):

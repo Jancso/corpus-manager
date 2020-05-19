@@ -1,0 +1,43 @@
+<div class="card">
+    <h6 class="card-header">
+        Create Repository
+    </h6>
+
+    <div class="card-body">
+
+        <div class="alert alert-info">
+            <ol>
+                <li>
+                    Create a repository on the bot's GitLab account by clicking on
+                    <code class="code">New project</code>. Give it a name
+                    e.g. 'database-backup'.
+                </li>
+                <li>
+                    Click on the repository (if not automatically redirected)
+                    and copy the repository's URL by clicking on
+                    <code class="code">Clone</code>, then
+                    <code class="code">Clone with SSH</code>
+                </li>
+            </ol>
+        </div>
+
+        <div class="alert alert-danger">
+            Make sure the repository is private!
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="post">{% csrf_token %}
+                    <table class="table">
+                        {{ form.as_table }}
+                    </table>
+
+                    <input class="btn btn-primary" type="submit"
+                           value="Add credentials">
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>

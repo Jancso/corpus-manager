@@ -5,3 +5,4 @@ __pycache__
 .pytest_cache/
 media/
 prod_static/
+backup-data

@@ -1,0 +1,40 @@
+<div class="card">
+    <h6 class="card-header">
+        Create SSH key
+    </h6>
+
+    <div class="card-body">
+
+        <div class="alert alert-info">
+            <p>
+                The backups will be automatically performed by a bot. Please,
+                follow the instructions to set the bot up:
+            </p>
+
+            <ol>
+                <li>
+                    First create a GitLab account for the bot. For security
+                    reasons,
+                    do not use your own personal GitLab account!
+                </li>
+                <li>
+                    Click on the avatar (profile pic), click <code
+                        class="code">Settings</code>
+                    and then <code class="code">SSH keys</code>.
+                </li>
+                <li>
+                    Copy the public key below:
+
+                    <div class="alert alert-dark mt-2" role="alert">
+                        {{ public_key }}
+                    </div>
+                </li>
+                <li>
+                    Paste the public key in GitLab.
+                </li>
+            </ol>
+        </div>
+
+        <a href="{% url 'backup:repository-create-view' %}" class="btn btn-primary">Next</a>
+    </div>
+</div>

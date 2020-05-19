@@ -75,3 +75,9 @@
 .fa-info-circle {
     font-size: 12pt;
 }
+
+code {
+    font-size: 87.5%;
+    color: #e83e8c;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
