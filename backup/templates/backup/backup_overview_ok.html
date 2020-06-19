@@ -1,0 +1,55 @@
+{% extends 'backup/base.html' %}
+
+{% block backup-content %}
+
+    <div class="row">
+
+        <div class="col-md-1"></div>
+
+        <div class="col-md-6">
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <a href="{% url 'backup:backup-view' %}"
+                       class="btn btn-primary">
+                        <i class="fas fa-plus-square pr-2"></i>Create Backup
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h6 class="card-header">Backups</h6>
+
+                        <div class="card-body">
+                            {{ log }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h6 class="card-header">Public Key</h6>
+
+                        <div class="card-body">
+                            <div class="alert alert-dark" role="alert">
+                                {{ public_key }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div>
+
+    </div>
+
+{% endblock %}
+
