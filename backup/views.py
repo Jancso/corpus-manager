@@ -34,7 +34,6 @@ class RepositoryCreateView(LoginRequiredMixin, View):
 
     BACKUP_DATA_DIR_PATH = Path('backup-data')
     REPO_DIRNAME = 'backup-repo'
-    CREDENTIALS_FILENAME = 'credentials.ini'
 
     def get(self, request):
         form = RepoForm()

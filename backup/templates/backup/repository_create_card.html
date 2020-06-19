@@ -8,21 +8,28 @@
         <div class="alert alert-info">
             <ol>
                 <li>
-                    Create a repository on the bot's GitLab account by clicking on
+                    Create a repository on the bot's GitLab account by clicking
+                    on
                     <code class="code">New project</code>. Give it a name
                     e.g. 'database-backup'.
                 </li>
+                <li class="alert alert-danger mt-2">
+                    Make sure the visibility level of the repository is
+                    private!
+                </li>
                 <li>
-                    Click on the repository (if not automatically redirected)
-                    and copy the repository's URL by clicking on
+                    Tick <code class="code">Initialize repository with a
+                    README</code>.
+                </li>
+                <li>
+                    Click <code class="code">Create Project</code>
+                </li>
+                <li>
+                    Copy the repository's URL by clicking on
                     <code class="code">Clone</code>, then
                     <code class="code">Clone with SSH</code>
                 </li>
             </ol>
-        </div>
-
-        <div class="alert alert-danger">
-            Make sure the repository is private!
         </div>
 
         <div class="row mb-4">
@@ -33,11 +40,10 @@
                     </table>
 
                     <input class="btn btn-primary" type="submit"
-                           value="Add credentials">
+                           value="Add URL">
                 </form>
             </div>
         </div>
-
 
     </div>
 </div>
