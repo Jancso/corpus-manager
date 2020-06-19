@@ -13,10 +13,10 @@ from backup.forms import RepoForm, SchedulerForm
 BACKUP_DATA_DIR_PATH = Path('backup-data')
 REPO_DIRNAME = 'backup-repo'
 REPO_PATH = (BACKUP_DATA_DIR_PATH / REPO_DIRNAME).resolve()
-GIT_PATH = REPO_PATH / '.git'
 DB_NAME = 'test'
 DB_PATH = Path(DB_NAME + '.sqlite3').resolve()
 SSH_KEY_PATH = Path.home() / '.ssh/' / 'corpus_manager'
+COMMIT_MSG = 'Backup database'
 
 
 def get_public_ssh_key():
@@ -38,7 +38,7 @@ def backup_repo_exists():
 
 
 def get_remote_url():
-    remote_cmd = f'git --git-dir={GIT_PATH} remote -v'
+    remote_cmd = f'git -C {REPO_PATH} remote -v'
     proc = subprocess.run(remote_cmd, shell=True, capture_output=True)
     ssh_url = str(proc.stdout, 'utf-8').split(' ')[0][7:]
     repo = ssh_url.split(':')[1]
@@ -53,7 +53,7 @@ def get_sha_url(sha):
 
 
 def get_commits():
-    log_cmd = f'git --git-dir={GIT_PATH} log --pretty=format:"%H%x09%ad%x09%s"'
+    log_cmd = f'git -C {REPO_PATH} log --pretty=format:"%H%x09%ad%x09%s"'
     proc = subprocess.run(log_cmd, shell=True, capture_output=True)
     logs = str(proc.stdout, 'utf-8').split('\n')
     commits = []
@@ -65,19 +65,23 @@ def get_commits():
 
 
 def backup():
-    shutil.copy(DB_PATH, REPO_PATH)
+    sqlite3_path = Path(shutil.copy(DB_PATH, REPO_PATH))
+    sql_path = sqlite3_path.with_suffix('.sql')
 
-    DB_SQLITE3 = f'{DB_NAME}.sqlite3'
-    DB_SQL = f'{DB_NAME}.sql'
-
-    csv_conversion_cdm = f'sqlite3 {DB_SQLITE3} .dump > {DB_SQL}'
+    csv_conversion_cdm = f'sqlite3 {sqlite3_path} .dump > {sql_path}'
     subprocess.run(csv_conversion_cdm, shell=True)
 
-    add_cmd = f'git --git-dir={GIT_PATH} add -v {DB_SQL}'
-    proc = subprocess.run(add_cmd, shell=True, capture_output=True)
-    if proc.stdout:
-        push_cmd = f'git --git-dir={GIT_PATH} commit; git --git-dir={GIT_PATH} push'
-        subprocess.run(push_cmd, shell=True)
+    add_cmd = f'git -C {REPO_PATH} add -v {sql_path.name}'
+    subprocess.run(add_cmd, shell=True, capture_output=True)
+    commit_cmd = f'git -C {REPO_PATH} commit -m "{COMMIT_MSG}"'
+    subprocess.run(commit_cmd, shell=True)
+    push_cmd = f'git -C {REPO_PATH} push'
+    subprocess.run(push_cmd, shell=True)
+
+
+def backup_create_view(request):
+    backup()
+    return redirect('backup:backup-view')
 
 
 @login_required
