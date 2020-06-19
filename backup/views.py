@@ -35,11 +35,20 @@ def backup_repo_exists():
     return REPO_PATH.is_dir()
 
 
+def get_remote_url():
+    remote_cmd = f'git --git-dir={GIT_PATH} remote -v'
+    proc = subprocess.run(remote_cmd, shell=True, capture_output=True)
+    ssh_url = str(proc.stdout, 'utf-8').split(' ')[0][7:]
+    repo = ssh_url.split(':')[1]
+    https_url = f'https://gitlab.com/{repo}'
+
+    return https_url
+
+
 @login_required
 def backup_view(request):
     if backup_repo_exists() and ssh_key_exists():
         log_cmd = f'git --git-dir={GIT_PATH} log --pretty=format:"%h%x09%ad%x09%s"'
-        print(log_cmd)
         proc = subprocess.run(log_cmd, shell=True, capture_output=True)
         logs = str(proc.stdout, 'utf-8').split('\n')
 
@@ -47,7 +56,10 @@ def backup_view(request):
         for log in logs:
             commits.append(log.split('\t'))
 
+        repository = get_remote_url()
+
         context = {
+            'repository': repository,
             'log': repr(commits),
             'public_key': get_public_ssh_key()
         }
