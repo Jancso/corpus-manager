@@ -1,4 +1,5 @@
 from pathlib import Path
+import shutil
 import subprocess
 
 from django.contrib.auth.decorators import login_required
@@ -13,7 +14,8 @@ BACKUP_DATA_DIR_PATH = Path('backup-data')
 REPO_DIRNAME = 'backup-repo'
 REPO_PATH = (BACKUP_DATA_DIR_PATH / REPO_DIRNAME).resolve()
 GIT_PATH = REPO_PATH / '.git'
-DB_PATH = Path('test.sqlite3').resolve()
+DB_NAME = 'test'
+DB_PATH = Path(DB_NAME + '.sqlite3').resolve()
 SSH_KEY_PATH = Path.home() / '.ssh/' / 'corpus_manager'
 
 
@@ -60,6 +62,22 @@ def get_commits():
         sha_url = get_sha_url(sha)
         commits.append({'sha': sha, 'sha_url': sha_url, 'date': date})
     return commits
+
+
+def backup():
+    shutil.copy(DB_PATH, REPO_PATH)
+
+    DB_SQLITE3 = f'{DB_NAME}.sqlite3'
+    DB_SQL = f'{DB_NAME}.sql'
+
+    csv_conversion_cdm = f'sqlite3 {DB_SQLITE3} .dump > {DB_SQL}'
+    subprocess.run(csv_conversion_cdm, shell=True)
+
+    add_cmd = f'git --git-dir={GIT_PATH} add -v {DB_SQL}'
+    proc = subprocess.run(add_cmd, shell=True, capture_output=True)
+    if proc.stdout:
+        push_cmd = f'git --git-dir={GIT_PATH} commit; git --git-dir={GIT_PATH} push'
+        subprocess.run(push_cmd, shell=True)
 
 
 @login_required
