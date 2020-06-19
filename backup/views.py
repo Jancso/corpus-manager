@@ -129,7 +129,7 @@ class RepositoryCreateView(LoginRequiredMixin, View):
             clone_cmd = f'git clone {repository_url} {REPO_PATH}'
             subprocess.run(clone_cmd, shell=True)
 
-            return redirect('backup:scheduler-create-view')
+            return redirect('backup:backup-view')
 
         context = {'form': form}
         return render(request, self.template, context)
