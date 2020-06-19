@@ -45,22 +45,32 @@ def get_remote_url():
     return https_url
 
 
+def get_sha_url(sha):
+    remote_url = get_remote_url()[:-4]
+    return Path(remote_url) / '-' / 'commit' / sha
+
+
+def get_commits():
+    log_cmd = f'git --git-dir={GIT_PATH} log --pretty=format:"%H%x09%ad%x09%s"'
+    proc = subprocess.run(log_cmd, shell=True, capture_output=True)
+    logs = str(proc.stdout, 'utf-8').split('\n')
+    commits = []
+    for log in logs:
+        sha, date, msg = log.split('\t')
+        sha_url = get_sha_url(sha)
+        commits.append({'sha': sha, 'sha_url': sha_url, 'date': date})
+    return commits
+
+
 @login_required
 def backup_view(request):
     if backup_repo_exists() and ssh_key_exists():
-        log_cmd = f'git --git-dir={GIT_PATH} log --pretty=format:"%h%x09%ad%x09%s"'
-        proc = subprocess.run(log_cmd, shell=True, capture_output=True)
-        logs = str(proc.stdout, 'utf-8').split('\n')
-
-        commits = []
-        for log in logs:
-            commits.append(log.split('\t'))
-
+        commits = get_commits()
         repository = get_remote_url()
 
         context = {
             'repository': repository,
-            'log': repr(commits),
+            'commits': commits,
             'public_key': get_public_ssh_key()
         }
         return render(request, 'backup/backup_overview_ok.html', context)

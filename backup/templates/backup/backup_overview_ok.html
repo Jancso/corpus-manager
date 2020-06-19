@@ -23,7 +23,27 @@
                         <h6 class="card-header">Backups</h6>
 
                         <div class="card-body">
-                            {{ log }}
+                            <table class="table table-responsive table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">SHA</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                {% for commit in commits %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ commit.sha_url }}" target="_blank">
+                                                {{ commit.sha }}
+                                            </a>
+                                        </td>
+                                        <td>{{ commit.date }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -39,7 +59,8 @@
                         <h6 class="card-header">Repository</h6>
 
                         <div class="card-body">
-                            <a href="{{ repository }}" target="_blank">{{ repository }}</a>
+                            <a href="{{ repository }}"
+                               target="_blank">{{ repository }}</a>
                         </div>
                     </div>
                 </div>
