@@ -132,10 +132,16 @@ class ParticipantLangUpdateView(LoginRequiredMixin, View):
 
 
 @login_required
-def participant_csv_export(_):
+def participant_csv_export_view(_):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="participants.csv"'
 
+    export_participants_as_csv(response)
+
+    return response
+
+
+def export_participants_as_csv(response):
     fieldnames = [
         'Added by',
         'Short name',
@@ -152,7 +158,6 @@ def participant_csv_export(_):
         'Contact address',
         'E-mail/Phone'
     ]
-
     writer = csv.DictWriter(response, fieldnames=fieldnames)
     writer.writeheader()
     for participant in Participant.objects.all():
@@ -160,7 +165,8 @@ def participant_csv_export(_):
         first_langs = []
         second_langs = []
         main_lang = []
-        for lang in ParticipantLangInfo.objects.filter(participant=participant):
+        for lang in ParticipantLangInfo.objects.filter(
+                participant=participant):
             if lang.main:
                 main_lang.append(lang.language.name)
             if lang.first:
@@ -184,5 +190,3 @@ def participant_csv_export(_):
             'Contact address': '',
             'E-mail/Phone': ''
         })
-
-    return response

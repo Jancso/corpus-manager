@@ -12,7 +12,7 @@ from metadata.views.session_views import \
 from metadata.views.file_views import file_list_view
 from metadata.views.participant_views import \
     participant_list_view, ParticipantCreateView, participant_detail_view, \
-    ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView, participant_csv_export
+    ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView, participant_csv_export_view
 from metadata.views.language_views import language_list_view, language_import_view
 
 app_name = 'metadata'
@@ -45,7 +45,7 @@ urlpatterns = [
     path('participants/<int:pk>/languages/create/', ParticipantLangInfoCreateView.as_view(), name='participant-lang-create'),
     path('participants/<int:ppk>/languages/<int:lpk>/delete/', participant_language_delete_view , name='participant-lang-delete'),
     path('participants/<int:ppk>/languages/<int:lpk>/update/', ParticipantLangUpdateView.as_view(), name='participant-lang-update'),
-    path('participants/export/csv/', participant_csv_export, name='participant-csv-export'),
+    path('participants/export/csv/', participant_csv_export_view, name='participant-csv-export'),
 
     path('recordings/', rec_list_view, name='rec-list'),
     path('recordings/<int:pk>/', rec_detail_view, name='rec-detail'),
