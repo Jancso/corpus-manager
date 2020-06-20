@@ -8,7 +8,8 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
 from backup.forms import RepoForm, SchedulerForm
-
+from metadata.views.participant_views import export_participants_as_csv
+from metadata.views.session_views import export_sessions_as_csv
 
 BACKUP_DATA_DIR_PATH = Path('backup-data')
 REPO_DIRNAME = 'backup-repo'
@@ -65,13 +66,23 @@ def get_commits():
 
 
 def backup():
+    # metadata tables export
+    sessions_filename = 'sessions.csv'
+    with open(REPO_PATH / sessions_filename, 'w') as sessions_file:
+        export_sessions_as_csv(sessions_file)
+
+    participants_filename = 'participants.csv'
+    with open(REPO_PATH / participants_filename, 'w') as participants_file:
+        export_participants_as_csv(participants_file)
+
+    # sqlite3 database export
     sqlite3_path = Path(shutil.copy(DB_PATH, REPO_PATH))
     sql_path = sqlite3_path.with_suffix('.sql')
 
     csv_conversion_cdm = f'sqlite3 {sqlite3_path} .dump > {sql_path}'
     subprocess.run(csv_conversion_cdm, shell=True)
 
-    add_cmd = f'git -C {REPO_PATH} add -v {sql_path.name}'
+    add_cmd = f'git -C {REPO_PATH} add -v {sessions_filename} {participants_filename} {sql_path.name}'
     subprocess.run(add_cmd, shell=True, capture_output=True)
     commit_cmd = f'git -C {REPO_PATH} commit -m "{COMMIT_MSG}"'
     subprocess.run(commit_cmd, shell=True)
