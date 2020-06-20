@@ -127,7 +127,8 @@ def session_csv_export(_):
         # fetch participants and roles
         participants = []
         for p in session.sessionparticipant_set.all():
-            part_role = f'{p.participant.short_name} ({p.role})'
+            roles = ' & '.join(role.name for role in p.roles.all())
+            part_role = f'{p.participant.short_name} ({roles})'
             participants.append(part_role)
         participants_and_roles = ', '.join(participants)
 

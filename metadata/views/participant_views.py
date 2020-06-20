@@ -172,7 +172,7 @@ def participant_csv_export(_):
             'Added by': participant.added_by,
             'Short name': participant.short_name,
             'Full name': participant.full_name,
-            'Birth date': participant.birth_date,
+            'Birth date': participant.get_birth_date(),
             'Age': participant.age,
             'Gender': participant.gender,
             'Education': participant.education,
