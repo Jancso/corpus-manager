@@ -7,7 +7,7 @@ from metadata.views.role_views import role_import_view, role_list_view
 from metadata.views.session_views import \
     session_list_view, session_detail_view, SessionUpdateView, \
     session_delete_view, session_participants_create_view, \
-    session_participant_delete_view, session_csv_export, \
+    session_participant_delete_view, session_csv_export_view, \
     SessionParticipantUpdateView
 from metadata.views.file_views import file_list_view
 from metadata.views.participant_views import \
@@ -35,7 +35,7 @@ urlpatterns = [
     path('sessions/<int:spk>/participants/<int:ppk>/update/',
          SessionParticipantUpdateView.as_view(),
          name='session-participant-update'),
-    path('sessions/export/csv/', session_csv_export, name='session-csv-export'),
+    path('sessions/export/csv/', session_csv_export_view, name='session-csv-export'),
 
     path('participants/', participant_list_view, name='participant-list'),
     path('participants/create/', ParticipantCreateView.as_view(), name='participant-create'),

@@ -106,10 +106,16 @@ def session_participant_delete_view(_, spk, ppk):
 
 
 @login_required
-def session_csv_export(_):
+def session_csv_export_view(_):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="sessions.csv"'
 
+    export_sessions_as_csv(response)
+
+    return response
+
+
+def export_sessions_as_csv(response):
     fieldnames = [
         'Code',
         'Date',
@@ -120,7 +126,6 @@ def session_csv_export(_):
         'Participants and roles',
         'Comments'
     ]
-
     writer = csv.DictWriter(response, fieldnames=fieldnames)
     writer.writeheader()
     for session in Session.objects.all():
@@ -140,5 +145,3 @@ def session_csv_export(_):
                          'Content': session.content,
                          'Participants and roles': participants_and_roles,
                          'Comments': session.comments})
-
-    return response
