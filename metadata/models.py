@@ -206,12 +206,12 @@ class File(models.Model):
 
     recording = models.ForeignKey('metadata.Recording', on_delete=models.CASCADE)
 
-    TYPE_AUDIO = 'A'
-    TYPE_VIDEO = 'V'
+    TYPE_AUDIO = 'audio'
+    TYPE_VIDEO = 'video'
 
     TYPE_CHOICES = [
-        (TYPE_AUDIO, 'audio'),
-        (TYPE_VIDEO, 'video')
+        (TYPE_AUDIO, TYPE_AUDIO),
+        (TYPE_VIDEO, TYPE_VIDEO)
     ]
 
     type = models.CharField(choices=TYPE_CHOICES, max_length=5)
@@ -222,10 +222,10 @@ class File(models.Model):
     FORMAT_MOV = 'mov'
 
     FORMAT_CHOICES = [
-        (FORMAT_MOV, 'MOV'),
-        (FORMAT_MP4, 'MP4'),
-        (FORMAT_MTS, 'MTS'),
-        (FORMAT_WAV, 'WAV')
+        (FORMAT_MOV, FORMAT_MOV),
+        (FORMAT_MP4, FORMAT_MP4),
+        (FORMAT_MTS, FORMAT_MTS),
+        (FORMAT_WAV, FORMAT_WAV)
     ]
 
     format = models.CharField(choices=FORMAT_CHOICES, max_length=3)
