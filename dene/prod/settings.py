@@ -31,9 +31,10 @@ ALLOWED_HOSTS = ['172.23.183.28']
 # Application definition
 # NB: order matters!
 INSTALLED_APPS = [
-    'home',
+    'backup',
     'registration',
     'users',
+    'metadata',
     'workflow',
     'django.contrib.admin',
     'django.contrib.auth',
