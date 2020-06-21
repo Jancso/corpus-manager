@@ -15,7 +15,8 @@ mkdir prod_static
 
 python3 -m venv venv
 source venv/bin/activate
-pip install wheel mod_wsgi django pillow
+pip install wheel mod_wsgi
+pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py collectstatic
