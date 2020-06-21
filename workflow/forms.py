@@ -13,7 +13,7 @@ class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
 class TaskForm(forms.ModelForm):
     assignees = UserModelMultipleChoiceField(required=False,
-                                             queryset=User.objects.all())
+                                             queryset=User.objects.order_by('-is_active', 'username'))
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('instance'):
