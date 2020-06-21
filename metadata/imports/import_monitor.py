@@ -106,6 +106,7 @@ people_dict = {
     'Andreas Gerster': ['andreas_gerster'],
     'Andreas Gerster(CR)': ['andreas_gerster', 'caroline_remensberger'],
     'Andre Mueller': ['andre_mueller'],
+    'Andre Mueller (AB)': ['andre_mueller', 'alexandra_bosshard'],
     'Andre Muellet (AP)': ['andre_mueller', 'amelie_paulsen'],
     'Candace Janvier': ['candace_janvier'],
     'Caroline': ['caroline_remensberger'],
@@ -120,6 +121,7 @@ people_dict = {
     'Chastity': ['chastity_sylvestre'],
     'Chastity/Dawn': ['chastity_sylvestre','dawn_herman'],
     'Chastity Sylvestre': ['chastity_sylvestre'],
+    'CHECK': [None],
     'CS/DH': ['chastity_sylvestre', 'dawn_herman'],
     'Curtis': ['curtis_fontaine'],
     'Curtis/Leanne': ['curtis_fontaine', 'leanne_fontaine'],
@@ -132,6 +134,7 @@ people_dict = {
     'Erika Herman': ['erika_herman'],
     'Farris Lemaigre': ['farris_lemaigre'],
     'FaLemaigre/Trrina Lemaigre': ['farris_lemaigre', 'trina_lemaigre'],
+    'FaL/Trrina Lemaigre': ['farris_lemaigre', 'trina_lemaigre'],
     'Gabrielle/Curtis': ['gabrielle_fontaine', 'curtis_fontaine'],
     'Gabrielle (Curtis) Fontaine': ['gabrielle_fontaine', 'curtis_fontaine'],
     'Gabrielle Fontaine': ['gabrielle_fontaine'],
@@ -150,13 +153,17 @@ people_dict = {
     'Jordan Klein (AlL)': ['jordan_klein', 'allison_lemaigre'],
     'JW (Jer/Mandy)': ['jeanette_wiens', 'jeremiah_mercredi', 'mandy_herman'],
     'JW/Jessica Gutiw': ['jeanette_wiens', 'jessica_gutiw'],
+    'Katharina Habel': ['katharina_habel'],
     'Leanne': ['leanne_fontaine'],
     'Leanne Fontaine': ['leanne_fontaine'],
     'Mary Roy': ['mary_roy'],
     'Mary Ruelling': ['mary_ruelling'],
+    'maybe?': [None],
     'Melanie Truessel': ['melanie_truessel'],
     'new stud assist FNUNIV': [None],
     'next': [None],
+    'NEXT': [None],
+    'NEXT?': [None],
     'not started': [None],
     'Rae Cheecham (MHE)': ['rae_cheecham', 'mandy_herman'],
     'Rae Cheecham/JordanK': ['rae_cheecham', 'jordan_klein'],
@@ -193,6 +200,7 @@ def import_monitor(file):
     Recording.objects.all().delete()
     Task.objects.all().delete()
     Assignment.objects.all().delete()
+    User.objects.exclude(username__exact='anna_jancso').delete()
 
     file = file.read().decode()
 
@@ -257,6 +265,7 @@ def import_monitor(file):
                     user, _ = User.objects.update_or_create(
                         username=person_name,
                         email='',
+                        is_active=False,
                         defaults={
                             'first_name': person_name.title()
                         }
