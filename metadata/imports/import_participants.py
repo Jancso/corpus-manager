@@ -45,6 +45,11 @@ def import_participants(file):
                 if match:
                     birth_year = match.group()
 
+        if row['Gender'] == 'Female':
+            gender = Participant.GENDER_FEMALE
+        else:
+            gender = Participant.GENDER_MALE
+
         participant = Participant.objects.create(
             added_by=row['Added by'],
             short_name=row['Short name'],
@@ -54,7 +59,7 @@ def import_participants(file):
             birth_month=birth_month,
             birth_year=birth_year,
             age=row['Age'],
-            gender=row['Gender'],
+            gender=gender,
             education=row['Education'],
             language_biography=row['Language biography'],
             description=row['Description']
