@@ -14,7 +14,7 @@ from metadata.views.session_views import export_sessions_as_csv
 BACKUP_DATA_DIR_PATH = Path('backup-data')
 REPO_DIRNAME = 'backup-repo'
 REPO_PATH = (BACKUP_DATA_DIR_PATH / REPO_DIRNAME).resolve()
-DB_NAME = 'test'
+DB_NAME = 'db'
 DB_PATH = Path(DB_NAME + '.sqlite3').resolve()
 SSH_KEY_PATH = Path.home() / '.ssh/' / 'corpus_manager'
 COMMIT_MSG = 'Backup database'
