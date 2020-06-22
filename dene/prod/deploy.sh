@@ -1,14 +1,14 @@
 # Create instance
 # Image: Ubuntu 18.04
 
-# set host in dene/prod/settings.py: ALLOWED_HOSTS
-
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install apache2 apache2-dev python3-venv libapache2-mod-wsgi-py3 python3-dev
 
 git clone https://github.com/Jancso/dene-webapp.git
 cd dene-webapp
+
+# set host in dene/prod/settings.py: ALLOWED_HOSTS
 
 cp dene/prod/settings.py dene/
 
