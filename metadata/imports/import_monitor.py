@@ -202,8 +202,6 @@ def import_monitor(file):
     Assignment.objects.all().delete()
     User.objects.exclude(username__exact='anna_jancso').delete()
 
-    file = file.read().decode()
-
     reader = csv.DictReader(StringIO(file), fieldnames=FIELDNAMES)
 
     next(reader)
@@ -282,3 +280,5 @@ def import_monitor(file):
                         task=task,
                         person=user
                     )
+
+    print('Monitor import done!')

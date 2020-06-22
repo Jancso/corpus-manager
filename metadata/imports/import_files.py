@@ -9,7 +9,6 @@ import csv
 def import_files(file):
     File.objects.all().delete()
 
-    file = file.read().decode()
     reader = csv.DictReader(StringIO(file))
 
     files = []
@@ -53,3 +52,5 @@ def import_files(file):
         files.append(file)
 
     #File.objects.bulk_create(files)
+
+    print('Files import done!')

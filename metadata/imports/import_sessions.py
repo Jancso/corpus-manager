@@ -8,7 +8,6 @@ from django.db.utils import IntegrityError
 def import_sessions(file):
     Session.objects.all().delete()
 
-    file = file.read().decode()
     reader = csv.DictReader(StringIO(file))
 
     for row in reader:
@@ -56,3 +55,5 @@ def import_sessions(file):
                         session_participant.roles.add(role_obj)
                     except Role.DoesNotExist:
                         print(f'role "{role}" does not exist!')
+
+    print('Sessions import done!')

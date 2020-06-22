@@ -10,7 +10,6 @@ from metadata.util.generate_random_code import generate_random_code
 def import_participants(file):
     Participant.objects.all().delete()
 
-    file = file.read().decode()
     reader = csv.DictReader(StringIO(file))
 
     participants = set()
@@ -92,3 +91,5 @@ def import_participants(file):
                         part_lang_info.main = True
 
         ParticipantLangInfo.objects.bulk_create(langs.values())
+
+    print('Participants import done!')
