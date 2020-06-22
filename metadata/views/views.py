@@ -1,4 +1,4 @@
-from metadata.tasks import import_metadata
+from metadata.imports.import_metadata import import_metadata
 from metadata.forms import UploadFileForm
 from django.views.generic.edit import View
 from django.contrib.auth.mixins import UserPassesTestMixin

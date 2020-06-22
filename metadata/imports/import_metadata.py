@@ -1,9 +1,7 @@
 from metadata.imports import import_sessions, import_files, import_participants, import_monitor
-from background_task import background
 
 
-@background(schedule=5)
-def import_metadata_task(files):
+def _import_metadata(files):
     if 'participants_file' in files:
         participants_file = files['participants_file']
         import_participants.import_participants(participants_file)
@@ -23,4 +21,4 @@ def import_metadata_task(files):
 
 def import_metadata(files):
     files_str = {f: files[f].read().decode() for f in files}
-    import_metadata_task(files_str)
+    _import_metadata(files_str)

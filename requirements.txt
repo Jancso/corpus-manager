@@ -3,4 +3,3 @@ pillow
 requests~=2.23.0
 python-dateutil~=2.8.1
 hurry.filesize==0.9
-django-background-tasks
