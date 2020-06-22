@@ -35,7 +35,3 @@ sudo systemctl restart apache2.service
 # use SSL
 cd dene/prod
 sh create_certificate.sh
-
-# for heavy tasks such as imports
-cd ../..
-nohup python manage.py process_tasks &
