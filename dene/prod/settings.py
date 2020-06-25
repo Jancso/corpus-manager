@@ -25,7 +25,7 @@ SECRET_KEY = '51%5^189l7c)q7*m970xawkd5k-bq2dh&92j4&&tuuzg&t5p2b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['172.23.183.28']
+ALLOWED_HOSTS = ['.corpus-manager.ch']
 
 
 # Application definition
