@@ -32,6 +32,4 @@ sudo cp dene/prod/apache2.conf /etc/apache2/apache2.conf
 # apachectl configtest
 sudo systemctl restart apache2.service
 
-# use SSL
-cd dene/prod
-sh create_certificate.sh
+# enable SSL (see create_certificate.sh)
