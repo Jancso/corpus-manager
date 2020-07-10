@@ -3,7 +3,7 @@ from django.urls import path
 from metadata.views.rec_views import rec_delete_view, \
     RecordingUpdateView, rec_list_view, rec_create_view, rec_detail_view
 from metadata.views.views import metadata_view, MetadataImportView
-from metadata.views.role_views import role_import_view, role_list_view
+from metadata.views.role_views import role_import_view, role_list_view, role_create_view
 from metadata.views.session_views import \
     session_list_view, session_detail_view, SessionUpdateView, \
     session_delete_view, session_participants_create_view, \
@@ -24,6 +24,7 @@ urlpatterns = [
     path('languages/import/', language_import_view, name='language-import'),
 
     path('roles/', role_list_view, name='role-list'),
+    path('roles/create/', role_create_view, name='role-create'),
     path('roles/import/', role_import_view, name='role-import'),
 
     path('sessions/', session_list_view, name='session-list'),

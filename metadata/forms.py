@@ -182,3 +182,9 @@ class UploadFileForm(forms.Form):
     sessions_file = forms.FileField(required=False)
     monitor_file = forms.FileField(required=False)
     files_file = forms.FileField(required=False)
+
+
+class RoleForm(BootstrapForm):
+    class Meta:
+        model = Role
+        fields = '__all__'
