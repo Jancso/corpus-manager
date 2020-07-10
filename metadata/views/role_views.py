@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import permission_required, login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from metadata.imports.import_roles import import_roles
 from metadata.models import Role
@@ -29,3 +29,9 @@ def role_create_view(request):
         'role_form': role_form
     }
     return render(request, 'metadata/role/role_create.html', context)
+
+
+@login_required
+def role_delete_view(_, pk):
+    get_object_or_404(Role, pk=pk).delete()
+    return redirect('metadata:role-list')
