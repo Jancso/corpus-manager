@@ -1,28 +1,32 @@
 <div class="card">
     <h6 class="card-header">
         Roles
-        <span class="badge badge-dark ml-2">{{ roles|length }}</span>
-        {% include 'workflow/util/table-filter-input.html' with filter_input_id='roles-input' %}
     </h6>
 
     <div class="card-body">
 
-        <table id="roles-table" class="table table-responsive table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-            </tr>
+        {% for role in roles %}
 
-            </thead>
-            <tbody>
-            {% for role in roles %}
-                <tr>
-                    <td>{{ role.name }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            {% if forloop.counter0|divisibleby:4 %}
+
+                {% if forloop.counter0 != 0 %}
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-3"><p class="lead">{{ role.name }}</p></div>
+
+                {% if forloop.last %}
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <div class="col-3">
+                    <p class="lead">{{ role.name }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+
     </div>
-</div>
 
-{% include 'workflow/util/table-filter-function.html' with filter_table_id='roles-table' filter_input_id='roles-input' %}
+</div>
