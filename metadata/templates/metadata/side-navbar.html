@@ -1,5 +1,5 @@
 <div id="metadata-list" class="row" hidden>
-    <div class="col-12 offset-md-2 mt-3 mb-3">
+    <div class="col-12 offset-1 mt-3 mb-3">
         <table>
             <tr>
                 <td><i class="fas fa-table pr-2"></i></td>
@@ -34,6 +34,29 @@
                 </td>
             </tr>
 
+        </table>
+
+        <div class="w-50">
+            <hr>
+        </div>
+
+        <table>
+            <tr>
+                <td><i class="fas fa-table pr-2"></i></td>
+                <td>
+                    <a href="{% url 'metadata:session-list' %}">
+                        Roles
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td><i class="fas fa-table pr-2"></i></td>
+                <td>
+                    <a href="{% url 'metadata:session-list' %}">
+                        Languages
+                    </a>
+                </td>
+            </tr>
         </table>
     </div>
 </div>
