@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
     <title>Dene</title>
@@ -23,7 +23,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static "css/custom.css" %}">
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 <div id="main-container" class="container-fluid">
 
     <div id="top-nav" class="row">
@@ -43,13 +43,12 @@
             {% endblock %}
         </div>
     </div>
-
-    <div id="footer" class="row">
-        <div class="col-12">
-            {% include 'base/footer.html' %}
-        </div>
-    </div>
-
 </div>
+
+<footer id="footer" class="mt-auto py-1">
+    <div class="container">
+        {% include 'base/footer.html' %}
+    </div>
+</footer>
 </body>
 </html>

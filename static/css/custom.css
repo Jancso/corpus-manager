@@ -1,3 +1,7 @@
+body {
+    background-image: linear-gradient(whitesmoke, whitesmoke);
+}
+
 #top-nav {
     background-image: linear-gradient(#007bff, #007bff);
     position: relative;
