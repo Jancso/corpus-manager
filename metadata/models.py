@@ -195,7 +195,7 @@ class SessionParticipant(models.Model):
 
 class SessionParticipantRole(models.Model):
     session_participant = models.ForeignKey('metadata.SessionParticipant', on_delete=models.CASCADE)
-    role = models.ForeignKey('metadata.Role', on_delete=models.CASCADE)
+    role = models.ForeignKey('metadata.Role', on_delete=models.PROTECT)
 
     class Meta:
         unique_together = ('session_participant', 'role')

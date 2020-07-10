@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import permission_required, login_required
+from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 
 from metadata.imports.import_roles import import_roles
-from metadata.models import Role
+from metadata.models import Role, SessionParticipant
 from metadata import forms
 
 
@@ -32,6 +33,15 @@ def role_create_view(request):
 
 
 @login_required
-def role_delete_view(_, pk):
-    get_object_or_404(Role, pk=pk).delete()
+def role_delete_view(request, pk):
+    role = get_object_or_404(Role, pk=pk)
+    try:
+        role.delete()
+    except ProtectedError:
+        participants = SessionParticipant.objects.filter(roles__name__contains=role.name)[:10]
+        return render(request,
+                      'metadata/role/role_delete_modal.html',
+                      {'role': role,
+                       'participants': participants})
+
     return redirect('metadata:role-list')
