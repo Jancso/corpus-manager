@@ -15,45 +15,7 @@
         Metadata
     </a>
 
-    <div id="metadata-list" class="row" hidden>
-        <div class="col-12 offset-md-2 mt-3 mb-3">
-            <table>
-                <tr>
-                    <td><i class="fas fa-table pr-2"></i></td>
-                    <td>
-                        <a href="{% url 'metadata:session-list' %}">
-                            Sessions
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><i class="fas fa-child pr-2"></i></td>
-                    <td>
-                        <a href="{% url 'metadata:participant-list' %}">
-                            Participants
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><i class="fas fa-video pr-2"></i></td>
-                    <td>
-                        <a href="{% url 'metadata:rec-list' %}">
-                            Recordings
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><i class="fas fa-file-video pr-2"></i></td>
-                    <td>
-                        <a href="{% url 'metadata:file-list' %}">
-                            Files
-                        </a>
-                    </td>
-                </tr>
-
-            </table>
-        </div>
-    </div>
+    {% include 'metadata/side-navbar.html' %}
 
     <a id="workflow-link" class="nav-link"
        href="{% url 'workflow:workflow' %}">
