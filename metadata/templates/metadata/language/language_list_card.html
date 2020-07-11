@@ -2,28 +2,20 @@
     <h6 class="card-header">
         Languages
         <span class="badge badge-dark ml-2">{{ languages|length }}</span>
-        {% include 'workflow/util/table-filter-input.html' with filter_input_id='languages-input' %}
     </h6>
 
     <div class="card-body">
-        <table id="languages-table" class="table table-responsive table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">ISO</th>
-            </tr>
-
-            </thead>
-            <tbody>
-            {% for language in languages %}
-                <tr>
-                    <td>{{ language.name }}</td>
-                    <td>{{ language.iso_code }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% for group in languages %}
+            <div class="row">
+                {% for language in group %}
+                    <div class="col-xl-4 px-5">
+                        <div class="d-flex justify-content-between lead">
+                            <div>{{ language.name }}</div>
+                            <div>{{ language.iso_code }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
 </div>
-
-{% include 'workflow/util/table-filter-function.html' with filter_table_id='languages-table' filter_input_id='languages-input' %}
