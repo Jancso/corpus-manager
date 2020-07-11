@@ -19,11 +19,16 @@
 
                         <p class="lead">{{ role.name }}</p>
 
-                        <a href="{% url 'metadata:role-delete' role.pk %}"
-                           class="btn trash-icon"
-                           type="submit"><i
-                                class="fas fa-trash-alt"></i>
-                        </a>
+                        <div>
+                            <a href="{% url 'metadata:role-update' role.pk %}">
+                                <i class="fas fa-edit edit-icon"></i>
+                            </a>
+                            <a href="{% url 'metadata:role-delete' role.pk %}"
+                               class="btn trash-icon"
+                               type="submit"><i
+                                    class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
                     </div>
 
                     {% if forloop.last %}
@@ -33,11 +38,17 @@
             {% else %}
                 <div class="col-xl-3 d-flex justify-content-between">
                     <p class="lead">{{ role.name }}</p>
-                    <a href="{% url 'metadata:role-delete' role.pk %}"
-                       class="btn trash-icon"
-                       type="submit"><i
-                            class="fas fa-trash-alt"></i>
-                    </a>
+                    <div>
+                        <a href="{% url 'metadata:role-update' role.pk %}">
+                            <i class="fas fa-edit edit-icon"></i>
+                        </a>
+                        <a href="{% url 'metadata:role-delete' role.pk %}"
+                           class="btn trash-icon"
+                           type="submit"><i
+                                class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+
                 </div>
             {% endif %}
         {% endfor %}

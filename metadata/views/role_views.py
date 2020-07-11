@@ -33,6 +33,18 @@ def role_create_view(request):
 
 
 @login_required
+def role_update_view(request, pk):
+    role = get_object_or_404(Role, pk=pk)
+    role_form = forms.RoleForm(request.POST or None, instance=role)
+    if role_form.is_valid():
+        role_form.save()
+        return redirect('metadata:role-list')
+
+    context = {'role_form': role_form}
+    return render(request, 'metadata/role/role_update.html', context)
+
+
+@login_required
 def role_delete_view(request, pk):
     role = get_object_or_404(Role, pk=pk)
     try:
