@@ -22,6 +22,11 @@
                                 <a href="{% url 'metadata:language-update' language.pk %}">
                                     <i class="fas fa-edit edit-icon"></i>
                                 </a>
+                                <a href="{% url 'metadata:language-delete' language.pk %}"
+                                   class="btn trash-icon"
+                                   type="submit"><i
+                                        class="fas fa-trash-alt"></i>
+                                </a>
                             </div>
                         </div>
                     </div>

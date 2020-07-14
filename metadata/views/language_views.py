@@ -47,3 +47,9 @@ def language_update_view(request, pk):
 
     context = {'language_form': language_form}
     return render(request, 'metadata/language/language_update.html', context)
+
+
+@login_required
+def language_delete_view(_, pk):
+    get_object_or_404(Language, pk=pk).delete()
+    return redirect('metadata:language-list')
