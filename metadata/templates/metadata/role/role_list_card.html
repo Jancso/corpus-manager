@@ -1,6 +1,9 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h6>Roles</h6>
+        <h6>
+            Roles
+            <span class="badge badge-dark ml-2">{{ roles|length }}</span>
+        </h6>
         {% include 'metadata/role/role_add_button.html' %}
     </div>
 

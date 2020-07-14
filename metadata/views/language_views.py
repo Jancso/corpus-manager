@@ -8,14 +8,15 @@ from metadata.models import Language, ParticipantLangInfo
 
 
 def grouped(objs, n):
-    for i in range(0, len(objs), n):
-        yield objs[i:i + n]
+    return [objs[i:i + n] for i in range(0, len(objs), n)]
 
 
 @login_required
 def language_list_view(request):
     languages = grouped(Language.objects.order_by('name'), 3)
-    context = {'languages': languages}
+    context = {'languages': languages,
+               'language_count': sum(1 for g in languages for _ in g)
+               }
     return render(request,
                   'metadata/language/language_list.html', context)
 
