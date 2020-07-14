@@ -1,8 +1,11 @@
 <div class="card">
-    <h6 class="card-header">
-        Languages
-        <span class="badge badge-dark ml-2">{{ languages|length }}</span>
-    </h6>
+    <div class="card-header d-flex justify-content-between">
+        <h6>
+            Languages
+            <span class="badge badge-dark ml-2">{{ languages|length }}</span>
+        </h6>
+        {% include 'metadata/language/language_add_button.html' %}
+    </div>
 
     <div class="card-body">
         {% for group in languages %}

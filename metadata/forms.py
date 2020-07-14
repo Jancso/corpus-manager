@@ -188,3 +188,10 @@ class RoleForm(BootstrapForm):
     class Meta:
         model = Role
         fields = '__all__'
+
+
+class LanguageForm(BootstrapForm):
+    class Meta:
+        model = Language
+        fields = '__all__'
+        labels = {'iso_code': 'ISO code'}

@@ -1,0 +1,29 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-content %}
+
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="card">
+
+                <div class="card-header">Create language</div>
+
+                <div class="card-body">
+                    <form method="post">{% csrf_token %}
+                        <table class="table">
+                            {{ language_form.as_table }}
+                        </table>
+                        <input type="submit" class="btn btn-primary"
+                               value="Create language">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+
+
+{% endblock %}

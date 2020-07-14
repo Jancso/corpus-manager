@@ -13,7 +13,7 @@ from metadata.views.file_views import file_list_view
 from metadata.views.participant_views import \
     participant_list_view, ParticipantCreateView, participant_detail_view, \
     ParticipantUpdateView, participant_delete_view, ParticipantLangInfoCreateView, participant_language_delete_view, ParticipantLangUpdateView, participant_csv_export_view
-from metadata.views.language_views import language_list_view, language_import_view
+from metadata.views.language_views import language_list_view, language_import_view, language_create_view
 
 app_name = 'metadata'
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('', metadata_view, name='metadata-view'),
 
     path('languages/', language_list_view, name='language-list'),
+    path('languages/create/', language_create_view, name='language-create'),
     path('languages/import/', language_import_view, name='language-import'),
 
     path('roles/', role_list_view, name='role-list'),
