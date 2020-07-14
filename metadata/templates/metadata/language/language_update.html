@@ -1,0 +1,24 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-content %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <h6 class="card-header">Update language</h6>
+
+                <div class="card-body">
+                    <form method="post">{% csrf_token %}
+                        {{ language_form.as_p }}
+                        <input class="btn btn-primary" type="submit"
+                               value="Update">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+
+{% endblock %}

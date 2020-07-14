@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from metadata import forms
 from metadata.imports.import_languages import import_languages
@@ -35,3 +35,15 @@ def language_create_view(request):
         'language_form': language_form
     }
     return render(request, 'metadata/language/language_create.html', context)
+
+
+@login_required
+def language_update_view(request, pk):
+    language = get_object_or_404(Language, pk=pk)
+    language_form = forms.LanguageForm(request.POST or None, instance=language)
+    if language_form.is_valid():
+        language_form.save()
+        return redirect('metadata:language-list')
+
+    context = {'language_form': language_form}
+    return render(request, 'metadata/language/language_update.html', context)

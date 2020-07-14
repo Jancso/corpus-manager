@@ -13,8 +13,16 @@
                 {% for language in group %}
                     <div class="col-xl-4 px-5">
                         <div class="d-flex justify-content-between lead">
-                            <div>{{ language.name }}</div>
-                            <div>{{ language.iso_code }}</div>
+                            <div>
+                                {{ language.name }}
+                                ({{ language.iso_code }})
+                            </div>
+
+                            <div>
+                                <a href="{% url 'metadata:language-update' language.pk %}">
+                                    <i class="fas fa-edit edit-icon"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
