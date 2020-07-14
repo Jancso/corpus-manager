@@ -1,0 +1,47 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-content %}
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Delete language '{{ language.name }}'
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    You cannot delete language
+                    <p class="pt-2"><b>{{ language.name }}</b>
+                    <p>
+                        The following participants have this language
+                        assigned:
+                    <ul>
+                        {% for lang in participant_langs %}
+                            <li>{{ lang.participant.short_name }}</li>
+                        {% endfor %}
+                        <li>...</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'metadata:language-list' %}"
+                       class="btn btn-secondary">
+                        OK
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            if (!$("#myModal").parent().is('body'))
+                $("#myModal").appendTo("body");
+
+            $('#myModal').modal('show')
+        });
+    </script>
+
+{% endblock %}
+

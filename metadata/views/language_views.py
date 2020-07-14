@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 
 from metadata import forms
 from metadata.imports.import_languages import import_languages
-from metadata.models import Language
+from metadata.models import Language, ParticipantLangInfo
 
 
 def grouped(objs, n):
@@ -50,6 +51,15 @@ def language_update_view(request, pk):
 
 
 @login_required
-def language_delete_view(_, pk):
-    get_object_or_404(Language, pk=pk).delete()
+def language_delete_view(request, pk):
+    language = get_object_or_404(Language, pk=pk)
+    try:
+        language.delete()
+    except ProtectedError:
+        participant_langs = ParticipantLangInfo.objects.filter(language=language)[:10]
+        return render(request,
+                      'metadata/language/language_delete_modal.html',
+                      {'language': language,
+                       'participant_langs': participant_langs})
+
     return redirect('metadata:language-list')

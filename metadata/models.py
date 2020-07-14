@@ -142,7 +142,7 @@ class Participant(models.Model):
 
 class ParticipantLangInfo(models.Model):
     participant = models.ForeignKey('metadata.Participant', on_delete=models.CASCADE)
-    language = models.ForeignKey('metadata.Language', on_delete=models.CASCADE)
+    language = models.ForeignKey('metadata.Language', on_delete=models.PROTECT)
     main = models.BooleanField()
     first = models.BooleanField()
     second = models.BooleanField()
