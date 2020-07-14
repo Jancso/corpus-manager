@@ -10,7 +10,8 @@ body {
 }
 
 #top-nav a {
-    color: white;
+    color: gold;
+    font-family: 'Artifika';
 }
 
 #side-nav {
@@ -30,7 +31,8 @@ body {
     box-shadow: 0 -5px 20px lightsteelblue;
     z-index: 3;
     font-size: 10pt;
-    color: white;
+    color: gold;
+    font-family: 'Artifika';
 }
 
 #user-image {
