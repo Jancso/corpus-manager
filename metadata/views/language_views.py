@@ -13,7 +13,7 @@ def grouped(objs, n):
 
 @login_required
 def language_list_view(request):
-    languages = grouped(Language.objects.order_by('name'), 3)
+    languages = grouped(Language.objects.order_by('name'), 4)
     context = {'languages': languages,
                'language_count': sum(1 for g in languages for _ in g)
                }
