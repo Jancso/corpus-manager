@@ -1,13 +1,14 @@
 <div class="card">
-    <h6 class="card-header">
-        Sessions
-        <span class="badge badge-dark ml-2">{{ session_count }}</span>
-        {% include 'workflow/util/table-filter-input.html' with filter_input_id='sessions-input' %}
-    </h6>
+    <div class="card-header">
+        <h6>Sessions
+            <span class="badge badge-dark ml-2">{{ session_count }}</span>
+        </h6>
+    </div>
 
     <div class="card-body">
 
-        <table id="sessions-table" class="table table-responsive table-hover">
+        <table id="sessions-table"
+               class="table table-sm table-responsive table-hover">
             <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -21,10 +22,17 @@
             {% for session in page_obj %}
                 <tr>
                     <td>
-                        <a href="{% url 'metadata:session-detail' session.pk %}">
-                            {{ session.name }}</a>
+                        <span style="white-space: nowrap;">
+                            <a href="{% url 'metadata:session-detail' session.pk %}">
+                            {{ session.name }}
+                            </a>
+                        </span>
                     </td>
-                    <td>{{ session.date }}</td>
+                    <td>
+                        <span style="white-space: nowrap;">
+                        {{ session.date }}
+                        </span>
+                    </td>
                     <td>{{ session.get_target_child_age }}</td>
                     <td>{{ session.situation }}</td>
                 </tr>
@@ -45,7 +53,8 @@
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">&laquo; Previous</a>
+                    <a class="page-link" href="#" tabindex="-1">&laquo;
+                        Previous</a>
                 </li>
             {% endif %}
 
@@ -70,7 +79,8 @@
             {% if page_obj.has_next %}
                 <li class="page-item">
                     <a class="page-link"
-                       href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+                       href="?page={{ page_obj.next_page_number }}">Next
+                        &raquo;</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
@@ -81,5 +91,3 @@
     </nav>
 
 </div>
-
-{% include 'workflow/util/table-filter-function.html' with filter_table_id='sessions-table' filter_input_id='sessions-input' %}

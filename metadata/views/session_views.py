@@ -18,7 +18,7 @@ from metadata.forms import SessionForm, SessionParticipantFormset, \
 @login_required
 def session_list_view(request):
     session_list = Session.objects.all()
-    paginator = Paginator(session_list, 15)
+    paginator = Paginator(session_list, 30)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj,
