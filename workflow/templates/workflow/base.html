@@ -17,10 +17,8 @@
     {% endblock %}
 
     <script>
-        $(function () {
-            $('#workflow-link').addClass('active');
-            $('#workflow-list').removeAttr('hidden');
-        })
+        document.getElementById('workflow-link').classList.add('active');
+        document.getElementById('workflow-list').removeAttribute('hidden');
     </script>
 
 {% endblock %}

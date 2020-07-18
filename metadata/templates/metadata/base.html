@@ -17,10 +17,8 @@
     {% endblock %}
 
     <script>
-        $(function () {
-            $('#metadata-link').addClass('active');
-            $('#metadata-list').removeAttr('hidden');
-        })
+        document.getElementById('metadata-link').classList.add('active');
+        document.getElementById('metadata-list').removeAttribute('hidden');
     </script>
 
 {% endblock %}
