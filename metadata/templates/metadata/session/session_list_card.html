@@ -3,6 +3,14 @@
         <h6>Sessions
             <span class="badge badge-dark ml-2">{{ session_count }}</span>
         </h6>
+
+        <form action="" method="get">
+            <table class="table">
+                {{ filter.form.as_table }}
+            </table>
+
+            <input type="submit" value="Filter"/>
+        </form>
     </div>
 
     <div class="card-body">

@@ -1,4 +1,6 @@
 import csv
+from copy import deepcopy
+from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +12,7 @@ from django.views.generic import UpdateView
 from django.urls import reverse
 from django.views.generic.base import View
 
+from metadata.filters import SessionFilter
 from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
 from metadata.forms import SessionForm, SessionParticipantFormset, \
     SessionParticipantForm, SessionParticipantUpdateForm
@@ -17,12 +20,20 @@ from metadata.forms import SessionForm, SessionParticipantFormset, \
 
 @login_required
 def session_list_view(request):
-    session_list = Session.objects.all()
+    filter = SessionFilter(request.GET, queryset=Session.objects.all())
+
+    params = deepcopy(request.GET)
+    params.pop('page', None)
+    query_string = '?'+urlencode(params)
+
+    session_list = filter.qs
     paginator = Paginator(session_list, 30)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj,
-               'session_count': paginator.count}
+               'session_count': paginator.count,
+               'filter': filter,
+               'query_string': query_string}
     return render(request, 'metadata/session/session_list.html', context)
 
 
