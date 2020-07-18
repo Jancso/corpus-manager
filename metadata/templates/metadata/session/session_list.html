@@ -11,26 +11,26 @@
 
 {% block metadata-content %}
     <div class="row">
-        <div class="col-xl-2"></div>
-
         <div class="col-xl-8">
-
-            <div class="row mb-4">
-                <div class="col-8"></div>
-                <div class="col-4">
-                    <div class="d-flex justify-content-end">
-                        <a href="{% url 'metadata:session-csv-export' %}"
-                           class="btn btn-secondary btn-sm">
-                            <i class="fas fa-download pr-2"></i> Export CSV
-                        </a>
-                    </div>
-
-                </div>
+            <div class="col-xl-12">
+                {% include "metadata/session/session_list_card.html" %}
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-xl-12">
-                    {% include "metadata/session/session_list_card.html" %}
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Filter</h6>
+                </div>
+
+                <div class="card-body">
+                    <form action="" method="get">
+                        <table class="table">
+                            {{ filter.form.as_table }}
+                        </table>
+
+                        <input class="btn btn-primary btn-sm " type="submit" value="Filter"/>
+                    </form>
                 </div>
             </div>
         </div>

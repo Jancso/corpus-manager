@@ -1,21 +1,22 @@
 <div class="card">
     <div class="card-header">
-        <h6>Sessions
-            <span class="badge bg-dark ml-2">{{ session_count }}</span>
-        </h6>
+        <div class="d-flex justify-content-between align-items-center">
 
-        <form action="" method="get">
-            <table class="table">
-                {{ filter.form.as_table }}
-            </table>
+            <div class="h6">Sessions
+                <span class="badge bg-dark ml-2">{{ session_count }}</span>
+            </div>
 
-            <input type="submit" value="Filter"/>
-        </form>
+            {% include 'base/pagination.html' %}
+
+            <a href="{% url 'metadata:session-csv-export' %}"
+               class="btn btn-secondary btn-sm">
+                <i class="fas fa-download pr-2"></i> Export CSV
+            </a>
+
+        </div>
     </div>
 
     <div class="card-body">
-
-        {% include 'base/pagination.html' %}
 
         <table id="sessions-table"
                class="table table-responsive table-hover">
