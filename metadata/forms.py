@@ -2,26 +2,33 @@ import re
 
 from django import forms
 from django.forms import formset_factory
-from django.forms import BaseFormSet
+from django.forms import BaseFormSet, Form
 
 from metadata.models import Recording, File, Session, Participant, \
     SessionParticipant, ParticipantLangInfo, Language, Role
 
 
-class BootstrapForm(forms.ModelForm):
+class BootstrapModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class FileForm(BootstrapForm):
+class BootstrapForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class FileForm(BootstrapModelForm):
     class Meta:
         model = File
         fields = ['duration', 'size', 'location']
 
 
-class SessionForm(BootstrapForm):
+class SessionForm(BootstrapModelForm):
     class Meta:
         model = Session
         fields = '__all__'
@@ -37,7 +44,7 @@ class SessionForm(BootstrapForm):
                     'Dates in session name and date field do not match.')
 
 
-class ParticipantForm(BootstrapForm):
+class ParticipantForm(BootstrapModelForm):
     class Meta:
         model = Participant
         exclude = ['anonymized']
@@ -64,7 +71,7 @@ class ParticipantRoleModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         return obj.name
 
 
-class SessionParticipantUpdateForm(BootstrapForm):
+class SessionParticipantUpdateForm(BootstrapModelForm):
     roles = ParticipantRoleModelMultipleChoiceField(queryset=Role.objects.order_by('name'))
 
     class Meta:
@@ -72,7 +79,7 @@ class SessionParticipantUpdateForm(BootstrapForm):
         fields = ['roles']
 
 
-class SessionParticipantForm(BootstrapForm):
+class SessionParticipantForm(BootstrapModelForm):
     def __init__(self, *args, session, **kwargs):
         self.session = session
         super().__init__(*args, **kwargs)
@@ -115,7 +122,7 @@ class ParticipantLangModelMultipleChoiceField(forms.ModelChoiceField):
         return obj.name
 
 
-class ParticipantLangInfoForm(BootstrapForm):
+class ParticipantLangInfoForm(BootstrapModelForm):
     class Meta:
         model = ParticipantLangInfo
         exclude = ['participant']
@@ -123,7 +130,7 @@ class ParticipantLangInfoForm(BootstrapForm):
     language = ParticipantLangModelMultipleChoiceField(queryset=Language.objects.order_by('name'))
 
 
-class RecordingCreateForm(BootstrapForm):
+class RecordingCreateForm(BootstrapModelForm):
 
     FILES_WAV = 'wav'
     FILES_MOV = 'mov'
@@ -184,14 +191,31 @@ class UploadFileForm(forms.Form):
     files_file = forms.FileField(required=False)
 
 
-class RoleForm(BootstrapForm):
+class RoleForm(BootstrapModelForm):
     class Meta:
         model = Role
         fields = '__all__'
 
 
-class LanguageForm(BootstrapForm):
+class LanguageForm(BootstrapModelForm):
     class Meta:
         model = Language
         fields = '__all__'
         labels = {'iso_code': 'ISO code'}
+
+
+class AgeForm(BootstrapForm):
+    age_min = forms.CharField(max_length=7, initial='0')
+    age_max = forms.CharField(max_length=7, initial='100')
+
+    def clean_age_min(self):
+        age_min = self.cleaned_data.get('age_min')
+        if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_min):
+            raise forms.ValidationError('Invalid format')
+        return age_min
+
+    def clean_age_max(self):
+        age_max = self.cleaned_data.get('age_max')
+        if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_max):
+            raise forms.ValidationError('Invalid format')
+        return age_max

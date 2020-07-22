@@ -16,7 +16,7 @@ from django.views.generic.base import View
 from metadata.filters import SessionFilter
 from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
 from metadata.forms import SessionForm, SessionParticipantFormset, \
-    SessionParticipantForm, SessionParticipantUpdateForm
+    SessionParticipantForm, SessionParticipantUpdateForm, AgeForm
 
 
 def to_days(age):
@@ -62,11 +62,11 @@ def session_list_view(request):
     filter = SessionFilter(request.GET, queryset=Session.objects.all())
     sessions = filter.qs
 
-    # expensive, therefore check
-    if ('age_min' in request.GET and request.GET['age_min']) \
-            or ('age_max' in request.GET and request.GET['age_max']):
-        age_min = request.GET.get('age_min', 0)
-        age_max = request.GET.get('age_max', 100)
+    age_form = AgeForm(request.GET or None)
+
+    if age_form.is_valid() and age_form.has_changed():
+        age_min = age_form.cleaned_data['age_min']
+        age_max = age_form.cleaned_data['age_max']
         sessions = with_age_between(sessions, age_min, age_max)
 
     paginator = Paginator(sessions, 30)
@@ -76,6 +76,7 @@ def session_list_view(request):
     context = {'page_obj': page_obj,
                'session_count': paginator.count,
                'filter': filter,
+               'age_form': age_form,
                'query_string': get_query_string(request)}
     return render(request, 'metadata/session/session_list.html', context)
 
