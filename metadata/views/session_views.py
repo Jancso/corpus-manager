@@ -1,4 +1,5 @@
 import csv
+import re
 from copy import deepcopy
 from urllib.parse import urlencode
 
@@ -18,22 +19,64 @@ from metadata.forms import SessionForm, SessionParticipantFormset, \
     SessionParticipantForm, SessionParticipantUpdateForm
 
 
+def to_days(age):
+    if not age:
+        return -1
+
+    age = re.match(r"(\d*)(;(\d*)(.(\d*))?)?", str(age))
+
+    years = int(age.group(1))
+
+    if age.group(3):
+        months = int(age.group(3))
+    else:
+        months = 0
+
+    if age.group(5):
+        days = int(age.group(5))
+    else:
+        days = 0
+
+    return years * 365 + months * 30 + days
+
+
+def with_age_between(sessions, minimum=0, maximum=100):
+    result = []
+    for session in sessions:
+        age = session.get_target_child_age()
+        if to_days(minimum) <= to_days(age) <= to_days(maximum):
+            result.append(session)
+
+    return result
+
+
+def get_query_string(request):
+    params = deepcopy(request.GET)
+    params.pop('page', None)
+    query_string = '?' + urlencode(params)
+    return query_string
+
+
 @login_required
 def session_list_view(request):
     filter = SessionFilter(request.GET, queryset=Session.objects.all())
+    sessions = filter.qs
 
-    params = deepcopy(request.GET)
-    params.pop('page', None)
-    query_string = '?'+urlencode(params)
+    # expensive, therefore check
+    if ('age_min' in request.GET and request.GET['age_min']) \
+            or ('age_max' in request.GET and request.GET['age_max']):
+        age_min = request.GET.get('age_min', 0)
+        age_max = request.GET.get('age_max', 100)
+        sessions = with_age_between(sessions, age_min, age_max)
 
-    session_list = filter.qs
-    paginator = Paginator(session_list, 30)
+    paginator = Paginator(sessions, 30)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
     context = {'page_obj': page_obj,
                'session_count': paginator.count,
                'filter': filter,
-               'query_string': query_string}
+               'query_string': get_query_string(request)}
     return render(request, 'metadata/session/session_list.html', context)
 
 
