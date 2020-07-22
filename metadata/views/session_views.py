@@ -73,6 +73,11 @@ def session_list_view(request):
                 sessionparticipant__participant__short_name=target_child,
                 sessionparticipant__roles__name='child')
 
+        if 'participants' in changed_data:
+            participants = session_filter_form.cleaned_data['participants']
+            sessions = sessions.filter(
+                sessionparticipant__participant__in=participants)
+            
         if 'age_min' in changed_data or 'age_max' in changed_data:
             age_min = session_filter_form.cleaned_data['age_min']
             age_max = session_filter_form.cleaned_data['age_max']

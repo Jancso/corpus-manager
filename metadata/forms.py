@@ -61,7 +61,7 @@ class ParticipantForm(BootstrapModelForm):
         return short_name
 
 
-class ParticipantModelMultipleChoiceField(forms.ModelChoiceField):
+class ParticipantModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return obj.short_name
 
@@ -84,7 +84,7 @@ class SessionParticipantForm(BootstrapModelForm):
         self.session = session
         super().__init__(*args, **kwargs)
 
-    participant = ParticipantModelMultipleChoiceField(queryset=Participant.objects.order_by('short_name'))
+    participant = ParticipantModelChoiceField(queryset=Participant.objects.order_by('short_name'))
     roles = ParticipantRoleModelMultipleChoiceField(queryset=Role.objects.order_by('name'))
 
     class Meta:
@@ -204,11 +204,19 @@ class LanguageForm(BootstrapModelForm):
         labels = {'iso_code': 'ISO code'}
 
 
+class ParticipantModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return obj.short_name
+
+
 class SessionFilterForm(BootstrapForm):
     age_min = forms.CharField(max_length=7, initial='0')
     age_max = forms.CharField(max_length=7, initial='100')
 
     target_child = forms.CharField(max_length=4, required=False)
+
+    participants = ParticipantModelMultipleChoiceField(
+        queryset=Participant.objects.order_by('short_name'))
 
     def clean_age_min(self):
         age_min = self.cleaned_data.get('age_min')
