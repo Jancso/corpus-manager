@@ -16,7 +16,7 @@ from django.views.generic.base import View
 from metadata.filters import SessionFilter
 from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
 from metadata.forms import SessionForm, SessionParticipantFormset, \
-    SessionParticipantForm, SessionParticipantUpdateForm, AgeForm
+    SessionParticipantForm, SessionParticipantUpdateForm, SessionFilterForm
 
 
 def to_days(age):
@@ -62,12 +62,21 @@ def session_list_view(request):
     filter = SessionFilter(request.GET, queryset=Session.objects.all())
     sessions = filter.qs
 
-    age_form = AgeForm(request.GET or None)
+    session_filter_form = SessionFilterForm(request.GET or None)
 
-    if age_form.is_valid() and age_form.has_changed():
-        age_min = age_form.cleaned_data['age_min']
-        age_max = age_form.cleaned_data['age_max']
-        sessions = with_age_between(sessions, age_min, age_max)
+    if session_filter_form.is_valid() and session_filter_form.has_changed():
+        changed_data = session_filter_form.changed_data
+
+        if 'target_child' in changed_data:
+            target_child = session_filter_form.cleaned_data['target_child']
+            sessions = sessions.filter(
+                sessionparticipant__participant__short_name=target_child,
+                sessionparticipant__roles__name='child')
+
+        if 'age_min' in changed_data or 'age_max' in changed_data:
+            age_min = session_filter_form.cleaned_data['age_min']
+            age_max = session_filter_form.cleaned_data['age_max']
+            sessions = with_age_between(sessions, age_min, age_max)
 
     paginator = Paginator(sessions, 30)
     page_number = request.GET.get('page')
@@ -76,7 +85,7 @@ def session_list_view(request):
     context = {'page_obj': page_obj,
                'session_count': paginator.count,
                'filter': filter,
-               'age_form': age_form,
+               'session_filter_form': session_filter_form,
                'query_string': get_query_string(request)}
     return render(request, 'metadata/session/session_list.html', context)
 

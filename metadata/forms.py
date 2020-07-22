@@ -204,9 +204,11 @@ class LanguageForm(BootstrapModelForm):
         labels = {'iso_code': 'ISO code'}
 
 
-class AgeForm(BootstrapForm):
+class SessionFilterForm(BootstrapForm):
     age_min = forms.CharField(max_length=7, initial='0')
     age_max = forms.CharField(max_length=7, initial='100')
+
+    target_child = forms.CharField(max_length=4, required=False)
 
     def clean_age_min(self):
         age_min = self.cleaned_data.get('age_min')
