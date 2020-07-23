@@ -223,6 +223,15 @@ class SessionFilterForm(BootstrapForm):
     participants = ParticipantModelMultipleChoiceField(
         queryset=Participant.objects.order_by('short_name'), required=False)
 
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        try:
+            Session.objects.get(name=name)
+        except Session.DoesNotExist:
+            raise forms.ValidationError('Session does not exist!')
+
+        return name
+
     def clean_age_min(self):
         age_min = self.cleaned_data.get('age_min')
         if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_min):
