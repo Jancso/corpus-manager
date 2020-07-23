@@ -24,6 +24,6 @@ urlpatterns = [
     path('backup/', include('backup.urls')),
     path('', include('users.urls.home_urls')),
     path('users/', include('users.urls.users_urls')),
-    path('metadata/', include('metadata.urls')),
+    path('metadata/', include('metadata.urls.urls')),
     path('workflow/', include('workflow.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
