@@ -210,13 +210,18 @@ class ParticipantModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
 
 class SessionFilterForm(BootstrapForm):
+    name = forms.CharField(required=False)
+
+    date_min = forms.DateField(required=False)
+    date_max = forms.DateField(required=False)
+
     age_min = forms.CharField(max_length=7, initial='0')
     age_max = forms.CharField(max_length=7, initial='100')
 
     target_child = forms.CharField(max_length=4, required=False)
 
     participants = ParticipantModelMultipleChoiceField(
-        queryset=Participant.objects.order_by('short_name'))
+        queryset=Participant.objects.order_by('short_name'), required=False)
 
     def clean_age_min(self):
         age_min = self.cleaned_data.get('age_min')

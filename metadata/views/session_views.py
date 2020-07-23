@@ -1,5 +1,4 @@
 import csv
-import re
 from copy import deepcopy
 from urllib.parse import urlencode
 
@@ -13,41 +12,10 @@ from django.views.generic import UpdateView
 from django.urls import reverse
 from django.views.generic.base import View
 
-from metadata.filters import SessionFilter
-from metadata.models import Session, SessionParticipant, Participant, SessionParticipantRole
+from metadata.filters.session_filters import filter_sessions
+from metadata.models import Session, SessionParticipant, SessionParticipantRole
 from metadata.forms import SessionForm, SessionParticipantFormset, \
-    SessionParticipantForm, SessionParticipantUpdateForm, SessionFilterForm
-
-
-def to_days(age):
-    if not age:
-        return -1
-
-    age = re.match(r"(\d*)(;(\d*)(.(\d*))?)?", str(age))
-
-    years = int(age.group(1))
-
-    if age.group(3):
-        months = int(age.group(3))
-    else:
-        months = 0
-
-    if age.group(5):
-        days = int(age.group(5))
-    else:
-        days = 0
-
-    return years * 365 + months * 30 + days
-
-
-def with_age_between(sessions, minimum=0, maximum=100):
-    result = []
-    for session in sessions:
-        age = session.get_target_child_age()
-        if to_days(minimum) <= to_days(age) <= to_days(maximum):
-            result.append(session)
-
-    return result
+    SessionParticipantUpdateForm, SessionFilterForm
 
 
 def get_query_string(request):
@@ -59,29 +27,9 @@ def get_query_string(request):
 
 @login_required
 def session_list_view(request):
-    filter = SessionFilter(request.GET, queryset=Session.objects.all())
-    sessions = filter.qs
-
+    sessions = Session.objects.all()
     session_filter_form = SessionFilterForm(request.GET or None)
-
-    if session_filter_form.is_valid() and session_filter_form.has_changed():
-        changed_data = session_filter_form.changed_data
-
-        if 'target_child' in changed_data:
-            target_child = session_filter_form.cleaned_data['target_child']
-            sessions = sessions.filter(
-                sessionparticipant__participant__short_name=target_child,
-                sessionparticipant__roles__name='child')
-
-        if 'participants' in changed_data:
-            participants = session_filter_form.cleaned_data['participants']
-            sessions = sessions.filter(
-                sessionparticipant__participant__in=participants)
-            
-        if 'age_min' in changed_data or 'age_max' in changed_data:
-            age_min = session_filter_form.cleaned_data['age_min']
-            age_max = session_filter_form.cleaned_data['age_max']
-            sessions = with_age_between(sessions, age_min, age_max)
+    sessions = filter_sessions(session_filter_form, sessions)
 
     paginator = Paginator(sessions, 30)
     page_number = request.GET.get('page')
@@ -89,7 +37,6 @@ def session_list_view(request):
 
     context = {'page_obj': page_obj,
                'session_count': paginator.count,
-               'filter': filter,
                'session_filter_form': session_filter_form,
                'query_string': get_query_string(request)}
     return render(request, 'metadata/session/session_list.html', context)
