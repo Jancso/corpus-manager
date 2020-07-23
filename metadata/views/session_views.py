@@ -29,7 +29,14 @@ def get_query_string(request):
 def session_list_view(request):
     sessions = Session.objects.all()
     session_filter_form = SessionFilterForm(request.GET or None)
-    sessions = filter_sessions(session_filter_form, sessions)
+
+    if session_filter_form.is_valid() and session_filter_form.has_changed():
+        if 'name' in session_filter_form.changed_data:
+            name = session_filter_form.cleaned_data['name']
+            session = sessions.get(name=name)
+            return redirect('metadata:session-detail', pk=session.pk)
+
+        sessions = filter_sessions(session_filter_form, sessions)
 
     paginator = Paginator(sessions, 30)
     page_number = request.GET.get('page')

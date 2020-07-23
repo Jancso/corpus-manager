@@ -1,5 +1,7 @@
 import re
 
+from django.shortcuts import redirect
+
 
 def to_days(age):
     if not age:
@@ -33,35 +35,30 @@ def with_age_between(sessions, minimum=0, maximum=100):
 
 
 def filter_sessions(session_filter_form, sessions):
-    if session_filter_form.is_valid() and session_filter_form.has_changed():
-        changed_data = session_filter_form.changed_data
+    changed_data = session_filter_form.changed_data
 
-        if 'name' in changed_data:
-            name = session_filter_form.cleaned_data['name']
-            sessions = sessions.filter(name=name)
+    if 'date_min' in changed_data:
+        date_min = session_filter_form.cleaned_data['date_min']
+        sessions = sessions.filter(date__gte=date_min)
 
-        if 'date_min' in changed_data:
-            date_min = session_filter_form.cleaned_data['date_min']
-            sessions = sessions.filter(date__gte=date_min)
+    if 'date_max' in changed_data:
+        date_max = session_filter_form.cleaned_data['date_max']
+        sessions = sessions.filter(date__lte=date_max)
 
-        if 'date_max' in changed_data:
-            date_max = session_filter_form.cleaned_data['date_max']
-            sessions = sessions.filter(date__lte=date_max)
+    if 'target_child' in changed_data:
+        target_child = session_filter_form.cleaned_data['target_child']
+        sessions = sessions.filter(
+            sessionparticipant__participant__short_name=target_child,
+            sessionparticipant__roles__name='child')
 
-        if 'target_child' in changed_data:
-            target_child = session_filter_form.cleaned_data['target_child']
-            sessions = sessions.filter(
-                sessionparticipant__participant__short_name=target_child,
-                sessionparticipant__roles__name='child')
+    if 'participants' in changed_data:
+        participants = session_filter_form.cleaned_data['participants']
+        sessions = sessions.filter(
+            sessionparticipant__participant__in=participants)
 
-        if 'participants' in changed_data:
-            participants = session_filter_form.cleaned_data['participants']
-            sessions = sessions.filter(
-                sessionparticipant__participant__in=participants)
-
-        if 'age_min' in changed_data or 'age_max' in changed_data:
-            age_min = session_filter_form.cleaned_data['age_min']
-            age_max = session_filter_form.cleaned_data['age_max']
-            sessions = with_age_between(sessions, age_min, age_max)
+    if 'age_min' in changed_data or 'age_max' in changed_data:
+        age_min = session_filter_form.cleaned_data['age_min']
+        age_max = session_filter_form.cleaned_data['age_max']
+        sessions = with_age_between(sessions, age_min, age_max)
 
     return sessions
