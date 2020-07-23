@@ -4,6 +4,16 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from hurry.filesize import size
 
+from django_countries.fields import CountryField
+
+
+class Corpus(models.Model):
+    name = models.CharField(max_length=300)
+    abbreviation = models.CharField(max_length=15, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+
+    country = CountryField(null=True, blank=True)
+
 
 class Recording(models.Model):
     name = models.CharField(max_length=50,

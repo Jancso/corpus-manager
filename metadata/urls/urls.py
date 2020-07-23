@@ -9,6 +9,7 @@ urlpatterns = [
          general_views.metadata_view,
          name='metadata-view'),
 
+    path('', include('metadata.urls.corpus_urls')),
     path('', include('metadata.urls.session_urls')),
     path('', include('metadata.urls.participant_urls')),
     path('', include('metadata.urls.role_urls')),

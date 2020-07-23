@@ -5,7 +5,7 @@ from django.forms import formset_factory
 from django.forms import BaseFormSet, Form
 
 from metadata.models import Recording, File, Session, Participant, \
-    SessionParticipant, ParticipantLangInfo, Language, Role
+    SessionParticipant, ParticipantLangInfo, Language, Role, Corpus
 
 
 class BootstrapModelForm(forms.ModelForm):
@@ -243,3 +243,9 @@ class SessionFilterForm(BootstrapForm):
         if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_max):
             raise forms.ValidationError('Invalid format')
         return age_max
+
+
+class CorpusForm(BootstrapModelForm):
+    class Meta:
+        model = Corpus
+        fields = '__all__'

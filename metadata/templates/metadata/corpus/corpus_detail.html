@@ -1,0 +1,77 @@
+{% extends 'metadata/base.html' %}
+
+
+{% block metadata-content %}
+
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+
+            <div class="card">
+                <div class="card-header">
+                    <h6>Corpus
+                        <a class="float-right"
+                           href="{% url 'metadata:corpus-update' %}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <td colspan="2">
+                                <h6 class="font-weight-light">General</h6>
+                            </td>
+                            <td>
+                                <table class="table table-hover">
+                                    <tbody>
+
+                                    <tr>
+                                        <th>Name:</th>
+                                        <td class="w-50">{{ corpus.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Abbreviation:</th>
+                                        <td>{{ corpus.abbreviation }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Description:</th>
+                                        <td>{{ corpus.description }}</td>
+                                    </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <h6 class="font-weight-light">Location</h6>
+                            </td>
+                            <td>
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th>Country:</th>
+                                        <td class="w-50">{{ corpus.country.name }}</td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+
+
+
+
+{% endblock %}
