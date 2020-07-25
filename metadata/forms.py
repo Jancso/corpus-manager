@@ -6,7 +6,7 @@ from django.forms import BaseFormSet, Form
 
 from metadata.models import Recording, File, Session, Participant, \
     SessionParticipant, ParticipantLangInfo, Language, Role, Corpus, \
-    CommunicationContext, Location
+    CommunicationContext, Location, Project, Contact
 
 
 class BootstrapModelForm(forms.ModelForm):
@@ -249,7 +249,7 @@ class SessionFilterForm(BootstrapForm):
 class CorpusForm(BootstrapModelForm):
     class Meta:
         model = Corpus
-        exclude = ['communication_context', 'location']
+        exclude = ['communication_context', 'location', 'project']
 
 
 class CommunicationContextForm(BootstrapModelForm):
@@ -261,4 +261,16 @@ class CommunicationContextForm(BootstrapModelForm):
 class LocationForm(BootstrapModelForm):
     class Meta:
         model = Location
+        fields = '__all__'
+
+
+class ProjectForm(BootstrapModelForm):
+    class Meta:
+        model = Project
+        exclude = ['contact']
+
+
+class ContactForm(BootstrapModelForm):
+    class Meta:
+        model = Contact
         fields = '__all__'

@@ -102,10 +102,26 @@ class Location(models.Model):
     region = models.CharField(max_length=100, null=True, blank=True)
 
 
+class Contact(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=500, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True, blank=True)
+    organisation = models.CharField(max_length=200, null=True, blank=True)
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=300, null=True, blank=True)
+    pid = models.CharField(max_length=20, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
+
+
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
-    abbreviation = models.CharField(max_length=15, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+
+    project = models.OneToOneField(
+        Project, on_delete=models.CASCADE)
 
     location = models.OneToOneField(
         Location, on_delete=models.CASCADE)
