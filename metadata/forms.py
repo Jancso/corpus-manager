@@ -5,7 +5,8 @@ from django.forms import formset_factory
 from django.forms import BaseFormSet, Form
 
 from metadata.models import Recording, File, Session, Participant, \
-    SessionParticipant, ParticipantLangInfo, Language, Role, Corpus
+    SessionParticipant, ParticipantLangInfo, Language, Role, Corpus, \
+    CommunicationContext
 
 
 class BootstrapModelForm(forms.ModelForm):
@@ -248,4 +249,10 @@ class SessionFilterForm(BootstrapForm):
 class CorpusForm(BootstrapModelForm):
     class Meta:
         model = Corpus
+        exclude = ['communication_context']
+
+
+class CommunicationContextForm(BootstrapModelForm):
+    class Meta:
+        model = CommunicationContext
         fields = '__all__'

@@ -7,12 +7,87 @@ from hurry.filesize import size
 from django_countries.fields import CountryField
 
 
+class CommunicationContext(models.Model):
+
+    class Interactivity(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        INTERACTIVE = 'interactive'
+        NON_INTERACTIVE = 'non-interactive'
+        SEMI_INTERACTIVE = 'semi-interactive'
+
+    interactivity = models.CharField(
+        max_length=20, choices=Interactivity.choices, default=Interactivity.UNSPECIFIED)
+
+    class PlanningType(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        SPONTANEOUS = 'spontaneous'
+        SEMI_SPONTANEOUS = 'semi-spontaneous'
+        PLANNED = 'planned'
+
+    planning_type = models.CharField(
+        max_length=20, choices=PlanningType.choices, default=PlanningType.UNSPECIFIED)
+
+    class Involvement(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        ELICITED = 'elicited'
+        NON_ELICITED = 'non-elicited'
+        NO_OBSERVER = 'no-observer'
+
+    involvement = models.CharField(
+        max_length=20, choices=Involvement.choices, default=Involvement.UNSPECIFIED)
+
+    class SocialContext(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        FAMILIY = 'Family'
+        PRIVATE = 'Private'
+        PUBLIC = 'Public'
+        CONTROLLED_ENVIRONMENT = 'Controlled environment'
+        PUBLIC_SCHOOL = 'Public (school)'
+        COMMUNITY = 'Community'
+
+    social_context = models.CharField(
+        max_length=30, choices=SocialContext.choices, default=SocialContext.UNSPECIFIED)
+
+    class EventStructure(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        MONOLOGUE = 'Monologue'
+        DIALOGUE = 'Dialogue'
+        MULTILOGUE = 'Multilogue'
+        NOT_A_NATURAL_FORMAT = 'Not a natural format'
+        CONVERSATION = 'Conversation'
+
+    event_structure = models.CharField(
+        max_length=30, choices=EventStructure.choices, default=EventStructure.UNSPECIFIED)
+
+    class Channel(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        FACE_TO_FACE = 'Face to Face'
+        EXPERIMENTAL_SETTING = 'Experimental setting'
+        BROADCASTING = 'Broadcasting'
+        TELEPHONE = 'Telephone'
+        WIZARD_OF_OZ = 'wizard-of-oz'
+        HUMAN_MACHINE_DIALOGUE = 'Human-machine dialogue'
+        OTHER = 'Other'
+
+    channel = models.CharField(
+        max_length=30, choices=Channel.choices, default=Channel.UNSPECIFIED)
+
+
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
     abbreviation = models.CharField(max_length=15, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
     country = CountryField(null=True, blank=True)
+
+    communication_context = models.OneToOneField(
+        CommunicationContext, on_delete=models.CASCADE)
 
 
 class Recording(models.Model):
