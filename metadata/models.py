@@ -79,12 +79,36 @@ class CommunicationContext(models.Model):
         max_length=30, choices=Channel.choices, default=Channel.UNSPECIFIED)
 
 
+class Location(models.Model):
+
+    class Continent(models.TextChoices):
+        UNKNOWN = 'Unknown'
+        UNSPECIFIED = 'Unspecified'
+        AFRICA = 'Africa'
+        ASIA = 'Asia'
+        EUROPE = 'Europe'
+        AUSTRALIA = 'Australia'
+        OCEANIA = 'Oceania'
+        NORTH_AMERICA = 'North-America'
+        MIDDLE_AMERICA = 'Middle-America'
+        SOUTH_AMERICA = 'South-America'
+
+    continent = models.CharField(
+        max_length=30,
+        choices=Continent.choices,
+        default=Continent.UNSPECIFIED)
+
+    country = CountryField(null=True, blank=True)
+    region = models.CharField(max_length=100, null=True, blank=True)
+
+
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
     abbreviation = models.CharField(max_length=15, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
-    country = CountryField(null=True, blank=True)
+    location = models.OneToOneField(
+        Location, on_delete=models.CASCADE)
 
     communication_context = models.OneToOneField(
         CommunicationContext, on_delete=models.CASCADE)

@@ -52,17 +52,25 @@
                                 <table class="table table-hover">
                                     <tbody>
                                     <tr>
+                                        <th>Continent:</th>
+                                        <td class="w-50">{{ corpus.location.continent }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Country:</th>
-                                        <td class="w-50">{{ corpus.country.name }}</td>
+                                        <td class="w-50">{{ corpus.location.country }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Region:</th>
+                                        <td class="w-50">{{ corpus.location.region }}</td>
                                     </tr>
                                     </tbody>
-
                                 </table>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <h6 class="font-weight-light">Communication Context</h6>
+                                <h6 class="font-weight-light">Communication
+                                    Context</h6>
                             </td>
                             <td>
                                 <table class="table table-hover">
@@ -72,7 +80,8 @@
                                         <td class="w-50">
                                             {{ corpus.communication_context.interactivity }}
                                         </td>
-                                    </tr>                                    <tr>
+                                    </tr>
+                                    <tr>
                                         <th>Planning Type:</th>
                                         <td class="w-50">
                                             {{ corpus.communication_context.planning_type }}
