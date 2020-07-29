@@ -2,20 +2,22 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from metadata import forms
-from metadata.models import Corpus, CommunicationContext, Location, Project, Contact
+from metadata.models import Corpus, CommunicationContext, Location, Project, Contact, Content
 
 
 @login_required
 def corpus_detail_view(request):
     if not Corpus.objects.exists():
         communication_context = CommunicationContext.objects.create()
+        content = Content.objects.create(
+            communication_context=communication_context)
         location = Location.objects.create()
         contact = Contact.objects.create()
         project = Project.objects.create(contact=contact)
         corpus = Corpus.objects.create(
             name='My Corpus',
             project=project,
-            communication_context=communication_context,
+            content=content,
             location=location
         )
     else:
@@ -29,20 +31,24 @@ def corpus_update_view(request):
     corpus = Corpus.objects.first()
     corpus_form = forms.CorpusForm(request.POST or None, instance=corpus)
     communication_context_form = forms.CommunicationContextForm(
-        request.POST or None, instance=corpus.communication_context)
+        request.POST or None, instance=corpus.content.communication_context)
     location_form = forms.LocationForm(
         request.POST or None, instance=corpus.location)
     contact_form = forms.ContactForm(
         request.POST or None, instance=corpus.project.contact)
     project_form = forms.ProjectForm(
         request.POST or None, instance=corpus.project)
+    content_form = forms.ContentForm(
+        request.POST or None, instance=corpus.content)
 
     if corpus_form.is_valid() \
             and communication_context_form.is_valid() \
+            and content_form.is_valid() \
             and location_form.is_valid()\
             and contact_form.is_valid()\
             and project_form.is_valid():
         corpus_form.save()
+        content_form.save()
         communication_context_form.save()
         location_form.save()
         contact_form.save()

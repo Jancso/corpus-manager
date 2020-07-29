@@ -6,7 +6,7 @@ from django.forms import BaseFormSet, Form
 
 from metadata.models import Recording, File, Session, Participant, \
     SessionParticipant, ParticipantLangInfo, Language, Role, Corpus, \
-    CommunicationContext, Location, Project, Contact
+    CommunicationContext, Location, Project, Contact, Content
 
 
 class BootstrapModelForm(forms.ModelForm):
@@ -274,3 +274,9 @@ class ContactForm(BootstrapModelForm):
     class Meta:
         model = Contact
         fields = '__all__'
+
+
+class ContentForm(BootstrapModelForm):
+    class Meta:
+        model = Content
+        fields = []

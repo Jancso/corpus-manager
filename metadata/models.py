@@ -117,6 +117,12 @@ class Project(models.Model):
     contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
 
 
+class Content(models.Model):
+    communication_context = models.OneToOneField(
+        CommunicationContext,
+        on_delete=models.CASCADE)
+
+
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
 
@@ -126,8 +132,9 @@ class Corpus(models.Model):
     location = models.OneToOneField(
         Location, on_delete=models.CASCADE)
 
-    communication_context = models.OneToOneField(
-        CommunicationContext, on_delete=models.CASCADE)
+    content = models.OneToOneField(
+        Content, on_delete=models.CASCADE
+    )
 
 
 class Recording(models.Model):
