@@ -118,6 +118,12 @@ class Project(models.Model):
 
 
 class Content(models.Model):
+    genre = models.CharField(max_length=50, default='None')
+    subgenre = models.CharField(max_length=50, null=True, blank=True)
+    task = models.CharField(max_length=50, null=True, blank=True)
+    modalities = models.CharField(max_length=50, null=True, blank=True)
+    subject = models.CharField(max_length=50, null=True, blank=True)
+
     communication_context = models.OneToOneField(
         CommunicationContext,
         on_delete=models.CASCADE)

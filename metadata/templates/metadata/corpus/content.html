@@ -1,4 +1,27 @@
-<div class="row mt-3">
+<table class="table table-hover table-responsive">
+    <tr>
+        <th>Genre:</th>
+        <td class="w-75">{{ corpus.content.genre }}</td>
+    </tr>
+    <tr>
+        <th>Sub-Genre:</th>
+        <td class="w-75">{{ corpus.content.subgenre }}</td>
+    </tr>
+    <tr>
+        <th>Task:</th>
+        <td class="w-75">{{ corpus.content.task }}</td>
+    </tr>
+    <tr>
+        <th>Modalities:</th>
+        <td class="w-75">{{ corpus.content.modalities }}</td>
+    </tr>
+    <tr>
+        <th>Subject:</th>
+        <td class="w-75">{{ corpus.content.subject }}</td>
+    </tr>
+</table>
+
+<div class="row mt-5">
     <div class="col-1"></div>
     <div class="col-11">
         <h6>Communication Context</h6>
