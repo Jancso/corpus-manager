@@ -19,12 +19,16 @@
         <th>Subject:</th>
         <td class="w-75">{{ corpus.content.subject }}</td>
     </tr>
+    <tr>
+        <th>Communication Context</th>
+        <td></td>
+    </tr>
 </table>
 
-<div class="row mt-5">
+<div class="row mt-1">
     <div class="col-1"></div>
     <div class="col-11">
-        <h6>Communication Context</h6>
+
         {% include 'metadata/corpus/communication_context.html' %}
     </div>
 </div>

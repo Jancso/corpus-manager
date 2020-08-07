@@ -3,49 +3,80 @@
 
 {% block metadata-content %}
 
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
+    <div class="row mb-5">
+        <div class="col-6">
+            <h3>Corpus
+                <a class="float-right"
+                   href="{% url 'metadata:corpus-update' %}">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </h3>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+
+        <div class="col-md-6">
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            General
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Name:</th>
+                                    <td class="w-75">{{ corpus.name }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Location
+                        </div>
+                        <div class="card-body">
+                            {% include 'metadata/corpus/location.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Project
+                        </div>
+                        <div class="card-body">
+                            {% include 'metadata/corpus/project.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-6">
 
             <div class="card">
                 <div class="card-header">
-                    <h6>Corpus
-                        <a class="float-right"
-                           href="{% url 'metadata:corpus-update' %}">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </h6>
+                    Content
                 </div>
                 <div class="card-body">
-
-                    <h6>General</h6>
-
-                    <table class="table">
-                        <tr>
-                            <th>Name:</th>
-                            <td class="w-75">{{ corpus.name }}</td>
-                        </tr>
-                    </table>
-
-                    <hr class="mt-5">
-
-                    <h6 class="mt-5">Location</h6>
-                    {% include 'metadata/corpus/location.html' %}
-
-                    <hr class="mt-5">
-
-                    <h6 class="mt-5">Project</h6>
-                    {% include 'metadata/corpus/project.html' %}
-
-                    <hr class="mt-5">
-
-                    <h6 class="mt-5">Content</h6>
                     {% include 'metadata/corpus/content.html' %}
-
                 </div>
             </div>
+
         </div>
-        <div class="col-2"></div>
     </div>
 
 {% endblock %}
