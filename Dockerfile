@@ -13,6 +13,10 @@ WORKDIR /opt/app/dene
 RUN pip install -r requirements.txt
 RUN chown -R www-data:www-data /opt/app
 
+RUN python manage.py makemigrations
+RUN python manage.py migrate
+RUN python manage.py collectstatic
+
 # start server
 EXPOSE 8020
 STOPSIGNAL SIGTERM
