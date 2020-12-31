@@ -1,9 +1,9 @@
 <div class="card">
-    <h6 class="card-header">Add Participant</h6>
+    <h6 class="card-header">Create Participant</h6>
 
     <div class="card-body">
         <form method="post">{% csrf_token %}
-            <table class="table">
+            <table class="table table-responsive">
                 {{ form.as_table }}
             </table>
             <input class="btn btn-primary" type="submit"

@@ -13,14 +13,38 @@ class BootstrapModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            if hasattr(visible.field.widget, 'input_type'):
+                widget_type = visible.field.widget.input_type
+
+                if widget_type == 'text':
+                    visible.field.widget.attrs['class'] = 'form-control'
+                elif widget_type == 'checkbox':
+                    visible.field.widget.attrs['class'] = 'form-check-input'
+                elif widget_type == 'select':
+                    visible.field.widget.attrs['class'] = 'form-select'
+                else:
+                    visible.field.widget.attrs['class'] = 'form-control'
+            else:
+                visible.field.widget.attrs['class'] = 'form-control'
 
 
 class BootstrapForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            if hasattr(visible.field.widget, 'input_type'):
+                widget_type = visible.field.widget.input_type
+
+                if widget_type == 'text':
+                    visible.field.widget.attrs['class'] = 'form-control'
+                elif widget_type == 'checkbox':
+                    visible.field.widget.attrs['class'] = 'form-check-input'
+                elif widget_type == 'select':
+                    visible.field.widget.attrs['class'] = 'form-select'
+                else:
+                    visible.field.widget.attrs['class'] = 'form-control'
+            else:
+                visible.field.widget.attrs['class'] = 'form-control'
 
 
 class FileForm(BootstrapModelForm):
