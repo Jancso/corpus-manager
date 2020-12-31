@@ -1,6 +1,6 @@
 from django.views import View
 from django.views.generic.detail import DetailView
-from users.forms import UserForm, UserProfileForm
+from users.forms import UserForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users.models import User
@@ -45,7 +45,6 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     template_name = 'users/user_update.html'
     user_form = UserForm
-    user_profile_form = UserProfileForm
 
     def test_func(self):
         return self.request.user.pk == self.kwargs.get('pk')
@@ -64,8 +63,6 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
             context['form'] = {
                 'user': self.user_form(
                     instance=user),
-                'user_profile': self.user_profile_form(
-                    instance=user.userprofile)
             }
 
             context['user'] = user
@@ -77,19 +74,15 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
         user = self.get_user(pk)
         if user is not None:
             user_form = self.user_form(
-                request.POST, instance=user)
-            user_profile_form = self.user_profile_form(
-                request.POST, request.FILES, instance=user.userprofile)
+                request.POST, request.FILES, instance=user)
 
-            if user_form.is_valid() and user_profile_form.is_valid():
+            if user_form.is_valid():
                 user_form.save()
-                user_profile_form.save()
 
                 return redirect('home:home-detail')
 
             context['form'] = {
                 'user': user_form,
-                'user_profile': user_profile_form
             }
 
             context['user'] = user

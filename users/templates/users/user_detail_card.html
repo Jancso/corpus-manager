@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <img src="{{ user.userprofile.image.url }}"
+                <img src="{{ user.image.url }}"
                      id="user-image"
                      class="rounded-circle mx-auto d-block img-fluid img-thumbnail">
             </div>
@@ -43,7 +43,7 @@
                     <tr>
                         <td><i class="fas fa-tag"></i></td>
                         <td>Job Function</td>
-                        <td>{{ user.userprofile.get_job_function_display }}</td>
+                        <td>{{ user.get_job_function_display }}</td>
                     </tr>
                     <tr>
                         <td>

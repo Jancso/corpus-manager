@@ -4,7 +4,7 @@ from io import StringIO
 from workflow.models import Task, Assignment
 from metadata.models import Recording, Session
 from datetime import timedelta, datetime
-from users.models import User, UserProfile
+from users.models import User
 
 FIELDNAMES = [
     'recording name',
@@ -271,10 +271,6 @@ def import_monitor(file):
 
                     user.set_password('matterhorn')
                     user.save()
-
-                    UserProfile.objects.update_or_create(
-                        user=user
-                    )
 
                     Assignment.objects.update_or_create(
                         task=task,

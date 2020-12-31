@@ -1,6 +1,5 @@
 from django.forms import ModelForm, ImageField, FileInput
-from .models import UserProfile
-from django.contrib.auth.models import User
+from .models import User
 
 
 class BootstrapForm(ModelForm):
@@ -13,16 +12,9 @@ class BootstrapForm(ModelForm):
                 visible.field.widget.attrs['class'] = 'form-control'
 
 
-class UserProfileForm(BootstrapForm):
-
-    class Meta:
-        model = UserProfile
-        fields = ['image', 'job_function']
-
-    image = ImageField(widget=FileInput, required=False)
-
-
 class UserForm(BootstrapForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'image', 'job_function']
+
+    image = ImageField(widget=FileInput, required=False)

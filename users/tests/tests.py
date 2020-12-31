@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.test import Client
-from users.models import User, UserProfile
+from users.models import User
 
 
 class UserTest(TestCase):
@@ -11,7 +11,6 @@ class UserTest(TestCase):
         self.password = 'this_is_secret'
         self.user = User.objects.create_user(
             'test', 'test@test.ch', self.password)
-        UserProfile.objects.create(user=self.user)
 
     def test_GET_user_list(self):
         self.client.login(username=self.user.username, password=self.password)

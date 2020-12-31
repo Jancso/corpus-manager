@@ -1,9 +1,10 @@
 from django import forms
 
 from metadata.forms import RecordingMultipleChoiceField
+from users.models import User
 from .models import Task, Assignment, Discussion, Comment
 from metadata.models import Recording
-from django.contrib.auth.models import User
+
 
 
 class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
