@@ -1,8 +1,8 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test import Client
 
 from metadata.models import Recording, Session
+from users.models import User
 from workflow.models import Task
 
 

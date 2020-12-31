@@ -1,9 +1,9 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 
 from metadata.models import Session, SessionParticipant, Participant, Role
+from users.models import User
 
 
 class SessionTest(TestCase):
