@@ -373,4 +373,7 @@ class File(models.Model):
     location = models.CharField(max_length=50, null=True, blank=True)
 
     def get_human_readable_size(self):
-        return size(self.size)
+        if self.size:
+            return size(self.size)
+        else:
+            return None
