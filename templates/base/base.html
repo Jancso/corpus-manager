@@ -20,6 +20,10 @@
     <link href='https://fonts.googleapis.com/css?family=Redressed' rel='stylesheet'>
     {% load static %}
     <link rel="stylesheet" href="{% static "css/custom.css" %}">
+
+    {% block head %}
+    {% endblock %}
+
 </head>
 <body class="d-flex flex-column h-100">
 <div id="main-container" class="container-fluid">
