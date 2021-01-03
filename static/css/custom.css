@@ -1,16 +1,45 @@
+:root {
+    --main-color1: #34495b;
+    --main-color2: #61758a;
+    --nav-text-color: white;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-image: linear-gradient(var(--main-color1), var(--main-color2));
+}
+
+nav a {
+    color: var(--main-color1);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-image: linear-gradient(var(--main-color1), var(--main-color2));
+    border-color: var(--main-color2);
+}
+
+.page-item.active .page-link {
+    background-image: linear-gradient(var(--main-color1), var(--main-color2));
+    border-color: var(--main-color2);
+}
+
+.page-link {
+    color: var(--main-color1);
+}
+
 body {
     background-image: linear-gradient(whitesmoke, whitesmoke);
 }
 
 #top-nav {
-    background-image: linear-gradient(#007bff, #007bff);
+    background-image: linear-gradient(var(--main-color1), var(--main-color2));
     position: relative;
     z-index: 3;
     box-shadow: 0 5px 20px lightsteelblue;
 }
 
 #top-nav a {
-    color: gold;
+    color: var(--nav-text-color);
     font-family: 'Redressed';
 }
 
@@ -26,12 +55,12 @@ body {
 }
 
 #footer {
-    background-color: #007bff;
+    background-image: linear-gradient(var(--main-color1), var(--main-color2));
     position: relative;
     box-shadow: 0 -5px 20px lightsteelblue;
     z-index: 3;
     font-size: 10pt;
-    color: gold;
+    color: var(--nav-text-color);
     font-family: 'Redressed';
 }
 
