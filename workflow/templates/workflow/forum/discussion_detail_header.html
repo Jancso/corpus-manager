@@ -13,7 +13,7 @@
                 </i>
             </div>
             <div class="col-md-2">
-                <a class="float-right"
+                <a class="float-end"
                    href="{% url 'workflow:discussion-update' discussion.pk %}">
                     <i class="fas fa-edit"></i>
                 </a>
@@ -25,7 +25,7 @@
         <li class="list-group-item">
             {% for rec in discussion.recordings.all %}
                 <a href="{% url 'workflow:rec-detail' rec.pk %}"
-                   class="badge badge-dark">
+                   class="badge bg-dark">
                     {{ rec.name }}
                 </a>
             {% endfor %}

@@ -1,17 +1,17 @@
 <nav class="nav flex-column nav-pills sticky-top">
     <a id="home-link" class="nav-link" href="{% url 'home:home-detail' %}">
-        <i class="fas fa-home pr-2"></i>
+        <i class="fas fa-home pe-2"></i>
         Home
     </a>
 
     <a id="team-link" class="nav-link" href="{% url 'users:user-list' %}">
-        <i class="fas fa-users pr-2"></i>
+        <i class="fas fa-users pe-2"></i>
         Team
     </a>
 
     <a id="metadata-link" class="nav-link"
        href="{% url 'metadata:metadata-view' %}">
-        <i class="fas fa-archive pr-2"></i>
+        <i class="fas fa-archive pe-2"></i>
         Metadata
     </a>
 
@@ -19,14 +19,14 @@
 
     <a id="workflow-link" class="nav-link"
        href="{% url 'workflow:workflow' %}">
-        <i class="fas fa-sitemap pr-2"></i>
+        <i class="fas fa-sitemap pe-2"></i>
         Workflow
     </a>
 
     {% include 'workflow/side-navbar.html' %}
 
     <a id="backup-link" class="nav-link" href="{% url 'backup:backup-view' %}">
-        <i class="fas fa-save pr-2"></i>
+        <i class="fas fa-save pe-2"></i>
         Backup
     </a>
 </nav>
