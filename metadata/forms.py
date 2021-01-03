@@ -250,23 +250,26 @@ class SessionFilterForm(BootstrapForm):
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
-        try:
-            Session.objects.get(name=name)
-        except Session.DoesNotExist:
-            raise forms.ValidationError('Session does not exist!')
+        if name:
+            try:
+                Session.objects.get(name=name)
+            except Session.DoesNotExist:
+                raise forms.ValidationError('Session does not exist!')
 
         return name
 
     def clean_age_min(self):
         age_min = self.cleaned_data.get('age_min')
-        if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_min):
-            raise forms.ValidationError('Invalid format')
+        if age_min:
+            if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_min):
+                raise forms.ValidationError('Enter a valid age')
         return age_min
 
     def clean_age_max(self):
         age_max = self.cleaned_data.get('age_max')
-        if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_max):
-            raise forms.ValidationError('Invalid format')
+        if age_max:
+            if not re.fullmatch(r"(\d*)(;(\d*)(.(\d*))?)?", age_max):
+                raise forms.ValidationError('Enter a valid age')
         return age_max
 
 
