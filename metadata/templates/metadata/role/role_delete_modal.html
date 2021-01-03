@@ -2,9 +2,9 @@
 
 {% block metadata-content %}
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+    <div class="modal fade" id="exampleModal" tabindex="-1"
          aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
@@ -35,12 +35,14 @@
     </div>
 
     <script>
-        $(function () {
-            if (!$("#myModal").parent().is('body'))
-                $("#myModal").appendTo("body");
+        let modal = document.getElementById("exampleModal");
+        if (modal.parentElement.tagName !== "body") {
+            document.body.append(modal);
+        }
 
-            $('#myModal').modal('show')
-        });
+        const myModal = new bootstrap.Modal(modal);
+        myModal.show();
+
     </script>
 
 {% endblock %}

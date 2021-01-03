@@ -33,7 +33,7 @@ def rec_list_view(request):
 def rec_delete_view(request, pk):
     rec = get_object_or_404(Recording, pk=pk)
     rec.delete()
-    return redirect('workflow:workflow')
+    return redirect('metadata:rec-list')
 
 
 class RecordingUpdateView(LoginRequiredMixin, UpdateView):
