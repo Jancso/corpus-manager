@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView
 
@@ -28,7 +29,7 @@ def corpus_detail_view(request):
     return render(request, 'metadata/corpus/corpus_detail.html', context)
 
 
-class CorpusUpdateView(UpdateView):
+class CorpusUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'metadata/corpus/corpus_update.html'
     success_url = reverse_lazy('metadata:corpus-detail')
 
