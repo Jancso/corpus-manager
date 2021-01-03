@@ -1,15 +1,17 @@
 {% extends 'metadata/base.html' %}
 
+{% block metadata-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'metadata:corpus-detail' %}">Corpus</a>
+    </li>
+{% endblock %}
+
 
 {% block metadata-content %}
 
     <div class="row mb-5">
         <div class="col-6">
             <h3>Corpus
-                <a class="float-right"
-                   href="{% url 'metadata:corpus-update' %}">
-                    <i class="fas fa-edit"></i>
-                </a>
             </h3>
         </div>
     </div>
@@ -23,6 +25,11 @@
                     <div class="card">
                         <div class="card-header">
                             General
+
+                            <a class="float-right"
+                               href="{% url 'metadata:corpus-general-update' corpus.pk %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -41,6 +48,11 @@
                     <div class="card">
                         <div class="card-header">
                             Location
+
+                            <a class="float-right"
+                               href="{% url 'metadata:corpus-location-update' corpus.pk %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
                         </div>
                         <div class="card-body">
                             {% include 'metadata/corpus/location.html' %}
@@ -54,9 +66,27 @@
                     <div class="card">
                         <div class="card-header">
                             Project
+                            <a class="float-right"
+                               href="{% url 'metadata:corpus-project-update' corpus.pk %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
                         </div>
                         <div class="card-body">
                             {% include 'metadata/corpus/project.html' %}
+                        </div>
+                    </div>
+
+                    <div class="card mt-3 ml-4">
+                        <div class="card-header">
+                            Contact
+                            <a class="float-right"
+                               href="{% url 'metadata:corpus-contact-update' corpus.pk %}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            {% include 'metadata/corpus/contact.html' %}
                         </div>
                     </div>
                 </div>
@@ -70,13 +100,33 @@
             <div class="card">
                 <div class="card-header">
                     Content
+
+                    <a class="float-right"
+                       href="{% url 'metadata:corpus-content-update' corpus.pk %}">
+                        <i class="fas fa-edit"></i>
+                    </a>
                 </div>
                 <div class="card-body">
                     {% include 'metadata/corpus/content.html' %}
                 </div>
             </div>
 
+            <div class="card mt-3 ml-4">
+                <div class="card-header">
+                    Communication Context
+                    <a class="float-right"
+                       href="{% url 'metadata:corpus-communicationcontext-update' corpus.pk %}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    {% include 'metadata/corpus/communication_context.html' %}
+                </div>
+            </div>
         </div>
+
+
     </div>
 
 {% endblock %}

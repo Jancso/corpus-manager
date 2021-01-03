@@ -1,5 +1,13 @@
 {% extends 'metadata/base.html' %}
 
+{% block metadata-breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'metadata:corpus-detail' %}">Corpus</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        Update
+    </li>
+{% endblock %}
 
 {% block metadata-content %}
     <div class="row">
@@ -12,11 +20,7 @@
                 <div class="card-body">
                     <form method="post">{% csrf_token %}
                         <table class="table">
-                            {{ corpus_form.as_table }}
-                            {{ communication_context_form }}
-                            {{ location_form }}
-                            {{ project_form }}
-                            {{ contact_form }}
+                            {{ form.as_table }}
                         </table>
                         <input value="Update" type="submit"
                                class="btn btn-primary float-right">

@@ -270,16 +270,10 @@ class SessionFilterForm(BootstrapForm):
         return age_max
 
 
-class CorpusForm(BootstrapModelForm):
+class CorpusGeneralForm(BootstrapModelForm):
     class Meta:
         model = Corpus
-        exclude = ['communication_context', 'location', 'project']
-
-
-class CommunicationContextForm(BootstrapModelForm):
-    class Meta:
-        model = CommunicationContext
-        fields = '__all__'
+        fields = ['name']
 
 
 class LocationForm(BootstrapModelForm):
@@ -303,4 +297,10 @@ class ContactForm(BootstrapModelForm):
 class ContentForm(BootstrapModelForm):
     class Meta:
         model = Content
-        fields = []
+        exclude = ['communication_context']
+
+
+class CommunicationContextForm(BootstrapModelForm):
+    class Meta:
+        model = CommunicationContext
+        fields = '__all__'
