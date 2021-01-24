@@ -1,32 +1,5 @@
-""""Reads session and speaker metadata from a tabular format and converts them to one IMDI (as defined in the CMDI framework) per session."
-
-Input (default locations; execute python3 IMDIMaker.py --help for help on how to set different locations):
-../Metadata/sessions.csv
-../Metadata/participants.csv
-../Metadata/files.csv
-../Workflow/monitor.csv
-../Metadata/IMDI/
-../Metadata/Dene_IMDI.ini
-
-Output:
-../Metadata/IMDI/<imdi file>
-./imdi.log
-
-If the flag '-v' is set, then all XMLs will be created in the IMDI version 1.2.
-
-Example:
-    python3 IMDIMaker.py
-"""
-
-
-import re
-import os
-import sys
-import csv
+import shutil
 import time
-import argparse
-import datetime
-import configparser
 import zipfile
 from collections import defaultdict
 from pathlib import Path
@@ -36,59 +9,39 @@ from lxml.etree import *
 
 from metadata.models import Participant, Recording, File, Corpus, Session, \
     Language
-
-
-def commandline_setup():
-    """Set up command line arguments"""
-    parser = argparse.ArgumentParser(description="Specify paths for metadata files.")
-    parser.add_argument("-s", "--sessions", help="path to sessions.csv", default="../Metadata/sessions.csv")
-    parser.add_argument("-p", "--participants", help="path to participants.csv", default="../Metadata/participants.csv")
-    parser.add_argument("-f", "--files", help="path to files.csv", default="../Metadata/files.csv")
-    parser.add_argument("-m", "--monitor", help="path to monitor.csv", default="../Workflow/monitor.csv")
-    parser.add_argument("-i", "--imdi", help="path for IMDI file", default="../Metadata/IMDI/")
-    parser.add_argument("-d", "--ini", help="path to Dene.ini", default="../Metadata/Dene_IMDI.ini")
-    parser.add_argument("-v", "--new-version", help="create file(s) in IMDI 1.2", action="store_true")
-
-    return parser.parse_args()
+from users.models import User
 
 
 class IMDIMaker:
-    """Generate CMDI files of profile IMDI for dene"""
+    """Generate CMDI files of profile IMDI."""
 
-    def __init__(self, new_version=False, imdi_zip_dir_path=None):
+    # some constants that were previously in Dene_IMDI.ini
+    md_profile = 'clarin.eu:cr1:p_1271859438204'
+    language_id_description = 'ISO639:eng'
+    cmd_resource_type = 'Resource'
+    language_id_written_resource = 'eng'
+
+    def __init__(self, creator: User, imdi_zip_dir_path, new_version=False):
         """Intialize variables for metadata files."""
-        # get parsed arguments
-        self.args = commandline_setup()
-
+        self.creator = creator
         self.new_version = new_version
         self.corpus = Corpus.objects.first()
-
-        # some constants that were previously in Dene_IMDI.ini
-        self.language_id_description = 'ISO639:eng'
-        self.cmd_resource_type = 'Resource'
-        self.language_id_written_resource = 'eng'
-
-        # load Dene.ini where all the fixed values are stored
-        self.config = configparser.ConfigParser()
-        # preserve case
-        self.config.optionxform = str
-        if not self.config.read(self.args.ini):
-            print("Couldn't find Dene_IMDI.ini at", self.args.ini)
-            sys.exit(1)
 
         # intialize variables storing metadata
         self.session_metadata: Optional[Session] = None
         self.participants = {}
         self.resources = defaultdict(list)
 
+        # create IMDI folder
+        self.imdi_dir_path = Path(imdi_zip_dir_path)
+        if self.imdi_dir_path.exists():
+            shutil.rmtree(self.imdi_dir_path)
+        self.imdi_dir_path.mkdir()
+
+        # open archive
         self.imdi_zip_path = Path(imdi_zip_dir_path)
         with zipfile.ZipFile(str(imdi_zip_dir_path), 'w') as archive:
             self.archive = archive
-            # archive.write(video_dir / 'bboxes.json', 'bboxes.json')
-
-        self.imdi_dir_path = Path(imdi_zip_dir_path)
-        if not self.imdi_dir_path.exists():
-            self.imdi_dir_path.mkdir()
 
     def generate_imdis(self):
         """Generate IMDI's for all sessions from session.csv"""
@@ -111,11 +64,10 @@ class IMDIMaker:
 
     def create_cmd(self):
         """Create CMDI element 'CMD'"""
-
         # set namespace
         clarin_ns = "http://www.clarin.eu/cmd/"
         clarin = "{%s}" % clarin_ns
-        NSMAP = {None : clarin_ns}
+        NSMAP = {None: clarin_ns}
 
         # create root element
         cmd_element = Element(clarin + "CMD", nsmap=NSMAP, CMDVersion="1.1")
@@ -128,32 +80,28 @@ class IMDIMaker:
         # write to file
         self.write_file(cmd_element)
 
-
     def create_header(self, cmd_element):
         """Create CMDI element 'Header'"""
         header_element = SubElement(cmd_element, "Header")
 
         for key, value in [
-            ("MdCreator", sys.argv[0]),
-            ("MdCreationDate", time.strftime("%Y-%m-%d")),
-            ("MdSelfLink", self.config["CMD"]["MdSelfLink"] + self.session_metadata["Code"] + ".imdi"),
-            ("MdProfile", self.config["CMD"]["MdProfile"]),
-            ("MdCollectionDisplayName", self.config["CMD"]["MdCollectionDisplayName"])
-            ]:
-
+                ("MdCreator", self.creator.username),
+                ("MdCreationDate", time.strftime("%Y-%m-%d")),
+                ("MdSelfLink", Path(self.corpus.link) / f'{self.session_metadata.name}.imdi'),
+                ("MdProfile", self.md_profile),
+                ("MdCollectionDisplayName", self.corpus.name)
+        ]:
             SubElement(header_element, key).text = value
-
 
     def create_cmd_resources(self, cmd_element):
         """Create CMDI element 'Resources'"""
         resources_element = SubElement(cmd_element, "Resources")
-        resource_proxy_list_element = SubElement(resources_element, "ResourceProxyList")
+        resource_proxy_list_element = SubElement(resources_element,
+                                                 "ResourceProxyList")
 
-        for resource_proxy_element, resource_element in self.resources[self.session_metadata["Code"]]:
+        resources = self.resources[self.session_metadata.name]
+        for resource_proxy_element, resource_element in resources:
             resource_proxy_list_element.append(resource_proxy_element)
-
-        journal_file_proxy_list_element = SubElement(resources_element, "JournalFileProxyList")
-        resource_relation_list_element = SubElement(resources_element, "ResourceRelationList")
 
     def create_session(self, components_element=None):
         """Creates CMDI element 'Components'"""
@@ -179,20 +127,26 @@ class IMDIMaker:
         self.create_mdgroup(session_element)
         self.create_session_resources(session_element)
 
-        if self.args.new_version:
+        if self.new_version:
             # write to file
             self.write_file(session_element)
 
-
     def write_file(self, element):
-        """Write XML to file"""
+        """Write XML tree to file."""
+        imdi_fname = f'{self.session_metadata.name}.imdi'
         # set path for IMDI file
-        path = os.path.join(self.args.imdi, self.session_metadata["Code"] + ".imdi")
+        imdi_path = self.imdi_dir_path / imdi_fname
 
         # write XML to this file
-        ElementTree(element).write(path, pretty_print=True, encoding="utf-8", xml_declaration=True)
+        ElementTree(element).write(
+            imdi_path,
+            pretty_print=True,
+            encoding="utf-8",
+            xml_declaration=True)
 
-        print(self.session_metadata["Code"])
+        self.archive.write(imdi_path, imdi_fname)
+
+        print(self.session_metadata.name)
 
     def create_mdgroup(self, session_element):
         """Create IMDI element 'MDGroup'"""
@@ -338,8 +292,9 @@ class IMDIMaker:
     def create_session_resources(self, session_element):
         """Create IMDI element 'Resources'"""
         resources_element = SubElement(session_element, "Resources")
+        resources = self.resources[self.session_metadata.name]
 
-        for resource_proxy_element, resource_element in self.resources[self.session_metadata["Code"]]:
+        for resource_proxy_element, resource_element in resources:
             resources_element.append(resource_element)
 
     def get_participants(self):
@@ -526,13 +481,3 @@ class IMDIMaker:
             quality[rec.name] = quality_mapping[rec.get_quality_display()]
 
         return quality
-
-
-def main():
-    """Generate all IMDI files for Dene"""
-    imdi_maker = IMDIMaker()
-    imdi_maker.generate_imdis()
-
-
-if __name__ == '__main__':
-    main()

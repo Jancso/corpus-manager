@@ -142,6 +142,8 @@ class Access(models.Model):
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
 
+    link = models.URLField(default='https//:unknown_link.ch')
+
     project = models.OneToOneField(
         Project, on_delete=models.CASCADE)
 
