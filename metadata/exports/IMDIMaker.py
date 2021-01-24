@@ -33,7 +33,7 @@ from pathlib import Path
 
 from lxml.etree import *
 
-from metadata.models import Participant
+from metadata.models import Participant, Recording, File, Corpus
 
 
 def commandline_setup():
@@ -57,7 +57,12 @@ class IMDIMaker:
         """Intialize variables for metadata files"""
         # get parsed arguments
         self.args = commandline_setup()
+        self.corpus = Corpus.objects.first()
+
+        # some constants that were previously in Dene_IMDI.ini
         self.language_id_description = 'ISO639:eng'
+        self.cmd_resource_type = 'Resource'
+        self.language_id_written_resource = 'eng'
 
         # load Dene.ini where all the fixed values are stored
         self.config = configparser.ConfigParser()
@@ -426,122 +431,123 @@ class IMDIMaker:
             # finally add the 'Actor' element under the right short name
             self.participants[participant.short_name] = actor_element
 
-
     def get_files(self):
         """Get all metadata of the resources from files.csv"""
-        try:
-            # open files.csv for reading
-            files_file = open(self.args.files, "r")
-        except FileNotFoundError:
-            print("Couldn't find files.csv at", self.args.files)
-            sys.exit(1)
-        else:
-            # first get the recording qualities which are needed when creating the 'MediaFile' elements
-            quality = self.get_qualities()
+        # first get the recording qualities
+        # which are needed when creating the 'MediaFile' elements
+        quality = self.get_qualities()
 
-            # go through each file
-            for file in csv.DictReader(files_file):
+        for file in File.objects.all():
 
-                # first create 'ResourceProxy' elments of CMD/ResourceProxyList
-                resource_proxy_element = Element("ResourceProxy", id=file["File name"])
-                SubElement(resource_proxy_element, "ResourceType", mimetype=file["Format"]).text = self.config["CMD"]["ResourceType"]
-                SubElement(resource_proxy_element, "ResourceRef").text = file["Location"]
+            # first create 'ResourceProxy' elments of CMD/ResourceProxyList
+            resource_proxy_element = Element("ResourceProxy", id=file.name)
+            SubElement(
+                resource_proxy_element,
+                "ResourceType",
+                mimetype=file.get_mime_type()).text = self.cmd_resource_type
+            SubElement(
+                resource_proxy_element,
+                "ResourceRef").text = file.location
 
+            # then create 'MediaFile'/'WrittenResource' elements
+            # of CMD/Components/Session
+            # check if it is a media file or a written resource
+            is_media_file = file.type in [File.TYPE_VIDEO, File.TYPE_AUDIO]
+            if is_media_file:
+                resource_element = Element("MediaFile")
 
-                # then create 'MediaFile'/'WrittenResource' elements of CMD/Components/Session
-                # check if it is a media file or a written resource
-                file["Type"] = file["Type"].lower()
-                is_media_file = file["Type"] == "video" or file["Type"] == "audio"
-                if is_media_file:
-                    resource_element = Element("MediaFile")
+                for key, value in [
+                        ("ResourceLink", file.location),
+                        ("Type", file.type),
+                        ("Format", file.get_mime_type()),
+                        ("Size", file.size)
+                ]:
+                    SubElement(resource_element, key).text = value
 
-                    for key, value in [
-                        ("ResourceLink", file["Location"]),
-                        ("Type", file["Type"]),
-                        ("Format", file["Format"]),
-                        ("Size", file["Byte size"])
-                        ]:
+                SubElement(
+                    resource_element,
+                    "Quality").text = quality[file.recording.name]
 
-                        SubElement(resource_element, key).text = value
+                SubElement(
+                    resource_element,
+                    "RecordingConditions").text = "Unspecified"
+                time_position_element = SubElement(resource_element,
+                                                   "TimePosition")
+                SubElement(time_position_element, "Start").text = "00:00:00"
+                if file.duration:
+                    SubElement(
+                        time_position_element,
+                        "End").text = file.duration
+            else:
+                resource_element = Element("WrittenResource")
 
-                    try:
-                        SubElement(resource_element, "Quality").text = quality[file["Recording code"]]
-                    except KeyError:
-                        self.logger.error("Recording code '" + file["Recording code"] + "' missing in monitor.csv")
-                        SubElement(resource_element, "Quality").text = "Unknown"
-
-                    SubElement(resource_element, "RecordingConditions").text = "Unspecified"
-                    time_position_element = SubElement(resource_element, "TimePosition")
-                    SubElement(time_position_element, "Start").text = "00:00:00"
-                    if file["Duration"]:
-                        SubElement(time_position_element, "End").text = file["Duration"]
-
-                else:
-                    resource_element = Element("WrittenResource")
-
-                    for key, value in [
-                        ("ResourceLink", file["Location"]),
+                for key, value in [
+                        ("ResourceLink", file.location),
                         ("MediaResourceLink", ""),
-                        ("Type", file["Type"]),
+                        ("Type", file.type),
                         ("SubType", ""),
-                        ("Format", file["Format"]),
+                        ("Format", file.get_mime_type()),
                         ("Derivation", ""),
                         ("CharacterEncoding", "UTF-8"),
                         ("ContentEncoding", ""),
-                        ("LanguageId", self.config["LanguageId"]["WrittenResource"]),
+                        ("LanguageId", self.language_id_written_resource),
                         ("Anonymized", "false")
-                        ]:
+                ]:
+                    SubElement(resource_element, key).text = value
 
-                        SubElement(resource_element, key).text = value
+                validation_element = SubElement(resource_element, "Validation")
 
-                    validation_element = SubElement(resource_element, "Validation")
+                for key, value in [("Type", ""),
+                                   ("Methodology", ""),
+                                   ("Level", "")]:
+                    SubElement(validation_element, key).text = value
 
-                    for key, value in [("Type", ""), ("Methodology", ""), ("Level", "")]:
-                        SubElement(validation_element, key).text = value
+            access_element = SubElement(resource_element, "Access")
+            for key, value in [
+                    ('Availability', self.corpus.access.availability),
+                    ('Date', self.corpus.access.date),
+                    ('Owner', self.corpus.access.date),
+                    ('Publisher', self.corpus.access.publisher)
+            ]:
+                SubElement(access_element, key).text = value
+            contact_element = SubElement(access_element, "Contact")
+            for key, value in [
+                    ('Name', self.corpus.project.contact.name),
+                    ('Address', self.corpus.project.contact.address),
+                    ('Email', self.corpus.project.contact.email),
+                    ('Organisation', self.corpus.project.contact.organisation)
+            ]:
+                SubElement(contact_element, key).text = value
 
+            keys_element = SubElement(resource_element, "Keys")
+            SubElement(
+                keys_element,
+                "Key",
+                Name="RecordingCode").text = file.recording.name
 
-                access_element = SubElement(resource_element, "Access")
-                for key, value in self.config.items("Access"):
-                    SubElement(access_element, key).text = value
-                contact_element = SubElement(access_element, "Contact")
-                for key, value in self.config.items("Contact"):
-                    SubElement(contact_element, key).text = value
-
-                keys_element = SubElement(resource_element, "Keys")
-                SubElement(keys_element, "Key", Name="RecordingCode").text = file["Recording code"]
-
-                # finally add both resource elements under the right session code
-                if is_media_file:
-                    # prepend since media files must come before written resources
-                    self.resources[file["Session code"]].insert(0, (resource_proxy_element, resource_element))
-                else:
-                    self.resources[file["Session code"]].append((resource_proxy_element, resource_element))
-
+            # finally add both resource elements under the right session code
+            if is_media_file:
+                # prepend since media files must come before written resources
+                self.resources[file.recording.session.name].insert(
+                    0, (resource_proxy_element, resource_element))
+            else:
+                self.resources[file.recording.session.name].append(
+                    (resource_proxy_element, resource_element))
 
     def get_qualities(self):
         """Get for each recording its quality"""
-        try:
-            # open monitor.csv for reading
-            monitor_file = open(self.args.monitor, "r")
-        except FileNotFoundError:
-            print("Couldn't find monitor.csv at", self.args.monitor)
-            sys.exit(1)
-        else:
-            quality = {}
-            quality_mapping = {"low": "1", "high": "5", "medium": "3", "": "Unspecified"}
+        quality = {}
+        quality_mapping = {
+            "low": "1",
+            "high": "5",
+            "medium": "3",
+            "n/a": "Unspecified"
+        }
 
-            monitor_reader = csv.DictReader(monitor_file)
+        for rec in Recording.objects.all():
+            quality[rec.name] = quality_mapping[rec.get_quality_display()]
 
-            # skip line with value 'quality' under 'quality of recording'
-
-            for row in monitor_reader:
-                try:
-                    quality[row["recording name"]] = quality_mapping[row["quality"]]
-                except KeyError:
-                    self.logger.error("Unknown quality: " + row["quality"] + "|" + row["recording name"])
-                    quality[row["recording name"]] = "Unknown"
-
-            return quality
+        return quality
 
 
 def main():
