@@ -4,7 +4,6 @@ import re
 from dateutil.relativedelta import relativedelta
 
 from django.db import models
-from django.db.models import Sum
 from hurry.filesize import size
 
 from django_countries.fields import CountryField
@@ -360,7 +359,9 @@ class Session(models.Model):
 
     @property
     def duration(self):
-        return self.recording_set.aggregate(Sum('duration'))
+        # TODO: implement properly
+        for rec in self.recording_set.all():
+            return rec.duration
 
 
 class Role(models.Model):
