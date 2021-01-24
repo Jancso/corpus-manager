@@ -327,16 +327,19 @@ class IMDIMaker:
             SubElement(actor_element, "Keys")
 
             if participant.description:
-                descriptions_element = SubElement(actor_element, "descriptions")
+                descriptions_element = SubElement(actor_element,
+                                                  "descriptions")
                 SubElement(
                     descriptions_element,
                     "Description",
                     LanguageId=self.language_id_description).text = participant.description
 
-            actor_languages_element = SubElement(actor_element, "Actor_Languages")
+            actor_languages_element = SubElement(actor_element,
+                                                 "Actor_Languages")
 
             if participant.language_biography:
-                descriptions_element = SubElement(actor_languages_element, "descriptions")
+                descriptions_element = SubElement(actor_languages_element,
+                                                  "descriptions")
                 SubElement(descriptions_element,
                            "Description",
                            LanguageId=self.language_id_description).text = participant.language_biography
@@ -344,22 +347,30 @@ class IMDIMaker:
             # then create an 'Actor_Language' element for each language
             # spoken by this actor
             for actor_language in participant.participantlanginfo_set:
-                actor_language_element = SubElement(actor_languages_element, "Actor_Language")
+                actor_language_element = SubElement(actor_languages_element,
+                                                    "Actor_Language")
 
-                SubElement(actor_language_element, "Id").text = actor_language.language.iso_code
-                SubElement(actor_language_element, "Name").text = actor_language.language.name
+                SubElement(actor_language_element,
+                           "Id").text = actor_language.language.iso_code
+                SubElement(actor_language_element,
+                           "Name").text = actor_language.language.name
 
                 if actor_language.first:
-                    SubElement(actor_language_element, "MotherTongue").text = "true"
+                    SubElement(actor_language_element,
+                               "MotherTongue").text = "true"
                 else:
-                    SubElement(actor_language_element, "MotherTongue").text = "false"
+                    SubElement(actor_language_element,
+                               "MotherTongue").text = "false"
 
                 if actor_language.main is None:
-                    SubElement(actor_language_element, "PrimaryLanguage").text = "Unspecified"
+                    SubElement(actor_language_element,
+                               "PrimaryLanguage").text = "Unspecified"
                 elif actor_language.main:
-                    SubElement(actor_language_element, "PrimaryLanguage").text = "true"
+                    SubElement(actor_language_element,
+                               "PrimaryLanguage").text = "true"
                 else:
-                    SubElement(actor_language_element, "PrimaryLanguage").text = "false"
+                    SubElement(actor_language_element,
+                               "PrimaryLanguage").text = "false"
 
             # finally add the 'Actor' element under the right short name
             self.participants[participant.short_name] = actor_element
