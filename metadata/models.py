@@ -1,7 +1,10 @@
 import datetime
+import re
+
 from dateutil.relativedelta import relativedelta
 
 from django.db import models
+from django.db.models import Sum
 from hurry.filesize import size
 
 from django_countries.fields import CountryField
@@ -233,9 +236,13 @@ class Recording(models.Model):
                                    default=DENE_SPEECH_NA)
 
     audio = models.CharField(max_length=100, null=True, blank=True)
-    length = models.DurationField(null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
+    @property
+    def duration(self):
+        if self.file_set.exists():
+            return self.file_set.first().duration
+        return None
 
 class Language(models.Model):
     iso_code = models.CharField(max_length=3, unique=True)
@@ -273,6 +280,8 @@ class Participant(models.Model):
                               max_length=10,
                               null=True, blank=True)
 
+    ethnic_group = models.CharField(max_length=100, null=True, blank=True)
+
     education = models.CharField(max_length=100, null=True, blank=True)
 
     language_biography = models.CharField(max_length=200, null=True, blank=True)
@@ -284,8 +293,10 @@ class Participant(models.Model):
             return datetime.date(self.birth_year,
                                  self.birth_month,
                                  self.birth_day)
+        elif self.birth_year:
+            return datetime.datetime.strptime(f'{self.birth_year}', "%Y")
         else:
-            return self.birth_year
+            return None
 
 
 class ParticipantLangInfo(models.Model):
@@ -327,6 +338,28 @@ class Session(models.Model):
 
         return None
 
+    @property
+    def title(self):
+        # initial part of title
+        title = f" session of target child {self.get_target_child().name} on {self.date}"
+        # regex to extract number of a session code
+        match = re.search(r"-\d\d-\d\d-(\d)[A-Z]*", self.name)
+        # if there is number, get its ordinal and concatenate to title,
+        # otherwise concatenate 'only'
+        if match:
+            # function to get ordinal from a number:
+            # http://stackoverflow.com/questions/9647202/ordinal-numbers-replacement#answer6
+            ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
+            title = ordinal(int(match.group(1))) + title
+        else:
+            title = "only" + title
+
+        return title
+
+    @property
+    def duration(self):
+        return self.recording_set.aggregate(Sum('duration'))
+
 
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -339,6 +372,15 @@ class SessionParticipant(models.Model):
 
     class Meta:
         unique_together = ('session', 'participant')
+
+    @property
+    def age(self):
+        birth_date = self.participant.get_birth_date()
+        if birth_date:
+            session_date = self.session.date
+            return int(abs((session_date - birth_date).days) / 365)
+
+        return None
 
 
 class SessionParticipantRole(models.Model):

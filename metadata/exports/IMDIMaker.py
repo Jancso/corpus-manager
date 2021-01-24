@@ -30,10 +30,12 @@ import configparser
 import zipfile
 from collections import defaultdict
 from pathlib import Path
+from typing import Optional
 
 from lxml.etree import *
 
-from metadata.models import Participant, Recording, File, Corpus
+from metadata.models import Participant, Recording, File, Corpus, Session, \
+    Language
 
 
 def commandline_setup():
@@ -53,10 +55,12 @@ def commandline_setup():
 class IMDIMaker:
     """Generate CMDI files of profile IMDI for dene"""
 
-    def __init__(self, imdi_zip_dir_path=None):
-        """Intialize variables for metadata files"""
+    def __init__(self, new_version=False, imdi_zip_dir_path=None):
+        """Intialize variables for metadata files."""
         # get parsed arguments
         self.args = commandline_setup()
+
+        self.new_version = new_version
         self.corpus = Corpus.objects.first()
 
         # some constants that were previously in Dene_IMDI.ini
@@ -73,7 +77,7 @@ class IMDIMaker:
             sys.exit(1)
 
         # intialize variables storing metadata
-        self.session_metadata = {}
+        self.session_metadata: Optional[Session] = None
         self.participants = {}
         self.resources = defaultdict(list)
 
@@ -88,37 +92,22 @@ class IMDIMaker:
 
     def generate_imdis(self):
         """Generate IMDI's for all sessions from session.csv"""
-        # open sessions.csv for reading
-        sessions_file = open(self.args.sessions, "r")
-
         # get and store metadata of all participants and files
         self.get_participants()
         self.get_files()
 
-        for session in csv.DictReader(sessions_file):
+        for session in Session.objects.all():
 
             # store metadata of this session
             self.session_metadata = session
 
-            # TODO: make this more corpus-independent
-            # extract and add shortname since it is needed several times
-            match = re.search(r"deslas-([A-Z]{3})", self.session_metadata["Code"])
-            if match:
-                self.session_metadata["Short name"] = match.group(1)
-            else:
-                self.logger.error(
-                    "Short name could not be extracted from {}".format(
-                        self.session_metadata["Code"]))
-                continue
-
             # check in which IMDI version the file should be created
-            if self.args.new_version:
+            if self.new_version:
                 # IMDI 1.2
                 self.create_session()
             else:
                 # IMDI 1.1
                 self.create_cmd()
-
 
     def create_cmd(self):
         """Create CMDI element 'CMD'"""
@@ -166,26 +155,26 @@ class IMDIMaker:
         journal_file_proxy_list_element = SubElement(resources_element, "JournalFileProxyList")
         resource_relation_list_element = SubElement(resources_element, "ResourceRelationList")
 
-
     def create_session(self, components_element=None):
         """Creates CMDI element 'Components'"""
-        if self.args.new_version:
+        if self.new_version:
             session_element = Element("Session")
         else:
             session_element = SubElement(components_element, "Session")
 
         for key, value in [
-            ("Name", self.session_metadata["Code"]),
-            ("Title", self.get_title()),
-            ("Date", self.session_metadata["Date"].replace(".", "-"))
-            ]:
-
+                ("Name", self.session_metadata.name),
+                ("Title", self.session_metadata.title),
+                ("Date", self.session_metadata.date)
+        ]:
             SubElement(session_element, key).text = value
 
-        if self.session_metadata["Situation"]:
+        if self.session_metadata.situation:
             descriptions_element = SubElement(session_element, "descriptions")
-            SubElement(descriptions_element, "Description",
-                LanguageId=self.language_id_description).text = self.session_metadata["Situation"]
+            SubElement(
+                descriptions_element,
+                "Description",
+                LanguageId=self.language_id_description).text = self.session_metadata.situation
 
         self.create_mdgroup(session_element)
         self.create_session_resources(session_element)
@@ -205,24 +194,6 @@ class IMDIMaker:
 
         print(self.session_metadata["Code"])
 
-
-    def get_title(self):
-        """Get title for a certain session"""
-        # initial part of title
-        title = " session of target child " + self.session_metadata["Short name"] + " on " + self.session_metadata["Date"]
-        # regex to extract number of a session code
-        match = re.search(r"-\d\d-\d\d-(\d)[A-Z]*", self.session_metadata["Code"])
-        # if there is number, get its ordinal and concatenate to title, otherwise concatenate 'only'
-        if match:
-            # function to get ordinal from a number: http://stackoverflow.com/questions/9647202/ordinal-numbers-replacement#answer6
-            ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4])
-            title = ordinal(int(match.group(1))) + title
-        else:
-            title = "only" + title
-
-        return title
-
-
     def create_mdgroup(self, session_element):
         """Create IMDI element 'MDGroup'"""
         mdgroup_element = SubElement(session_element, "MDGroup")
@@ -230,89 +201,117 @@ class IMDIMaker:
         self.create_project(mdgroup_element)
 
         keys_element = SubElement(mdgroup_element, "Keys")
-        SubElement(keys_element, "Key", Name="Duration").text = self.session_metadata["Length of recording"]
+        SubElement(
+            keys_element,
+            "Key",
+            Name="Duration").text = self.session_metadata.duration
 
         self.create_content(mdgroup_element)
         self.create_actors(mdgroup_element)
-
 
     def create_location(self, mdgroup_element):
         """Create IMDI element 'Location'"""
         location_element = SubElement(mdgroup_element, "Location")
 
-        for field in ["Continent", "Country", "Region"]:
-            SubElement(location_element, field).text = self.config["Location"][field]
+        for key, value in [
+                ("Continent", self.corpus.location.continent),
+                ("Country", self.corpus.location.country),
+                ("Region", self.corpus.location.region)
+        ]:
+            SubElement(location_element, key).text = value
 
-        SubElement(location_element, "Address").text = self.session_metadata["Location"]
-
+        SubElement(
+            location_element,
+            "Address").text = self.session_metadata.location
 
     def create_project(self, mdgroup_element):
         """Create IMDI element 'Project'"""
         project_element = SubElement(mdgroup_element, "Project")
 
-        for field in ["Name", "Title", "Id"]:
-            SubElement(project_element, field).text = self.config["Project"][field]
+        for key, value in [
+                ("Name", self.corpus.project.name),
+                ("Title", self.corpus.project.title),
+                ("Id", self.corpus.project.pid)
+        ]:
+            SubElement(project_element, key).text = value
 
         contact_element = SubElement(project_element, "Contact")
-        for key, value in self.config.items("Contact"):
+        for key, value in [
+                ('Name', self.corpus.project.contact.name),
+                ('Address', self.corpus.project.contact.address),
+                ('Email', self.corpus.project.contact.email),
+                ('Organisation', self.corpus.project.contact.organisation)
+        ]:
             SubElement(contact_element, key).text = value
 
         descriptions_element = SubElement(project_element, "descriptions")
-        SubElement(descriptions_element, "Description",
-            LanguageId=self.language_id_description).text = self.config["Project"]["descriptions"]
-
+        SubElement(
+            descriptions_element,
+            "Description",
+            LanguageId=self.language_id_description).text = self.corpus.project.description
 
     def create_content(self, mdgroup_element):
         """Create IMDI element 'Content'"""
         content_element = SubElement(mdgroup_element, "Content")
 
-        for key, value in self.config.items("Content"):
+        for key, value in [
+                ('Genre', self.corpus.content.genre),
+                ('SubGenre', self.corpus.content.subgenre),
+                ('Task', self.corpus.content.task),
+                ('Modalities', self.corpus.content.modalities),
+                ('Subject', self.corpus.content.subject)
+        ]:
             SubElement(content_element, key).text = value
 
         context_element = SubElement(content_element, "CommunicationContext")
 
-        for key, value in self.config.items("CommunicationContext"):
+        context = self.corpus.content.communication_context
+
+        for key, value in [
+                ('Interactivity', context.interactivity),
+                ('PlanningType', context.planning_type),
+                ('Involvement', context.involvement),
+                ('SocialContext', context.social_context),
+                ('EventStructure', context.event_structure),
+                ('Channel', context.channel)
+        ]:
             SubElement(context_element, key).text = value
 
-        content_languages_element = SubElement(content_element, "Content_Languages")
+        content_languages_element = SubElement(content_element,
+                                               "Content_Languages")
 
-        for language in self.config["Languages"]:
-            content_language_element = SubElement(content_languages_element, "Content_Language")
-            for key, value in self.config.items(language):
+        for lang in Language.objects.all():
+            content_language_element = SubElement(content_languages_element,
+                                                  "Content_Language")
+            for key, value in [
+                ('Id', lang.iso_code),
+                ('Name', lang.name),
+                ('Dominant', 'Unspecified'),
+                ('SourceLanguage', 'Unspecified'),
+                ('TargetLanguage', 'Unspecified')
+            ]:
                 SubElement(content_language_element, key).text = value
 
         SubElement(content_element, "Keys")
 
-        if self.session_metadata["Content"]:
+        if self.session_metadata.content:
             descriptions_element = SubElement(content_element, "descriptions")
-            SubElement(descriptions_element, "Description",
-                LanguageId=self.language_id_description).text = self.session_metadata["Content"]
-
+            SubElement(
+                descriptions_element,
+                "Description",
+                LanguageId=self.language_id_description).text = self.session_metadata.content
 
     def create_actors(self, mdgroup_element):
         """Create IMDI element 'Actors'"""
         actors_element = SubElement(mdgroup_element, "Actors")
 
-        for actor in self.session_metadata["Participants and roles"].split(", "):
-
-            # extract role and short name for this actor
-            try:
-                shortname, role = re.split(r" (?=\()", actor)
-            except ValueError:
-                self.logger.error("Element 'Actor' for '" + actor + "' could not be created => format of 'Participants and roles not right'" +
-                    "|" + self.session_metadata["Code"])
-                continue
-
-            # strip the braces around the role
-            role = role[1:-1]
+        for actor in self.session_metadata.sessionparticipant_set:
 
             # get the right actor element
-            try:
-                actor_element = self.participants[shortname]
-            except KeyError:
-                self.logger.error("Element 'Actor' for '" + shortname + "' could not be created => short name missing in participants.csv" +
-                    "|" + self.session_metadata["Code"])
-                continue
+            actor_element = self.participants[actor.participant.short_name]
+
+            # role (select the first one)
+            role = actor.roles.first().name
 
             # modify the fields whose values depend on the role of an actor
             if role == "researcher":
@@ -320,42 +319,21 @@ class IMDIMaker:
                 actor_element[0].text = role
                 # change 'FamilySocialRole' element
                 actor_element[4].text = "Not-related"
-                # change 'EthnicGroup' element
-                actor_element[5].text = "German"
-
             elif role == "recorder":
                 actor_element[0].text = role
                 actor_element[4].text = "Not-related"
-                actor_element[5].text = "Unknown"
-
             else:
                 actor_element[0].text = "Speaker"
                 actor_element[4].text = role
-                actor_element[5].text = "Dene"
 
-            # try to parse birth date of this actor
-            for format in ["%Y-%m-%d", "%Y"]:
-                try:
-                    birthdate = datetime.datetime.strptime(actor_element[7].text, format)
-                except ValueError:
-                    birthdate = None
-                else:
-                    break
-
-            # try to parse date of this session
-            try:
-                recording_date = datetime.datetime.strptime(self.session_metadata["Date"], "%Y-%m-%d")
-            except ValueError:
-                recording_date = None
-
-            # if both birth date and recording date could be parsed
-            if birthdate and recording_date:
-                # then calculate age of this actor at this session
-                actor_element[6].text = str(int(abs((recording_date - birthdate).days) / 365))
+            # age of actor at this session
+            if actor.age:
+                actor_element[6].text = str(actor.age)
+            else:
+                actor_element[6].text = 'Unspecified'
 
             # finally add the actor element
             actors_element.append(actor_element)
-
 
     def create_session_resources(self, session_element):
         """Create IMDI element 'Resources'"""
@@ -378,7 +356,7 @@ class IMDIMaker:
                 ("FullName", participant.full_name),
                 ("Code", participant.short_name),
                 ("FamilySocialRole", ""),
-                ("EthnicGroup", ""),
+                ("EthnicGroup", participant.ethnic_group),
                 ("Age", ""),
                 ("BirthDate", participant.get_birth_date()),
                 ("Sex", participant.gender),
