@@ -24,4 +24,7 @@ urlpatterns = [
     path('corpus/<int:pk>/communicationcontext/update/',
          corpus_views.CorpusCommunicationContextUpdate.as_view(),
          name='corpus-communicationcontext-update'),
+    path('corpus/<int:pk>/access/update/',
+         corpus_views.CorpusAccessUpdate.as_view(),
+         name='corpus-access-update'),
 ]

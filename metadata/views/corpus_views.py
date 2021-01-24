@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import UpdateView
 
 from metadata import forms
-from metadata.models import Corpus, CommunicationContext, Location, Project, Contact, Content
+from metadata.models import Corpus, CommunicationContext, Location, Project, \
+    Contact, Content, Access
 
 
 @login_required
@@ -17,11 +18,13 @@ def corpus_detail_view(request):
         location = Location.objects.create()
         contact = Contact.objects.create()
         project = Project.objects.create(contact=contact)
+        access = Access.objects.create()
         corpus = Corpus.objects.create(
             name='My Corpus',
             project=project,
             content=content,
-            location=location
+            location=location,
+            access=access
         )
     else:
         corpus = Corpus.objects.first()
@@ -57,6 +60,11 @@ class CorpusContentUpdate(CorpusUpdateView):
 class CorpusCommunicationContextUpdate(CorpusUpdateView):
     model = CommunicationContext
     form_class = forms.CommunicationContextForm
+
+
+class CorpusAccessUpdate(CorpusUpdateView):
+    model = Access
+    form_class = forms.AccessForm
 
 
 class CorpusContactUpdate(CorpusUpdateView):

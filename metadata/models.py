@@ -129,6 +129,13 @@ class Content(models.Model):
         on_delete=models.CASCADE)
 
 
+class Access(models.Model):
+    availability = models.CharField(max_length=300, default='User license required', blank=True)
+    date = models.DateField(null=True, blank=True)
+    owner = models.CharField(max_length=100, null=True, blank=True)
+    publisher = models.CharField(max_length=300, null=True, blank=True)
+
+
 class Corpus(models.Model):
     name = models.CharField(max_length=300)
 
@@ -140,6 +147,9 @@ class Corpus(models.Model):
 
     content = models.OneToOneField(
         Content, on_delete=models.CASCADE
+    )
+    access = models.OneToOneField(
+        Access, on_delete=models.CASCADE
     )
 
 
@@ -377,3 +387,6 @@ class File(models.Model):
             return size(self.size)
         else:
             return None
+
+    def get_mime_type(self):
+        return f'{self.type}/{self.format}'

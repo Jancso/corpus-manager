@@ -124,6 +124,20 @@
                     {% include 'metadata/corpus/communication_context.html' %}
                 </div>
             </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    Access
+                    <a class="float-end"
+                       href="{% url 'metadata:corpus-access-update' corpus.pk %}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    {% include 'metadata/corpus/access.html' %}
+                </div>
+            </div>
         </div>
 
 
