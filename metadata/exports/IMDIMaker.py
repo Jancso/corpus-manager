@@ -24,12 +24,16 @@ import os
 import sys
 import csv
 import time
-import logging
 import argparse
 import datetime
 import configparser
+import zipfile
 from collections import defaultdict
+from pathlib import Path
+
 from lxml.etree import *
+
+from metadata.models import Participant
 
 
 def commandline_setup():
@@ -49,12 +53,11 @@ def commandline_setup():
 class IMDIMaker:
     """Generate CMDI files of profile IMDI for dene"""
 
-    def __init__(self):
+    def __init__(self, imdi_zip_dir_path=None):
         """Intialize variables for metadata files"""
         # get parsed arguments
         self.args = commandline_setup()
-        # get logger to track errors while creating the IMDI files
-        self.logger = self.get_logger()
+        self.language_id_description = 'ISO639:eng'
 
         # load Dene.ini where all the fixed values are stored
         self.config = configparser.ConfigParser()
@@ -69,66 +72,47 @@ class IMDIMaker:
         self.participants = {}
         self.resources = defaultdict(list)
 
-        # create IMDI directory if does not already exist
-        if not os.path.isdir(self.args.imdi):
-            try:
-                os.mkdir(self.args.imdi)
-            except FileNotFoundError:
-                print("Folder IMDI couldn't be created at", self.args.imdi)
-                sys.exit(1)
+        self.imdi_zip_path = Path(imdi_zip_dir_path)
+        with zipfile.ZipFile(str(imdi_zip_dir_path), 'w') as archive:
+            self.archive = archive
+            # archive.write(video_dir / 'bboxes.json', 'bboxes.json')
 
-
-    def get_logger(self):
-        """Produce logs if some of the elements cannot be created"""
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.INFO)
-
-        handler = logging.FileHandler("imdi.log", mode="w")
-        handler.setLevel(logging.INFO)
-
-        formatter = logging.Formatter("%(funcName)s|%(levelname)s|%(message)s")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-
-        return logger
-
+        self.imdi_dir_path = Path(imdi_zip_dir_path)
+        if not self.imdi_dir_path.exists():
+            self.imdi_dir_path.mkdir()
 
     def generate_imdis(self):
         """Generate IMDI's for all sessions from session.csv"""
-        try:
-            # open sessions.csv for reading
-            sessions_file = open(self.args.sessions, "r")
-        except FileNotFoundError:
-            print("Couldn't find sessions.csv at", self.args.sessions)
-            sys.exit(1)
-        else:
-            # get and store metadata of all participants and files
-            self.get_participants()
-            self.get_files()
+        # open sessions.csv for reading
+        sessions_file = open(self.args.sessions, "r")
 
-            for session in csv.DictReader(sessions_file):
+        # get and store metadata of all participants and files
+        self.get_participants()
+        self.get_files()
 
-                # store metadata of this session
-                self.session_metadata = session
+        for session in csv.DictReader(sessions_file):
 
-                # TODO: make this more corpus-independent
-                # extract and add shortname since it is needed several times
-                match = re.search(r"deslas-([A-Z]{3})", self.session_metadata["Code"])
-                if match:
-                    self.session_metadata["Short name"] = match.group(1)
-                else:
-                    self.logger.error(
-                        "Short name could not be extracted from {}".format(
-                            self.session_metadata["Code"]))
-                    continue
+            # store metadata of this session
+            self.session_metadata = session
 
-                # check in which IMDI version the file should be created
-                if self.args.new_version:
-                    # IMDI 1.2
-                    self.create_session()
-                else:
-                    # IMDI 1.1
-                    self.create_cmd()
+            # TODO: make this more corpus-independent
+            # extract and add shortname since it is needed several times
+            match = re.search(r"deslas-([A-Z]{3})", self.session_metadata["Code"])
+            if match:
+                self.session_metadata["Short name"] = match.group(1)
+            else:
+                self.logger.error(
+                    "Short name could not be extracted from {}".format(
+                        self.session_metadata["Code"]))
+                continue
+
+            # check in which IMDI version the file should be created
+            if self.args.new_version:
+                # IMDI 1.2
+                self.create_session()
+            else:
+                # IMDI 1.1
+                self.create_cmd()
 
 
     def create_cmd(self):
@@ -196,7 +180,7 @@ class IMDIMaker:
         if self.session_metadata["Situation"]:
             descriptions_element = SubElement(session_element, "descriptions")
             SubElement(descriptions_element, "Description",
-                LanguageId=self.config["LanguageId"]["Description"]).text = self.session_metadata["Situation"]
+                LanguageId=self.language_id_description).text = self.session_metadata["Situation"]
 
         self.create_mdgroup(session_element)
         self.create_session_resources(session_element)
@@ -270,7 +254,7 @@ class IMDIMaker:
 
         descriptions_element = SubElement(project_element, "descriptions")
         SubElement(descriptions_element, "Description",
-            LanguageId=self.config["LanguageId"]["Description"]).text = self.config["Project"]["descriptions"]
+            LanguageId=self.language_id_description).text = self.config["Project"]["descriptions"]
 
 
     def create_content(self, mdgroup_element):
@@ -297,7 +281,7 @@ class IMDIMaker:
         if self.session_metadata["Content"]:
             descriptions_element = SubElement(content_element, "descriptions")
             SubElement(descriptions_element, "Description",
-                LanguageId=self.config["LanguageId"]["Description"]).text = self.session_metadata["Content"]
+                LanguageId=self.language_id_description).text = self.session_metadata["Content"]
 
 
     def create_actors(self, mdgroup_element):
@@ -375,100 +359,72 @@ class IMDIMaker:
         for resource_proxy_element, resource_element in self.resources[self.session_metadata["Code"]]:
             resources_element.append(resource_element)
 
-
     def get_participants(self):
-        """Get all metadata of the partcipants from participants.csv"""
-        try:
-            # open participants.csv for reading
-            participants_file = open(self.args.participants, "r")
-        except FileNotFoundError:
-            print("Couldn't find participants.csv at", self.args.participants)
-            sys.exit(1)
-        else:
-            # go through each participant
-            for participant in csv.DictReader(participants_file):
+        """Get all metadata of the partcipants."""
+        participants = Participant.objects.all()
+        # go through each participant
+        for participant in participants:
 
-                actor_element = Element("Actor")
+            actor_element = Element("Actor")
 
-                for key, value in [
-                    ("Role", ""),
-                    ("Name", participant["Full name"].split(" ")[0]),
-                    ("FullName", participant["Full name"]),
-                    ("Code", participant["Short name"]),
-                    ("FamilySocialRole", ""),
-                    ("EthnicGroup", ""),
-                    ("Age", ""),
-                    ("BirthDate", participant["Birth date"]),
-                    ("Sex", participant["Gender"]),
-                    ("Education", participant["Education"]),
-                    ("Anonymized", "false")
-                    ]:
+            for key, value in [
+                ("Role", ""),
+                ("Name", participant.full_name.split(" ")[0]),
+                ("FullName", participant.full_name),
+                ("Code", participant.short_name),
+                ("FamilySocialRole", ""),
+                ("EthnicGroup", ""),
+                ("Age", ""),
+                ("BirthDate", participant.get_birth_date()),
+                ("Sex", participant.gender),
+                ("Education", participant.education),
+                ("Anonymized", "false")
+                ]:
 
-                    if value:
-                        SubElement(actor_element, key).text = value
-                    else:
-                        SubElement(actor_element, key).text = "Unspecified"
+                if value:
+                    SubElement(actor_element, key).text = value
+                else:
+                    SubElement(actor_element, key).text = "Unspecified"
 
-                # only create contact if there is also data available for this actor
-                if participant["Contact address"] or "@" in participant["E-mail/Phone"]:
-                    contact_element = SubElement(actor_element, "Contact")
-                    SubElement(contact_element, "Name").text = participant["Full name"]
+            SubElement(actor_element, "Keys")
 
-                    if participant["Contact address"]:
-                        SubElement(contact_element, "Address").text = participant["Contact address"]
-                    # do not create this element if phone number is given
-                    if "@" in participant["E-mail/Phone"]:
-                        SubElement(contact_element, "Email").text = participant["E-mail/Phone"]
+            if participant.description:
+                descriptions_element = SubElement(actor_element, "descriptions")
+                SubElement(
+                    descriptions_element,
+                    "Description",
+                    LanguageId=self.language_id_description).text = participant.description
 
-                SubElement(actor_element, "Keys")
+            actor_languages_element = SubElement(actor_element, "Actor_Languages")
 
-                if participant["Description"]:
-                    descriptions_element = SubElement(actor_element, "descriptions")
-                    SubElement(descriptions_element, "Description",
-                        LanguageId=self.config["LanguageId"]["Description"]).text = participant["Description"]
+            if participant.language_biography:
+                descriptions_element = SubElement(actor_languages_element, "descriptions")
+                SubElement(descriptions_element,
+                           "Description",
+                           LanguageId=self.language_id_description).text = participant.language_biography
 
-                actor_languages_element = SubElement(actor_element, "Actor_Languages")
+            # then create an 'Actor_Language' element for each language
+            # spoken by this actor
+            for actor_language in participant.participantlanginfo_set:
+                actor_language_element = SubElement(actor_languages_element, "Actor_Language")
 
-                if participant["Language biography"]:
-                    descriptions_element = SubElement(actor_languages_element, "descriptions")
-                    SubElement(descriptions_element, "Description",
-                        LanguageId=self.config["LanguageId"]["Description"]).text = participant["Language biography"]
+                SubElement(actor_language_element, "Id").text = actor_language.language.iso_code
+                SubElement(actor_language_element, "Name").text = actor_language.language.name
 
-                # first collect the languages the actor speaks
-                actor_languages = set()
-                for field in ["First languages", "Second languages", "Main language"]:
-                    if participant[field]:
-                        # split at slash in case two languages are given in a field
-                        for language in participant[field].split("/"):
-                            actor_languages.add(language)
+                if actor_language.first:
+                    SubElement(actor_language_element, "MotherTongue").text = "true"
+                else:
+                    SubElement(actor_language_element, "MotherTongue").text = "false"
 
-                # then create an 'Actor_Language' element for each language spoken by this actor
-                for actor_language in actor_languages:
-                    actor_language_element = SubElement(actor_languages_element, "Actor_Language")
+                if actor_language.main is None:
+                    SubElement(actor_language_element, "PrimaryLanguage").text = "Unspecified"
+                elif actor_language.main:
+                    SubElement(actor_language_element, "PrimaryLanguage").text = "true"
+                else:
+                    SubElement(actor_language_element, "PrimaryLanguage").text = "false"
 
-                    # try to get the language data from Dene.ini
-                    try:
-                        SubElement(actor_language_element, "Id").text = self.config[actor_language]["Id"]
-                        SubElement(actor_language_element, "Name").text = self.config[actor_language]["Name"]
-                    except KeyError:
-                        self.logger.error("Data for language '" + actor_language + "' missing in Dene.ini" + "|" + participant["Short name"])
-                        SubElement(actor_language_element, "Id").text = "Unknown"
-                        SubElement(actor_language_element, "Name").text = actor_language
-
-                    if actor_language in participant["First languages"]:
-                        SubElement(actor_language_element, "MotherTongue").text = "true"
-                    else:
-                        SubElement(actor_language_element, "MotherTongue").text = "false"
-
-                    if not participant["Main language"]:
-                        SubElement(actor_language_element, "PrimaryLanguage").text = "Unspecified"
-                    elif actor_language == participant["Main language"]:
-                        SubElement(actor_language_element, "PrimaryLanguage").text = "true"
-                    else:
-                        SubElement(actor_language_element, "PrimaryLanguage").text = "false"
-
-                # finally add the 'Actor' element under the right short name
-                self.participants[participant["Short name"]] = actor_element
+            # finally add the 'Actor' element under the right short name
+            self.participants[participant.short_name] = actor_element
 
 
     def get_files(self):
