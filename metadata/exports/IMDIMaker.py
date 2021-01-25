@@ -1,4 +1,4 @@
-import shutil
+import io
 import time
 import zipfile
 from collections import defaultdict
@@ -21,7 +21,7 @@ class IMDIMaker:
     cmd_resource_type = 'Resource'
     language_id_written_resource = 'eng'
 
-    def __init__(self, creator: User, imdi_zip_dir_path, new_version=False):
+    def __init__(self, creator: User, new_version=False):
         """Intialize variables for metadata files."""
         self.creator = creator
         self.new_version = new_version
@@ -32,19 +32,11 @@ class IMDIMaker:
         self.participants = {}
         self.resources = defaultdict(list)
 
-        # create IMDI folder
-        self.imdi_dir_path = Path(imdi_zip_dir_path)
-        if self.imdi_dir_path.exists():
-            shutil.rmtree(self.imdi_dir_path)
-        self.imdi_dir_path.mkdir()
-
-        # open archive
-        self.imdi_zip_path = Path(imdi_zip_dir_path)
-        with zipfile.ZipFile(str(imdi_zip_dir_path), 'w') as archive:
-            self.archive = archive
-
     def generate_imdis(self):
         """Generate IMDI's for all sessions from session.csv"""
+        buffer = io.BytesIO()
+        archive = zipfile.ZipFile(buffer, 'w')
+
         # get and store metadata of all participants and files
         self.get_participants()
         self.get_files()
@@ -57,10 +49,15 @@ class IMDIMaker:
             # check in which IMDI version the file should be created
             if self.new_version:
                 # IMDI 1.2
-                self.create_session()
+                root_element = self.create_session()
             else:
                 # IMDI 1.1
-                self.create_cmd()
+                root_element = self.create_cmd()
+
+            self.write_to_buffer(archive, root_element)
+
+        archive.close()
+        return buffer
 
     def create_cmd(self):
         """Create CMDI element 'CMD'"""
@@ -77,8 +74,7 @@ class IMDIMaker:
         components_element = SubElement(cmd_element, "Components")
         self.create_session(components_element)
 
-        # write to file
-        self.write_file(cmd_element)
+        return cmd_element
 
     def create_header(self, cmd_element):
         """Create CMDI element 'Header'"""
@@ -87,7 +83,7 @@ class IMDIMaker:
         for key, value in [
                 ("MdCreator", self.creator.username),
                 ("MdCreationDate", time.strftime("%Y-%m-%d")),
-                ("MdSelfLink", Path(self.corpus.link) / f'{self.session_metadata.name}.imdi'),
+                ("MdSelfLink", str(Path(self.corpus.link) / f'{self.session_metadata.name}.imdi')),
                 ("MdProfile", self.md_profile),
                 ("MdCollectionDisplayName", self.corpus.name)
         ]:
@@ -113,7 +109,7 @@ class IMDIMaker:
         for key, value in [
                 ("Name", self.session_metadata.name),
                 ("Title", self.session_metadata.title),
-                ("Date", self.session_metadata.date)
+                ("Date", str(self.session_metadata.date))
         ]:
             SubElement(session_element, key).text = value
 
@@ -127,26 +123,13 @@ class IMDIMaker:
         self.create_mdgroup(session_element)
         self.create_session_resources(session_element)
 
-        if self.new_version:
-            # write to file
-            self.write_file(session_element)
+        return session_element
 
-    def write_file(self, element):
-        """Write XML tree to file."""
-        imdi_fname = f'{self.session_metadata.name}.imdi'
-        # set path for IMDI file
-        imdi_path = self.imdi_dir_path / imdi_fname
-
-        # write XML to this file
-        ElementTree(element).write(
-            imdi_path,
-            pretty_print=True,
-            encoding="utf-8",
-            xml_declaration=True)
-
-        self.archive.write(imdi_path, imdi_fname)
-
-        print(self.session_metadata.name)
+    def write_to_buffer(self, archive, element):
+        """Write XML tree to buffer."""
+        imdi_path = f'IMDI/{self.session_metadata.name}.xml'
+        imdi_str = tostring(element, pretty_print=True, encoding='utf-8')
+        archive.writestr(imdi_path, imdi_str)
 
     def create_mdgroup(self, session_element):
         """Create IMDI element 'MDGroup'"""
@@ -168,8 +151,8 @@ class IMDIMaker:
         location_element = SubElement(mdgroup_element, "Location")
 
         for key, value in [
-                ("Continent", self.corpus.location.continent),
-                ("Country", self.corpus.location.country),
+                ("Continent", self.corpus.location.get_continent_display()),
+                ("Country", self.corpus.location.country.name),
                 ("Region", self.corpus.location.region)
         ]:
             SubElement(location_element, key).text = value
@@ -259,7 +242,7 @@ class IMDIMaker:
         """Create IMDI element 'Actors'"""
         actors_element = SubElement(mdgroup_element, "Actors")
 
-        for actor in self.session_metadata.sessionparticipant_set:
+        for actor in self.session_metadata.sessionparticipant_set.all():
 
             # get the right actor element
             actor_element = self.participants[actor.participant.short_name]
@@ -313,7 +296,7 @@ class IMDIMaker:
                 ("FamilySocialRole", ""),
                 ("EthnicGroup", participant.ethnic_group),
                 ("Age", ""),
-                ("BirthDate", participant.get_birth_date()),
+                ("BirthDate", str(participant.get_birth_date())),
                 ("Sex", participant.gender),
                 ("Education", participant.education),
                 ("Anonymized", "false")
@@ -346,7 +329,7 @@ class IMDIMaker:
 
             # then create an 'Actor_Language' element for each language
             # spoken by this actor
-            for actor_language in participant.participantlanginfo_set:
+            for actor_language in participant.participantlanginfo_set.all():
                 actor_language_element = SubElement(actor_languages_element,
                                                     "Actor_Language")
 

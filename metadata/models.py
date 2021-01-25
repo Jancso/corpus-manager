@@ -342,7 +342,12 @@ class Session(models.Model):
     @property
     def title(self):
         # initial part of title
-        title = f" session of target child {self.get_target_child().name} on {self.date}"
+        tc = self.get_target_child()
+        if tc:
+            tc = tc.name
+        else:
+            tc = '{Unknown}'
+        title = f" session of target child {tc} on {self.date}"
         # regex to extract number of a session code
         match = re.search(r"-\d\d-\d\d-(\d)[A-Z]*", self.name)
         # if there is number, get its ordinal and concatenate to title,
