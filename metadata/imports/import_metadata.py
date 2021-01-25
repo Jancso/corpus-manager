@@ -1,7 +1,12 @@
-from metadata.imports import import_sessions, import_files, import_participants, import_monitor
+from metadata.imports import import_sessions, \
+    import_files, import_participants, import_monitor, import_corpus
 
 
 def _import_metadata(files):
+    if 'corpus_file' in files:
+        corpus_file = files['corpus_file']
+        import_corpus.import_corpus(corpus_file)
+
     if 'participants_file' in files:
         participants_file = files['participants_file']
         import_participants.import_participants(participants_file)

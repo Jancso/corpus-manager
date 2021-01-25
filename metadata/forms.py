@@ -204,12 +204,8 @@ class RecordingMultipleChoiceField(forms.ModelMultipleChoiceField):
         return obj.name
 
 
-class UploadFileForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control-file'
-
+class UploadFileForm(BootstrapForm):
+    corpus_file = forms.FileField(required=False)
     participants_file = forms.FileField(required=False)
     sessions_file = forms.FileField(required=False)
     monitor_file = forms.FileField(required=False)
