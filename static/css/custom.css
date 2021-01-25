@@ -18,6 +18,11 @@ nav a {
     border-color: var(--main-color2);
 }
 
+.btn-success {
+    background-image: linear-gradient(#355b34, #618a63);
+    border-color: #618a63;
+}
+
 .page-item.active .page-link {
     background-image: linear-gradient(var(--main-color1), var(--main-color2));
     border-color: var(--main-color2);

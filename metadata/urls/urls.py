@@ -19,5 +19,9 @@ urlpatterns = [
 
     path('import/',
          general_views.MetadataImportView.as_view(),
-         name='metadata-import')
+         name='metadata-import'),
+    path('imdiexport/',
+         general_views.imdi_export_view,
+         name='imdi-export'
+         ),
 ]

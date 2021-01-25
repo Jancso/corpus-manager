@@ -75,6 +75,15 @@
                 </div>
             </div>
 
+            <div class="row mt-5">
+                <div class="col-12">
+                    <a class="btn w-100 h-100 btn-success"
+                       href="{% url 'metadata:imdi-export' %}">
+                        IMDI Export
+                    </a>
+                </div>
+            </div>
+
             {% if request.user.is_superuser %}
                 <div class="row mt-5">
                     <div class="col-12">

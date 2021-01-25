@@ -1,3 +1,10 @@
+import io
+import zipfile
+from xml.etree.ElementTree import ElementTree
+
+from django.http import HttpResponse
+from lxml.etree import Element, tostring
+
 from metadata.imports.import_metadata import import_metadata
 from metadata.forms import UploadFileForm
 from django.views.generic.edit import View
@@ -28,3 +35,18 @@ class MetadataImportView(UserPassesTestMixin, View):
 
         context = {'form': form}
         return render(request, 'metadata/metadata_import.html', context)
+
+
+@login_required
+def imdi_export_view(request):
+    element = Element('test')
+    imdi_str = tostring(element)
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, 'w') as archive:
+        # archive.write('metadata/util/test.xml',  'files/test.xml')
+        archive.writestr('files/test.xml', imdi_str)
+
+    response = HttpResponse(buffer.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename="IMDI.zip"'
+    return response
