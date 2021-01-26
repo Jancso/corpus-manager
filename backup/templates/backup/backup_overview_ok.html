@@ -12,7 +12,7 @@
                 <div class="col-12">
                     <a href="{% url 'backup:backup-create' %}"
                        class="btn btn-primary">
-                        <i class="fas fa-plus-square pe-2"></i>Create Backup
+                        <i class="fas fa-plus-square pe-2"></i>Create backup on GitLab
                     </a>
                 </div>
             </div>
@@ -52,6 +52,15 @@
         </div>
 
         <div class="col-md-4">
+
+            <div class="row mb-3 text-center">
+                <div class="col-12">
+                    <a  href="{% url 'backup:backup-download' %}" class="btn btn-success">
+                        <i class="fas fa-download pe-2"></i>
+                        Download backup
+                    </a>
+                </div>
+            </div>
 
             <div class="row mb-3">
                 <div class="col-12">

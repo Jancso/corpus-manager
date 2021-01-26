@@ -4,6 +4,8 @@ import subprocess
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files import File
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic.base import View
 
@@ -161,3 +163,12 @@ class SchedulerCreateView(LoginRequiredMixin, View):
 
         context = {'form': form}
         return render(request, self.template, context)
+
+
+def download_backup_view(request):
+    sqlite3_path = Path(shutil.copy(DB_PATH, REPO_PATH))
+    sqlite3_file = File(open(sqlite3_path, "rb"))
+
+    response = HttpResponse(sqlite3_file, content_type='application/x-sqlite3')
+    response['Content-Disposition'] = 'attachment; filename="corpus-metadata.sqlite3"'
+    return response
