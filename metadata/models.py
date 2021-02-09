@@ -295,7 +295,7 @@ class Participant(models.Model):
                                  self.birth_month,
                                  self.birth_day)
         elif self.birth_year:
-            return datetime.datetime.strptime(f'{self.birth_year}', "%Y")
+            return datetime.datetime.strptime(f'{self.birth_year}', "%Y").date()
         else:
             return None
 
@@ -344,7 +344,7 @@ class Session(models.Model):
         # initial part of title
         tc = self.get_target_child()
         if tc:
-            tc = tc.name
+            tc = tc.short_name
         else:
             tc = '{Unknown}'
         title = f" session of target child {tc} on {self.date}"

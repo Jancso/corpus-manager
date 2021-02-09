@@ -248,7 +248,10 @@ class IMDIMaker:
             actor_element = self.participants[actor.participant.short_name]
 
             # role (select the first one)
-            role = actor.roles.first().name
+            if actor.roles.all():
+                role = actor.roles.first().name
+            else:
+                role = 'Unspecified'
 
             # modify the fields whose values depend on the role of an actor
             if role == "researcher":
@@ -290,7 +293,7 @@ class IMDIMaker:
 
             for key, value in [
                 ("Role", ""),
-                ("Name", participant.full_name.split(" ")[0]),
+                ("Name", participant.full_name),
                 ("FullName", participant.full_name),
                 ("Code", participant.short_name),
                 ("FamilySocialRole", ""),
