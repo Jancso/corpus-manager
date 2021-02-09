@@ -99,16 +99,16 @@ def backup_create_view(request):
 
 @login_required
 def backup_view(request):
-    if backup_repo_exists() and ssh_key_exists():
-        commits = get_commits()
-        repository = get_remote_url()
-
-        context = {
-            'repository': repository,
-            'commits': commits,
-            'public_key': get_public_ssh_key()
-        }
-        return render(request, 'backup/backup_overview_ok.html', context)
+    # if backup_repo_exists() and ssh_key_exists():
+    #     commits = get_commits()
+    #     repository = get_remote_url()
+    #
+    #     context = {
+    #         'repository': repository,
+    #         'commits': commits,
+    #         'public_key': get_public_ssh_key()
+    #     }
+    #     return render(request, 'backup/backup_overview_ok.html', context)
 
     return render(request, 'backup/backup_overview_nok.html', {})
 
@@ -166,7 +166,7 @@ class SchedulerCreateView(LoginRequiredMixin, View):
 
 
 def download_backup_view(request):
-    sqlite3_path = Path(shutil.copy(DB_PATH, REPO_PATH))
+    sqlite3_path = DB_PATH
     sqlite3_file = File(open(sqlite3_path, "rb"))
 
     response = HttpResponse(sqlite3_file, content_type='application/x-sqlite3')
