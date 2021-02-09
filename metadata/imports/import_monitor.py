@@ -55,6 +55,7 @@ dene['much '] = Recording.DENE_SPEECH_HIGH
 
 status_names = {v: k for k, v in Task.STATUS_CHOICES}
 status_names['completed'] = Task.STATUS_COMPLETE
+status_names['finished'] = Task.STATUS_COMPLETE
 status_names[''] = Task.STATUS_NOT_STARTED
 status_names['complete/in progress'] = Task.STATUS_COMPLETE
 
@@ -113,6 +114,7 @@ people_dict = {
     'Caroline Remensberger': ['caroline_remensberger'],
     'Caro Rem (CFo)': ['caroline_remensberger', 'curtis_fontaine'],
     'C/D': ['chastity_sylvestre', 'dawn_herman'],
+    '??/C/D': ['chastity_sylvestre', 'dawn_herman'],
     'C/D???': ['chastity_sylvestre', 'dawn_herman'],
     'C/D (Allison)': ['chastity_sylvestre', 'dawn_herman', 'allison_lemaigre'],
     'C/D (DCU)': ['chastity_sylvestre', 'dawn_herman', 'dene_cheecham_ulrich'],
@@ -127,10 +129,13 @@ people_dict = {
     'Curtis/Leanne': ['curtis_fontaine', 'leanne_fontaine'],
     'Cynthia': ['cynthia'],
     'Dagmar Jung': ['dagmar_jung'],
+    'Dagmar': ['dagmar_jung'],
     'Dawn/Chastity': ['dawn_herman', 'chastity_sylvestre'],
     'Debora Beuret': ['debora_beuret'],
     'DJ': ['dagmar_jung'],
     'DJ/CS': ['dagmar_jung', 'chastity_sylvestre'],
+    'Eric': ['eric_szabo'],
+    'Eric Szabo': ['eric_szabo'],
     'Erika Herman': ['erika_herman'],
     'Farris Lemaigre': ['farris_lemaigre'],
     'FaLemaigre/Trrina Lemaigre': ['farris_lemaigre', 'trina_lemaigre'],
@@ -224,7 +229,6 @@ def import_monitor(file):
                 'directedness': directedness[row['directedness']],
                 'dene_speech': dene[row['Dene']],
                 'audio': row['audio'] if row['audio'] else None,
-                'length': to_timedelta(row['length']),
                 'notes': row['notes'] if row['notes'] else None
             }
         )
