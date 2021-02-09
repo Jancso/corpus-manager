@@ -28,7 +28,12 @@ def get_query_string(request):
 @login_required
 def session_list_view(request):
     sessions = Session.objects.all()
-    session_filter_form = SessionFilterForm(request.GET or None)
+
+    if len(request.GET) == 0 \
+            or ('page' in request.GET and len(request.GET) == 1):
+        session_filter_form = SessionFilterForm(None)
+    else:
+        session_filter_form = SessionFilterForm(request.GET)
 
     if session_filter_form.is_valid() and session_filter_form.has_changed():
         if 'name' in session_filter_form.changed_data:
