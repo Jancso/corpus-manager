@@ -49,9 +49,9 @@ child_speech['meidum'] = Recording.CHILD_SPEECH_MEDIUM
 directedness = {v: k for k, v in Recording.DIRECTEDNESS_CHOICES}
 directedness[''] = Recording.DIRECTEDNESS_NA
 
-dene = {v: k for k, v in Recording.DENE_SPEECH_CHOICES}
-dene[''] = Recording.DENE_SPEECH_NA
-dene['much '] = Recording.DENE_SPEECH_HIGH
+dene = {v: k for k, v in Recording.LANGUAGE_SPEECH_CHOICES}
+dene[''] = Recording.LANGUAGE_SPEECH_NA
+dene['much '] = Recording.LANGUAGE_SPEECH_HIGH
 
 status_names = {v: k for k, v in Task.STATUS_CHOICES}
 status_names['completed'] = Task.STATUS_COMPLETE

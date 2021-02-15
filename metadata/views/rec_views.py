@@ -46,7 +46,7 @@ class RecordingUpdateView(LoginRequiredMixin, UpdateView):
 
 
 def _get_session_name(rec_name):
-    regex = re.compile(r'deslas-[A-Z]{3,}-\d\d\d\d-\d\d-\d\d(-\d+)?')
+    regex = re.compile(r'.*-[A-Z]{3,}-\d\d\d\d-\d\d-\d\d(-\d+)?')
     match = regex.search(rec_name)
 
     if match:

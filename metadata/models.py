@@ -218,23 +218,23 @@ class Recording(models.Model):
                                     max_length=30,
                                     default=DIRECTEDNESS_NA)
 
-    DENE_SPEECH_LITTLE = 'L'
-    DENE_SPEECH_MEDIUM = 'M'
-    DENE_SPEECH_HIGH = 'H'
-    DENE_SPEECH_NONE = 'N'
-    DENE_SPEECH_NA = 'U'
+    LANGUAGE_SPEECH_LITTLE = 'L'
+    LANGUAGE_SPEECH_MEDIUM = 'M'
+    LANGUAGE_SPEECH_HIGH = 'H'
+    LANGUAGE_SPEECH_NONE = 'N'
+    LANGUAGE_SPEECH_NA = 'U'
 
-    DENE_SPEECH_CHOICES = [
-        (DENE_SPEECH_LITTLE, 'little'),
-        (DENE_SPEECH_MEDIUM, 'medium'),
-        (DENE_SPEECH_HIGH, 'much'),
-        (DENE_SPEECH_NONE, 'none'),
-        (DENE_SPEECH_NA, 'n/a')
+    LANGUAGE_SPEECH_CHOICES = [
+        (LANGUAGE_SPEECH_LITTLE, 'little'),
+        (LANGUAGE_SPEECH_MEDIUM, 'medium'),
+        (LANGUAGE_SPEECH_HIGH, 'much'),
+        (LANGUAGE_SPEECH_NONE, 'none'),
+        (LANGUAGE_SPEECH_NA, 'n/a')
     ]
 
-    dene_speech = models.CharField(choices=DENE_SPEECH_CHOICES,
-                                   max_length=30,
-                                   default=DENE_SPEECH_NA)
+    language_speech = models.CharField(choices=LANGUAGE_SPEECH_CHOICES,
+                                       max_length=30,
+                                       default=LANGUAGE_SPEECH_NA)
 
     audio = models.CharField(max_length=100, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)

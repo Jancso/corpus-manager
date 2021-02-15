@@ -180,7 +180,7 @@ class RecordingCreateForm(BootstrapModelForm):
         model = Recording
         fields = [
             'name', 'quality', 'child_speech', 'directedness',
-            'dene_speech', 'audio', 'notes']
+            'language_speech', 'audio', 'notes']
 
     notes = forms.CharField(
         required=False,
@@ -191,10 +191,13 @@ class RecordingCreateForm(BootstrapModelForm):
     def clean_name(self):
         name = self.cleaned_data.get('name')
 
-        rgx = re.compile(r'deslas-[A-Z]{3,4}-\d{4}-\d{2}-\d{2}(-[A-Z0-9]+)?')
+        rgx = re.compile(r'.*-[A-Z]{3,4}-\d{4}-\d{2}-\d{2}(-[A-Z0-9]+)?')
 
         if not rgx.fullmatch(name):
-            raise forms.ValidationError(f'Format must be: /{rgx.pattern}/')
+            raise forms.ValidationError(
+                f'Format must be: /{rgx.pattern}/, i.e.'
+                f'<corpus-name>-<shortname>-<date>(-<number>)'
+            )
 
         return name
 
