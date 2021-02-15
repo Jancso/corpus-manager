@@ -4,8 +4,8 @@ server {
     listen 8020 ssl;
     server_name corpus-manager.ch;
 
-    ssl_certificate     /opt/app/dene/corpus-manager.ch.crt;
-    ssl_certificate_key /opt/app/dene/corpus-manager.ch.key;
+    ssl_certificate     /opt/app/dene/certificates/corpus-manager.ch.crt;
+    ssl_certificate_key /opt/app/dene/certificates/corpus-manager.ch.key;
 
     location / {
         proxy_pass http://127.0.0.1:8010;
