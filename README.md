@@ -58,7 +58,7 @@ has to contain the following two files:
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
-export DJANGO_SETTINGS_MODULE=dene.settings
+export SECRET_KEY="This_is_the_secret_key_of_Django"
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
