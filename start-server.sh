@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-if [ -n "$DJANGO_SETTINGS_MODULE" ]; then
-  export DJANGO_SETTINGS_MODULE="$DJANGO_SETTINGS_MODULE"
+if [ -n "$ALLOWED_HOSTS" ]; then
+  sed -i "s/ALLOWED_HOSTS =.*/ALLOWED_HOSTS = \['$ALLOWED_HOSTS'\]/" dene/production_settings.py
+  export DJANGO_SETTINGS_MODULE="dene.production_settings"
 else
   export DJANGO_SETTINGS_MODULE="dene.settings"
 fi

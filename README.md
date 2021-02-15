@@ -39,19 +39,26 @@ sudo docker build -t dene .
 
 sudo docker run -it -p 443:8020 \
      -e SECRET_KEY="This_is_the_secret_key_of_Django" \
-     -e DJANGO_SUPERUSER_USERNAME=anna \
+     -e DJANGO_SUPERUSER_USERNAME=anna_jancso \
      -e DJANGO_SUPERUSER_PASSWORD=This_is_the_admin_password \
      -e DJANGO_SUPERUSER_EMAIL=admin@example.com \
-     -e DJANGO_SETTINGS_MODULE=dene.production_settings \
+     -e ALLOWED_HOSTS="dene.corpus-manager.ch" \
      -v /home/ubuntu/certificates:/opt/app/dene/certificates \
      dene
 ```
 
+where `/home/ubuntu/certificates` (or in whatever folder you store the certificates)
+has to contain the following two files:
+* corpus-manager.ch.crt
+* corpus-manager.ch.key
+
+
 ### Conventional (local)
 ```
-python -m venv venv
+python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
+export DJANGO_SETTINGS_MODULE=dene.settings
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
