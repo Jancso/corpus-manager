@@ -1,8 +1,11 @@
 # nginx.default
 
 server {
-    listen 8020;
-    server_name example.org;
+    listen 8020 ssl;
+    server_name corpus-manager.ch;
+
+    ssl_certificate     /opt/app/dene/corpus-manager.ch.crt;
+    ssl_certificate_key /opt/app/dene/corpus-manager.ch.key;
 
     location / {
         proxy_pass http://127.0.0.1:8010;

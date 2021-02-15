@@ -16,6 +16,8 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic
 
+chown www-data:www-data /opt/app/dene/db.sqlite3
+
 # start-server.sh
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ] ; then
     (python manage.py createsuperuser --no-input)
