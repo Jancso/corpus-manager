@@ -1,24 +1,53 @@
-# Run web-application
+# Child Language Acquisition Corpus Manager
+
+Building a child language acquisition corpus is a time-consuming task
+since most of the data can only be collected manually. Such corpora often
+suffer from 'data problems' such as missing, erroneous or inconsistent data.
+Furthermore, building such a corpus is also an organizational challenge
+as many people in parallel are working on tasks, requiring appropriate
+coordination and synchronization.
+
+The idea to build a web-based corpus manager arose based on these challenges.
+Metadata and workflow data had previously been collected in CSVs and shared
+over git. Since these do not apply any constraints on the entered data,
+we also had a set of scripts which checked those CSVs.
+However, those were only run sporadically and therefore data problems tended
+to start to accumulate. A web-application, on the other, can
+apply validation before data is stored, thereby keeping 'bad' data out of a
+database right from the beginning.
+
+The web-app offers the following functionality:
+* Grant or revoke access to platform for specific people
+* Add metadata for sessions, recordings, participants, etc.
+* Export metadata to IMDI
+* Assign specific tasks to people such as segmenting, transcribing and glossing
+* Post issues and ideas to a forum
+* Download a backup of your database
+
+## Run web-application
 
 You can run it in two ways:
 * Docker
 * conventional with a python environment
 
-### Docker (local or production)
+### Docker (production)
 Install Docker first: https://docs.docker.com/get-docker/
 
-Run the following commands (change port, username, password and mail if needed)
+Run the following commands (change environment variables if needed)
 ```shell
-docker build -t dene .
+sudo docker build -t dene .
 
-docker run -it -p 80:8020 \
-     -e DJANGO_SUPERUSER_USERNAME=admin \
-     -e DJANGO_SUPERUSER_PASSWORD=sekret1 \
+sudo docker run -it -p 443:8020 \
+     -e SECRET_KEY="This_is_the_secret_key_of_Django" \
+     -e DJANGO_SUPERUSER_USERNAME=anna \
+     -e DJANGO_SUPERUSER_PASSWORD=This_is_the_admin_password \
      -e DJANGO_SUPERUSER_EMAIL=admin@example.com \
+     -e DJANGO_SETTINGS_MODULE=dene.production_settings \
+     -v /home/ubuntu/certificates:/opt/app/dene/certificates \
      dene
 ```
 
-### Conventional (local only)
+### Conventional (local)
 ```
 python -m venv venv
 . venv/bin/activate
