@@ -141,7 +141,7 @@ class IMDIMaker:
         SubElement(
             keys_element,
             "Key",
-            Name="Duration").text = self.session_metadata.duration
+            Name="Duration").text = str(self.session_metadata.duration)
 
         self.create_content(mdgroup_element)
         self.create_actors(mdgroup_element)
@@ -390,7 +390,7 @@ class IMDIMaker:
                         ("ResourceLink", file.location),
                         ("Type", file.type),
                         ("Format", file.get_mime_type()),
-                        ("Size", file.size)
+                        ("Size", str(file.size))
                 ]:
                     SubElement(resource_element, key).text = value
 
@@ -407,7 +407,7 @@ class IMDIMaker:
                 if file.duration:
                     SubElement(
                         time_position_element,
-                        "End").text = file.duration
+                        "End").text = str(file.duration)
             else:
                 resource_element = Element("WrittenResource")
 
