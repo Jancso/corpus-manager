@@ -84,16 +84,16 @@
                 </div>
             </div>
 
-            {% if request.user.is_superuser %}
-                <div class="row mt-5">
-                    <div class="col-12">
-                        <a class="btn w-100 h-100 btn-danger"
-                           href="{% url 'metadata:metadata-import' %}">
-                            Metadata Import
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
+{#            {% if request.user.is_superuser %}#}
+{#                <div class="row mt-5">#}
+{#                    <div class="col-12">#}
+{#                        <a class="btn w-100 h-100 btn-danger"#}
+{#                           href="{% url 'metadata:metadata-import' %}">#}
+{#                            Metadata Import#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
 
         </div>
 

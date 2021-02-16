@@ -7,9 +7,19 @@
 
 {% block metadata-content %}
 
+    <div class="alert alert-danger mb-5" role="alert">
+        <p class="fs-3">
+            DANGER OF DATA LOSS
+        </p>
+        <p class="fs-3">
+            Importing data will completely overwrite the whole database!!
+        </p>
+    </div>
+
     <div class="row mb-4">
         <div class="col-12">
-            <a href="{% url 'metadata:language-import' %}" class="btn btn-primary btn-sm">
+            <a href="{% url 'metadata:language-import' %}"
+               class="btn btn-primary btn-sm">
                 Import Languages
             </a>
         </div>
@@ -19,7 +29,8 @@
 
     <div class="row mb-4">
         <div class="col-12">
-            <a href="{% url 'metadata:role-import' %}" class="btn btn-primary btn-sm">
+            <a href="{% url 'metadata:role-import' %}"
+               class="btn btn-primary btn-sm">
                 Import Roles
             </a>
         </div>
