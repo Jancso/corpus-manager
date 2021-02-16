@@ -44,11 +44,14 @@ sudo docker run -it -p 443:8020 \
      -e DJANGO_SUPERUSER_EMAIL=admin@example.com \
      -e ALLOWED_HOSTS="dene.corpus-manager.ch" \
      -v /home/ubuntu/database:/opt/app/dene/database \
+     -v /home/ubuntu/media:/opt/app/dene/media \
      -v /home/ubuntu/certificates:/opt/app/dene/certificates \
      dene
 ```
 
 where `/home/ubuntu/database` will contain the database.
+
+where `/home/ubuntu/media` will contain media uploads.
 
 where `/home/ubuntu/certificates` has to contain the following certificate files:
 * corpus-manager.ch.crt

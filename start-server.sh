@@ -20,6 +20,7 @@ python manage.py collectstatic
 
 chown www-data:www-data ${db_dir_path}
 chown www-data:www-data $DB_PATH
+chown www-data:www-data /opt/app/dene/media
 
 set +e
 
