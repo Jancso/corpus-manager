@@ -2,6 +2,8 @@ from pathlib import Path
 import shutil
 import subprocess
 
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files import File
@@ -92,6 +94,7 @@ def backup():
     subprocess.run(push_cmd, shell=True)
 
 
+@login_required
 def backup_create_view(request):
     backup()
     return redirect('backup:backup-view')
@@ -165,8 +168,9 @@ class SchedulerCreateView(LoginRequiredMixin, View):
         return render(request, self.template, context)
 
 
+@staff_member_required
 def download_backup_view(request):
-    sqlite3_path = DB_PATH
+    sqlite3_path = settings.DATABASES['default']['NAME']
     sqlite3_file = File(open(sqlite3_path, "rb"))
 
     response = HttpResponse(sqlite3_file, content_type='application/x-sqlite3')
