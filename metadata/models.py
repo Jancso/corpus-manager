@@ -443,3 +443,6 @@ class File(models.Model):
 
     def get_mime_type(self):
         return f'{self.type}/{self.format}'
+
+    class Meta:
+        unique_together = ('recording', 'format')
