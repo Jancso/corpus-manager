@@ -12,4 +12,7 @@ urlpatterns = [
     path('files/<int:pk>/',
          file_views.file_delete_view,
          name='file-delete'),
+    path('files/<int:pk>/update/',
+         file_views.FileUpdateView.as_view(),
+         name='file-update'),
 ]

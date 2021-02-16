@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 from metadata.forms import FileCreateForm
 from metadata.models import File
@@ -34,3 +34,10 @@ class FileCreateView(LoginRequiredMixin, CreateView):
         file_name = f'{rec_name}.{rec_format}'
         form.instance.name = file_name
         return super().form_valid(form)
+
+
+class FileUpdateView(LoginRequiredMixin, UpdateView):
+    model = File
+    form_class = FileCreateForm
+    template_name = 'metadata/file/file_update.html'
+    success_url = reverse_lazy('metadata:file-list')
