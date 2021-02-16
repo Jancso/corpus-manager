@@ -312,3 +312,9 @@ class AccessForm(BootstrapModelForm):
     class Meta:
         model = Access
         fields = '__all__'
+
+
+class FileCreateForm(BootstrapModelForm):
+    class Meta:
+        model = File
+        exclude = ['name']

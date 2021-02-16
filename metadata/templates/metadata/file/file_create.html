@@ -1,0 +1,38 @@
+{% extends 'metadata/base.html' %}
+
+{% block metadata-breadcrumb %}
+    <li class=breadcrumb-item>
+        <a href="{% url 'metadata:file-list' %}">
+            Files
+        </a>
+    </li>
+    <li class=breadcrumb-item aria-current="page">
+        Create
+    </li>
+{% endblock %}
+
+
+{% block metadata-content %}
+    <div class="row">
+        <div class="col-3"></div>
+
+        <div class="col-6">
+            <div class="card">
+                <h6 class="card-header">Create file</h6>
+
+                <div class="card-body">
+                    <form method="post">{% csrf_token %}
+                        <table class="table">
+                            {{ form.as_table }}
+                        </table>
+                        <input class="btn btn-primary"
+                               type="submit"
+                               value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3"></div>
+    </div>
+{% endblock %}
