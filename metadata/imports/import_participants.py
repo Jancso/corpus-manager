@@ -28,7 +28,10 @@ def import_participants(file):
                 row[field] = None
             else:
                 if field == 'Age':
-                    row[field] = int(row[field])
+                    if row['Age'].isdigit():
+                        row['Age'] = int(row[field])
+                    else:
+                        row['Age'] = None
 
         birth_day = None
         birth_month = None
@@ -74,7 +77,11 @@ def import_participants(file):
                     if lang in langs:
                         part_lang_info = langs[lang]
                     else:
-                        language = Language.objects.get(name=lang)
+                        try:
+                            language = Language.objects.get(name=lang)
+                        except Language.DoesNotExist:
+                            continue
+
                         part_lang_info = ParticipantLangInfo(
                             participant=participant,
                             language=language,

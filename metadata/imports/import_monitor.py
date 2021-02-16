@@ -227,7 +227,7 @@ def import_monitor(file):
                 'quality': quality_names[row['quality']],
                 'child_speech': child_speech[row['child speech']],
                 'directedness': directedness[row['directedness']],
-                'dene_speech': dene[row['Dene']],
+                'language_speech': dene[row['Dene']],
                 'audio': row['audio'] if row['audio'] else None,
                 'notes': row['notes'] if row['notes'] else None
             }

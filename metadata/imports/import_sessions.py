@@ -35,7 +35,10 @@ def import_sessions(file):
         if row['Participants and roles'] is not None:
 
             for part_role in row['Participants and roles'].split(', '):
-                part, role = part_role.split(' ', maxsplit=1)
+                try:
+                    part, role = part_role.split(' ', maxsplit=1)
+                except ValueError:
+                    continue
 
                 try:
                     participant = Participant.objects.get(short_name=part)

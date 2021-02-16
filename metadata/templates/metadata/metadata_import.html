@@ -48,15 +48,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#monitor-import-btn").click(function () {
-                $(this).prop("disabled", true);
-                $("#monitor-import").append(
-                    `<span class="spinner-border" role="status" aria-hidden="true"></span>`
-                );
-            });
-        });
-    </script>
 {% endblock %}
