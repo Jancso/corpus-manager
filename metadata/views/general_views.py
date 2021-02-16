@@ -4,6 +4,7 @@ from xml.etree.ElementTree import ElementTree
 
 from django.http import HttpResponse
 from lxml.etree import Element, tostring
+import threading
 
 from metadata.exports.IMDIMaker import IMDIMaker
 from metadata.imports.import_metadata import import_metadata
@@ -31,8 +32,9 @@ class MetadataImportView(UserPassesTestMixin, View):
     def post(self, request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            import_metadata(request.FILES)
-            return redirect(reverse('metadata:metadata-import'))
+            x = threading.Thread(target=import_metadata, args=(request.FILES,))
+            x.start()
+            return redirect(reverse('metadata:metadata-view'))
 
         context = {'form': form}
         return render(request, 'metadata/metadata_import.html', context)
