@@ -135,8 +135,11 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_ROOT.mkdir(exist_ok=True)
-copy(BASE_DIR / 'static/img/user-placeholder.jpg', MEDIA_ROOT)
+
+# when localhost
+if not os.environ.get('ALLOWED_HOSTS'):
+    MEDIA_ROOT.mkdir(exist_ok=True)
+    copy(BASE_DIR / 'static/img/user-placeholder.jpg', MEDIA_ROOT)
 
 
 LOGIN_REDIRECT_URL = '/'

@@ -15,6 +15,7 @@ export DB_PATH="${db_dir_path}/db.sqlite3"
 export DJANGO_SETTINGS_MODULE="dene.production_settings"
 
 media_dir_path="/opt/app/dene/media"
+cp /opt/app/dene/static/img/user-placeholder.jpg ${media_dir_path}
 
 python manage.py makemigrations
 python manage.py migrate
