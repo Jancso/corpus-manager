@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     image = models.ImageField(upload_to='profile-images/',
-                              default='/static/img/user-placeholder.jpg',
+                              default='user-placeholder.jpg',
                               blank=True)
 
     JOB_FUNCTION_CHOICES = [

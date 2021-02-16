@@ -14,13 +14,16 @@ db_dir_path="/opt/app/dene/database"
 export DB_PATH="${db_dir_path}/db.sqlite3"
 export DJANGO_SETTINGS_MODULE="dene.production_settings"
 
+media_dir_path="/opt/app/dene/media"
+cp /opt/app/dene/static/img/user-placeholder.jpg ${media_dir_path}
+
 python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic
 
 chown www-data:www-data ${db_dir_path}
 chown www-data:www-data $DB_PATH
-chown www-data:www-data /opt/app/dene/media
+chown www-data:www-data ${media_dir_path}
 
 set +e
 
