@@ -155,21 +155,7 @@ class ParticipantLangInfoForm(BootstrapModelForm):
     language = ParticipantLangModelMultipleChoiceField(queryset=Language.objects.order_by('name'))
 
 
-class RecordingCreateForm(BootstrapModelForm):
-
-    FILES_WAV = 'wav'
-    FILES_MOV = 'mov'
-    FILES_MTS = 'mts'
-    FILES_MP4 = 'mp4'
-
-    FILES_CHOICES = [
-        (FILES_WAV, 'WAV'),
-        (FILES_MTS, 'MTS'),
-        (FILES_MOV, 'MOV'),
-        (FILES_MP4, 'MP4'),
-    ]
-
-    files = forms.MultipleChoiceField(choices=FILES_CHOICES)
+class RecordingUpdateForm(BootstrapModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -200,6 +186,23 @@ class RecordingCreateForm(BootstrapModelForm):
             )
 
         return name
+
+
+class RecordingCreateForm(RecordingUpdateForm):
+
+    FILES_WAV = 'wav'
+    FILES_MOV = 'mov'
+    FILES_MTS = 'mts'
+    FILES_MP4 = 'mp4'
+
+    FILES_CHOICES = [
+        (FILES_WAV, 'WAV'),
+        (FILES_MTS, 'MTS'),
+        (FILES_MOV, 'MOV'),
+        (FILES_MP4, 'MP4'),
+    ]
+
+    files = forms.MultipleChoiceField(choices=FILES_CHOICES)
 
 
 class RecordingMultipleChoiceField(forms.ModelMultipleChoiceField):

@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import UpdateView
 
-from metadata.forms import RecordingCreateForm
+from metadata.forms import RecordingCreateForm, RecordingUpdateForm
 from metadata.models import Recording, Session, File
 from workflow.models import Task
 
@@ -39,10 +39,10 @@ def rec_delete_view(request, pk):
 class RecordingUpdateView(LoginRequiredMixin, UpdateView):
     model = Recording
     template_name = 'metadata/recording/rec_update.html'
-    form_class = RecordingCreateForm
+    form_class = RecordingUpdateForm
 
     def get_success_url(self):
-        return reverse('workflow:rec-detail', args=(self.object.pk,))
+        return reverse('metadata:rec-detail', args=(self.object.pk,))
 
 
 def _get_session_name(rec_name):
