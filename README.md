@@ -27,13 +27,13 @@ The web-app offers the following functionality:
 ## Run web-application
 
 You can run it in two ways:
-* Docker
-* conventional with a python environment
+* Docker (production)
+* Python environment (local)
 
 ### Docker (production)
 Install Docker first: https://docs.docker.com/get-docker/
 
-Run the following commands (change environment variables if needed)
+Run the following commands (change environment variables and volume paths if needed)
 ```shell
 sudo docker build -t dene .
 
@@ -43,17 +43,19 @@ sudo docker run -it -p 443:8020 \
      -e DJANGO_SUPERUSER_PASSWORD=This_is_the_admin_password \
      -e DJANGO_SUPERUSER_EMAIL=admin@example.com \
      -e ALLOWED_HOSTS="dene.corpus-manager.ch" \
+     -v /home/ubuntu/database:/opt/app/dene/database \
      -v /home/ubuntu/certificates:/opt/app/dene/certificates \
      dene
 ```
 
-where `/home/ubuntu/certificates` (or in whatever folder you store the certificates)
-has to contain the following two files:
+where `/home/ubuntu/database` will contain the database.
+
+where `/home/ubuntu/certificates` has to contain the following certificate files:
 * corpus-manager.ch.crt
 * corpus-manager.ch.key
 
 
-### Conventional (local)
+### Python environment (local)
 ```
 python3 -m venv venv
 . venv/bin/activate

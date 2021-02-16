@@ -10,13 +10,18 @@ else
   exit
 fi
 
+db_dir_path="/opt/app/dene/database"
+export DB_PATH="${db_dir_path}/db.sqlite3"
 export DJANGO_SETTINGS_MODULE="dene.production_settings"
 
 python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic
 
-chown www-data:www-data /opt/app/dene/db.sqlite3
+chown www-data:www-data ${db_dir_path}
+chown www-data:www-data $DB_PATH
+
+set +e
 
 if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ] ; then
     (python manage.py createsuperuser --no-input)
