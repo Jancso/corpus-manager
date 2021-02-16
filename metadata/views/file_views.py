@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -14,7 +15,14 @@ def file_list_view(request):
     return render(request, 'metadata/file/file_list.html', context)
 
 
-class FileCreateView(CreateView):
+@login_required
+def file_delete_view(_, pk):
+    rec = get_object_or_404(File, pk=pk)
+    rec.delete()
+    return redirect('metadata:file-list')
+
+
+class FileCreateView(LoginRequiredMixin, CreateView):
     model = File
     form_class = FileCreateForm
     template_name = 'metadata/file/file_create.html'

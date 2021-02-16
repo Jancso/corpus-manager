@@ -9,4 +9,7 @@ urlpatterns = [
     path('files/create/',
          file_views.FileCreateView.as_view(),
          name='file-create'),
+    path('files/<int:pk>/',
+         file_views.file_delete_view,
+         name='file-delete'),
 ]

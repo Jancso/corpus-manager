@@ -17,6 +17,7 @@
                 <th scope="col">Duration</th>
                 <th scope="col">Size</th>
                 <th scope="col">Location</th>
+                <th scope="col"></th>
             </tr>
 
             </thead>
@@ -34,6 +35,14 @@
                     <td>{{ file.duration }}</td>
                     <td>{{ file.get_human_readable_size }}</td>
                     <td>{{ file.location }}</td>
+                    <td>
+                        <a class="btn trash-icon"
+                           type="submit"
+                           href="{% url 'metadata:file-delete' file.pk %}"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
