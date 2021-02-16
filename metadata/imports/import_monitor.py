@@ -273,7 +273,7 @@ def import_monitor(file):
                         }
                     )
 
-                    user.set_password('matterhorn')
+                    user.set_password(None)
                     user.save()
 
                     Assignment.objects.update_or_create(
