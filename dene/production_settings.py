@@ -4,7 +4,7 @@ from dene.settings import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
 
 CSRF_COOKIE_SECURE = True
 
